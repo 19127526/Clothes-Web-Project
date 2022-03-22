@@ -17,7 +17,6 @@ export default function (app){
         })
     })
     app.use('/about',aboutRoute)
-
     app.use('/product',productRoute)
 }
 
