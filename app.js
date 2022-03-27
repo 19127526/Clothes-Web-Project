@@ -6,7 +6,7 @@ import  activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
 import passport from 'passport'
 import flash from 'express-flash'
-import session from 'cookie-session'
+import session from 'cookie-session';
 import bcrypt from 'bcrypt'
 import initializePassport from './passport-config.js'
 
@@ -16,7 +16,7 @@ initializePassport.initialize(
     id => users.find(user=>user.id === id)
 )
 const app=express();
-const port = 3000
+const port = process.env.PORT || 5000;
 //using
 // app.use(morgan('dev'));
 const users=[]
