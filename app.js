@@ -6,7 +6,7 @@ import  activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
 import passport from 'passport'
 import flash from 'express-flash'
-import session from 'express-session'
+import session from 'cookie-session'
 import bcrypt from 'bcrypt'
 import initializePassport from './passport-config.js'
 
