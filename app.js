@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import activateViewMiddleware from "./middlewares/view.mdw.js";
-import activateRouteMiddleware from "./middlewares/routes.mdw.js";
+//import activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
 import passport from "passport";
 import flash from "express-flash";
@@ -18,13 +18,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
+
 const users = [];
-console.log(users);
+//console.log(users);
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+
 app.use("/public", express.static("public"));
 app.set("trust proxy", 1); // trust first proxy
 app.use(
@@ -37,9 +39,7 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.get("/index", (req, res) => {
-  res.render("index", { name: "Kyle" });
-});
+
 app.get("/login", (req, res) => {
   res.render("login");
 });
@@ -55,6 +55,7 @@ app.post(
     failureFlash: true,
   })
 );
+
 app.post("/register", async (req, res) => {
   try {
     const hashedPass = await bcrypt.hash(req.body.password, 10);
@@ -74,7 +75,10 @@ app.post("/register", async (req, res) => {
 //middleware
 activateLocalMiddleware(app);
 activateViewMiddleware(app);
-activateRouteMiddleware(app);
+//activateRouteMiddleware(app);
+
+import shoppingRouter from "./routes/shopping.route.js";
+app.use(shoppingRouter);
 
 //listen port
 app.listen(port, function () {
