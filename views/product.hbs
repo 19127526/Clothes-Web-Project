@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap text-center">
-                            <h2 >Shop</h2>
+                            <h2>Shop</h2>
                         </div>
                     </div>
                 </div>
@@ -37,11 +37,11 @@
                     <form action="#">
                         <div class="select-itms">
                             <select name="select" id="select1" style="display: none;">
-                                <option value="">40 per page</option>
+                                <option value="">12 per page</option>
                                 <option value="">50 per page</option>
                                 <option value="">60 per page</option>
                                 <option value="">70 per page</option>
-                            </select><div class="nice-select" tabindex="0"><span class="current">40 per page</span><ul class="list"><li data-value="" class="option selected">40 per page</li><li data-value="" class="option">50 per page</li><li data-value="" class="option">60 per page</li><li data-value="" class="option">70 per page</li></ul></div>
+                            </select><div class="nice-select" tabindex="0"><span class="current">12 per page</span><ul class="list"><li data-value="" class="option selected">12 per page</li><li data-value="" class="option">50 per page</li><li data-value="" class="option">60 per page</li><li data-value="" class="option">70 per page</li></ul></div>
                         </div>
                     </form>
                 </div>
@@ -51,7 +51,7 @@
                 <!-- card one -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row">
-                        {{#each this.productByCatID}}
+                        {{#each this.listProduct}}
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">{{ProName}}</a></h3>
+                                        <h3><a href="product_details">{{ProName}}</a></h3>
                                         <span>{{format_number Price}}</span>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                 <!-- Card two -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="row">
-                        {{#each this.productByCatID}}
+                        {{#each this.listProduct}}
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
@@ -90,7 +90,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">{{ProName}}</a></h3>
+                                        <h3><a href="product_details">{{ProName}}</a></h3>
                                         <span>{{format_number Price}}</span>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                     <div class="row">
                         <div class="row">
-                            {{#each this.productByCatID}}
+                            {{#each this.listProduct}}
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                     <div class="single-popular-items mb-50 text-center">
                                         <div class="popular-img">
@@ -115,7 +115,7 @@
                                             </div>
                                         </div>
                                         <div class="popular-caption">
-                                            <h3><a href="product_details.html">{{ProName}}</a></h3>
+                                            <h3><a href="product_details">{{ProName}}</a></h3>
                                             <span>{{format_number Price}}</span>
                                         </div>
                                     </div>
@@ -127,6 +127,7 @@
             </div>
             <!-- End Nav Card -->
         </div>
+        {{{paginateHelper pagination leftText="Prev" rightText="Next"}}}
     </section>
     <!-- Latest Products End -->
     <!--? Shop Method Start-->
