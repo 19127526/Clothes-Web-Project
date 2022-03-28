@@ -1,10 +1,10 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import categoryModel from "../models/category.model.js";
-import productModel from "../models/product.model.js";
-import productRoute from "../routes/product.route.js";
+import productModel from "../models/shopping.model.js";
+import productRoute from "../routes/shopping.route.js";
 import aboutRoute from "../routes/about.route.js";
-import router from "../routes/product.route.js";
+import router from "../routes/shopping.route.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export default function (app) {
