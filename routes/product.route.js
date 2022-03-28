@@ -3,17 +3,17 @@ import express from "express";
 const router = express.Router();
 
 router.get("/:CatID", async function (req, res) {
-  const per_page = 12;
+  const perPage = 12;
   const catID = req.params.CatID || 0;
   const page = req.query.page || 1;
-  const { pagination, listProduct } = await productModel.findByCatID(catID, page, perPage);
-  res.render("product", {
-    listProduct : listProduct,
+  let { pagination, listProduct } = await productModel.findByCatID(catID, page, perPage);
+  res.render("product", { 
     pagination: {
       page: pagination.current_page,
-      limit: 7,
-      totalRows: pagination.totalRows,
+      limit: perPage,
+      totalRows: pagination.total_items,
     },
+    listProduct,
   });
 });
 

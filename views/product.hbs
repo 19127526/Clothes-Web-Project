@@ -22,9 +22,9 @@
                     <!--Nav Button  -->
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Newest Arrivals</a>
                             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"> Price high to low</a>
-                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"> Most populer </a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"> Most popular </a>
                         </div>
                     </nav>
                     <!--End Nav Button  -->
@@ -126,8 +126,34 @@
                 </div>
             </div>
             <!-- End Nav Card -->
+            <style>
+                .pagination>li>a, .pagination>li>span {
+                    position: relative;
+                    float: left;
+                    padding: 10px 16px;
+                    font-size: 18px;
+                    margin-left: -1px;
+                    line-height: 1.42857143;
+                    color: #337ab7;
+                    text-decoration: none;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                }
+                .pagination > .disabled > span,
+                .pagination > .disabled > span:hover,
+                .pagination > .disabled > span:focus,
+                .pagination > .disabled > a,
+                .pagination > .disabled > a:hover,
+                .pagination > .disabled > a:focus {
+                    color: rgb(119, 119, 119);
+                    cursor: not-allowed;
+                    background-color: rgb(255, 255, 255);
+                    border-color: rgb(221, 221, 221);
+                    pointer-events: none;
+                }
+            </style>
+            {{{paginateHelper pagination paginationClass="pagination pagination-lg justify-content-center"}}}
         </div>
-        {{{paginateHelper pagination leftText="Prev" rightText="Next"}}}
     </section>
     <!-- Latest Products End -->
     <!--? Shop Method Start-->

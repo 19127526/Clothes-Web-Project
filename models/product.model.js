@@ -7,18 +7,18 @@ export default {
       .limit(6)
       .offset(0);
   },
-  async findByCatID(catID, page, per_page) {
+  async findByCatID(catID, page, perPage) {
     let pagination = {};
     const total = await db("products").count('* as count').where("CatID", catID).first();
     pagination.total_pages = Math.ceil(total.count / perPage);
-    page = max(1, min(page, pagination.total_pages);
+    page = Math.max(1, Math.min(page, pagination.total_pages));
     pagination.current_page = page;
-    pagination.per_page = per_page;
+    pagination.per_page = perPage;
     pagination.total_items = total.count;
     const offset = page - 1;
-    const list = await db("products").where("CatID", catID).limit(perPage).offset(page * 12);
+    const listProduct = await db("products").where("CatID", catID).limit(perPage).offset(offset * perPage);
     
-    return {pagination, list};
+    return { pagination, listProduct };
   },
   async findArrival() {
     const sql =
