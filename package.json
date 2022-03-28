@@ -1,9 +1,9 @@
 {
   "type": "module",
-  "name": "Clothes-Web-Project",
+  "name": "clothes_web_project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "debug": "nodemon --inspect app.js",
