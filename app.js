@@ -3,11 +3,13 @@ import morgan from "morgan";
 import activateViewMiddleware from "./middlewares/view.mdw.js";
 //import activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
-
+import bp from 'body-parser'
 const app = express();
 const port = process.env.PORT || 3000;
-
 app.use(morgan('dev'));
+
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: true }))
 
 app.use("/public", express.static("public"));
 app.set("trust proxy", 1); // trust first proxy

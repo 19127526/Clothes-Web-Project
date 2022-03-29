@@ -1,7 +1,6 @@
 import adminModel from "../models/admin.model.js";
 import express from "express";
 const router = express.Router();
-
 router.get("/", async function (req, res) {
     const perPage = 12;
     const page = req.query.page || 1;
@@ -18,5 +17,13 @@ router.get("/", async function (req, res) {
       listProduct,
     });
 });
+
+router.post("/add", async function (req, res) {
+    console.log(req.body);
+    const ret=await adminModel.addProduct(req.body)
+    res.redirect('/admin')
+});
+
+
 
 export default router;

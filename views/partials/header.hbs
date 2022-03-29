@@ -49,13 +49,13 @@
                                 <li><a href="#">Category</a>
                                     <ul class="submenu">
                                         {{#each lcCategories}}
-                                            <li><a href="category/{{CatID}}">
+                                            <li><a href="/category/{{CatID}}">
                                                 {{CatName}}
                                             </a></li>
                                         {{/each}}
                                     </ul>
                                 </li>
-                                <li><a href="about">about</a></li>
+                                <li><a href="/about">about</a></li>
                                 <li class="hot"><a href="#">Latest</a>
                                     <ul class="submenu">
                                         <li><a href="shop"> Product list</a></li>
@@ -99,6 +99,14 @@
                     <div class="mobile_menu d-block d-lg-none"></div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="search-model-box">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-btn">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Searching key.....">
+            </form>
         </div>
     </div>
     <!-- Header End -->
