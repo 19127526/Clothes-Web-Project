@@ -18,6 +18,66 @@
     <section class="popular-items latest-padding">
         <div class="container">
             <div class="row product-btn justify-content-between mb-40">
+                <!-- Add Button start-->
+                <div class="text-center">
+                    <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalContactForm">
+                    Add new product</a>
+                </div>
+                <!-- Modal start -->
+                <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Fill product information</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="form-group">  
+                                    <label>Product name:</label>                               
+                                    <input class="form-control" type="text" name="product_name" id="product_name" placeholder="Enter product name">                                 
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Manufacturer name:</label>
+                                    <input class="form-control" type="text" name="product_name" id="manufacturer_name" placeholder="Enter manufacturer name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="form34">Category name:</label> 
+                                    <input class="form-control" type="text" name="category_name" id="category_name" placeholder="Enter category name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="form34">Link product image:</label> 
+                                    <input class="form-control" type="text" name="link_product_image" id="link_product_image" placeholder="Enter link product  image">
+                                </div>
+
+                                <div class="form-group">
+					                <label>Price:</label>
+					                <input class="form-control" type="number" name="price" id="price" placeholder="Enter price" value="0" onkeyup="updateTotalPrice()">
+				                </div>
+				                <div class="form-group">
+					                <label>Quantity:</label>
+					                <input class="form-control" type="text" name="quantity" id="quantity" placeholder="Enter quantity" value="0" onkeyup="updateTotalPrice()">
+				                </div>
+				                
+				                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+					                    <button class="btn btn-success" type="button" onclick="addProduct()">Add Product</button>
+					                </div>
+                                    <div class="col-lg-6">
+                                        <button class="btn btn-danger" type="reset">Reset</button>
+                                    </div>
+				                </div>
+                            </div> 
+                        </div>      				
+                    </div>
+                </div>
+                <!-- Modal end -->
+                <!-- Add Button end -->
                 <div class="properties__button">
                     <!--Nav Button  -->
                     <nav>
@@ -59,7 +119,39 @@
                                         <img src="{{Image}}" alt="" >
                                         </a>
                                         <div class="img-cap">
-                                            <span>Add to cart</span>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <a href="" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                                        Edit
+                                                    </a>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                                <!--Modal start -->
+                                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+                                                <!--Modal end -->
+                                            </div>    
                                         </div>
                                         <div class="favorit-items">
                                             <span class="flaticon-heart"></span>
