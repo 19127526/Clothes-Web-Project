@@ -24,6 +24,13 @@ router.post("/add", async function (req, res) {
     res.redirect('/admin')
 });
 
+router.post("/del", async function (req, res) {
+    console.log(req.body);
+    const ret=await adminModel.delProduct(req.body.ProID)
+    res.redirect('/admin')
+});
+
+
 
 
 export default router;
