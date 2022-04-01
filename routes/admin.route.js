@@ -1,4 +1,5 @@
 import adminModel from "../models/admin.model.js";
+import shoppingModel from "../models/shopping.model.js";
 import express from "express";
 const router = express.Router();
 router.get("/", async function (req, res) {
@@ -16,6 +17,12 @@ router.get("/", async function (req, res) {
       },
       listProduct,
     });
+});
+
+router.get("/product/:ProID", async function (req, res) {
+    const proID = req.params.ProID || 0;
+    const product = await shoppingModel.findByProductID(proID);
+    res.render("product_detail_management", { product });
 });
 
 router.post("/add", async function (req, res) {
