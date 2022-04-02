@@ -14,4 +14,40 @@ export default {
       .offset(offset * perPage);
     return { pagination, listProduct };
   },
+
+  async addCategories(category) {
+    return await db("categories").insert(category);
+  },
+
+  async patchCategories(category) {
+    const id = category.CatID;
+    delete category.CatID;
+    return await db("categories").where("CatID", id).update(category);
+  },
+
+  async addProduct(product) {
+    return await db("products").insert({
+      ProName: product.ProName,
+      Price: product.Price,
+      SizeS: "null",
+      SizeM: "null",
+      SizeL: "null",
+      SizeXL: "null",
+      FullDes: product.FullDes,
+      CatID: product.CatID,
+      Quantity: product.Quantity,
+      Arrival: product.Arrival,
+      Image: product.Image,
+    });
+  },
+
+  async delProduct(id) {
+    return await db("products").where("ProID", id).del();
+  },
+
+  async patchProduct(product) {
+    const id = product.ProID;
+    delete product.ProID;
+    return await db("products").where("ProID", id).update(product);
+  },
 };

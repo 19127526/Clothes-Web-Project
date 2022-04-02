@@ -33,7 +33,11 @@
                         <div class="login_part_form_iner">
                             <h3>Register !<br>
                                 Please Sign up now</h3>
-                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            {{#if error_message}}
+                                <div class="alert alert-danger" role="alert">
+                                {{error_message}}</div>
+                            {{/if}}
+                            <form class="row contact_form" action="/register" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
                                     <input type="text" class="form-control" id="name" name="name" value=""
                                            placeholder="Username">

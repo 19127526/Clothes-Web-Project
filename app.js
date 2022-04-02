@@ -3,16 +3,17 @@ import morgan from "morgan";
 import flash from "express-flash";
 import session from "cookie-session";
 import passport from "passport";
+import bodyParser from "body-parser";
 
 import activateViewMiddleware from "./middlewares/view.mdw.js";
-//import activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
 
 const app = express();
+app.use(morgan('dev'));
 const port = process.env.PORT || 3000;
 
-app.use(morgan('dev'));
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use("/public", express.static("public"));
 app.set("trust proxy", 1); // trust first proxy
 app.use(
@@ -30,7 +31,6 @@ app.use(passport.session());
 //middleware
 activateLocalMiddleware(app);
 activateViewMiddleware(app);
-//activateRouteMiddleware(app);
 
 import loginRouter from "./routes/login.route.js";
 import shoppingRouter from "./routes/shopping.route.js";
