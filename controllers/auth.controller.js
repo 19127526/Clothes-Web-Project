@@ -1,6 +1,6 @@
 import passport from "passport";
 import bcrypt from "bcrypt";
-import initializePassport from "../auth/passport-config.js";
+import initializePassport from "../configs/passport-config.js";
 import validator from "express-validator";
 
 const { body, validationResult } = validator;
