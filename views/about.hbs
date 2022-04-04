@@ -1,38 +1,81 @@
 <main>
     <div class="slider-area ">
         <div class="single-slider slider-height2 d-flex align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="hero-cap text-center">
-                            <h2>About Us</h2>
+            <div class="container">                
+                <div class="col-xl-12">                        
+                    <div class="container rounded bg-white my-4 border border-danger">
+                        <div class="row">
+                            <div class="col-md-4 border-right">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img class="rounded-circle mb-1 mt-5" width="150px" src="../public/assets/img/about/User1.jpg">
+                                    <span class="font-weight-bold">Vũ Trọng</span>
+                                    <span class="text-black-50">caovutrong@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="text-right">Profile</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"><label class="labels">First Name</label><span class="form-control">Trọng</span></div>
+                                    <div class="col-md-6"><label class="labels">Last name</label><span class="form-control">Cao</span></div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12 my-1"><label class="labels">Phone Number</label><span class="form-control">0123456789</span></div>
+                                    <div class="col-md-12 my-1"><label class="labels">Address</label><span class="form-control">Bến Tre</span></div>
+                                    <div class="col-md-12 my-1"><label class="labels">Email address</label><span class="form-control">caovutrong@gmail.com</span></div>
+                                    <div class="col-md-12 my-1"><label class="labels">Date Created</label><span type="date" class="form-control">15/10/2001</span></div>
+                                </div>                
+                                <div class="my-3 text-center">
+                                    <a href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#editProfileForm">
+                                    Edit profile</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </div>                            
                 </div>
             </div>
         </div>
     </div>
-    <!-- Hero Area End-->
-    <!-- About Details Start -->
-    <div class="about-details section-padding30">
-        <div class="container">
-            <div class="row">
-                <div class="offset-xl-1 col-lg-8">
-                    <div class="about-details-cap mb-50">
-                        <h4>Our Mission</h4>
-                        <p>Consectetur adipiscing elit, sued do eiusmod tempor ididunt udfgt labore et dolore magna aliqua. Quis ipsum suspendisces gravida. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus.
-                        </p>
-                        <p> Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan.</p>
-                    </div>
-
-                    <div class="about-details-cap mb-50">
-                        <h4>Our Vision</h4>
-                        <p>Consectetur adipiscing elit, sued do eiusmod tempor ididunt udfgt labore et dolore magna aliqua. Quis ipsum suspendisces gravida. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus.
-                        </p>
-                        <p> Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            <!-- Modal start -->
+                            <div class="modal fade" id="editProfileForm" tabindex="-1" role="dialog" 
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                            <h4 class="modal-title w-100 font-weight-bold">Profile Settings</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="container rounded bg-white mb-3">
+                                            <div class="row">
+                                                <div class="col-md-5 border-right">
+                                                    <div class="d-flex flex-column align-items-center justify-content">
+                                                        <img class="rounded-circle mb-1 mt-5" width="150px" src="../public/assets/img/about/User1.jpg">
+                                                        <span class="font-weight-bold">Vu Trong</span>
+                                                        <span class="text-black-50">caovutrong@gmail.com</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">                                                    
+                                                    <div class="mt-3">
+                                                        <div class="col-md-12 my-1"><label class="labels">First Name</label><input type="text" class="form-control" placeholder="First name" value=""></div>
+                                                        <div class="col-md-12 my-1"><label class="labels">Last name</label><input type="text" class="form-control" value="" placeholder="Last name"></div>
+                                                        <div class="col-md-12 my-1"><label class="labels">Phone Number</label><input type="text" class="form-control" placeholder="Phone number" value=""></div>
+                                                        <div class="col-md-12 my-1"><label class="labels">Address</label><input type="text" class="form-control" placeholder="Address" value=""></div>
+                                                        <div class="col-md-12 my-1"><label class="labels">Email address</label><input type="text" class="form-control" placeholder="Email address" value="" readonly/></div>
+                                                        <div class="col-md-12 my-1"><label class="labels">Date Created</label><input type="date" class="form-control" placeholder="" value="" readonly/></div>
+                                                    </div>                
+                                                    <div class="mt-4 text-center">
+                                                        <button class="btn btn-primary profile-button" type="button">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>      				
+                                    </div>                
+                                </div>
+                            </div>                            
+                            <!-- Modal end -->
 </main>
