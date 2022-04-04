@@ -1,6 +1,7 @@
 import { engine } from "express-handlebars";
 import numeral from "numeral";
 import paginateHelper from "express-handlebars-paginate";
+import express_handlebars_sections from 'express-handlebars-sections';
 
 export default function (app) {
   app.engine(
@@ -13,10 +14,23 @@ export default function (app) {
           return val + " VNĐ";
         },
         paginateHelper: paginateHelper.createPagination,
+          section: express_handlebars_sections(),
+          equal(first, second) {
+            console.log(first)
+              console.log(second)
+              return first === second;
+          },
+          check(first){
+            if(typeof first != "undefined"){
+                return true
+            }
+            return false;
+          },
       },
       extname: ".hbs",
     })
   );
+
   app.set("view engine", "hbs");
   app.set("views", "./views");
 }

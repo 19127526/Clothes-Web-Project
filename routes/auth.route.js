@@ -1,59 +1,85 @@
+
+import dotenv from'dotenv';
 import express from "express";
 const app = express();
 const router = express.Router();
 import passport from "passport";
 import flash from "express-flash";
-import session from "cookie-session";
+import session from "express-session";
 import bcrypt from "bcrypt";
 import initializePassport from "../passport-config.js";
+import accountModels from "../models/auth.model.js";
+
+router.use(flash());
+
+
+const userRegister=[];
+let users = await accountModels.findAllEmail();
+router.use(passport.initialize());
 
 initializePassport.initialize(
-  passport,
-  (email) => users.find((user) => user.email === email),
-  (id) => users.find((user) => user.id === id)
+    passport,
+    email => users.forEach(u=>{u=u.email})
 );
 
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
+router.use(passport.session());
 
-router.get("/login", (req, res) => {
+router.get("/login", async (req, res) => {
+    users.splice(0, users.length)
+    const a= await accountModels.findAllEmail();
+    a.forEach(item => {
+        users.push(item)
+    })
   res.render("login");
 });
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register")
 });
+router.post('/login',
+    passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+    function(req, res) {
+        /*successRedirect: "/success",*/
+        res.redirect('/success');
 
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-);
+});
 
 router.post("/register", async (req, res) => {
-  try {
-    const hashedPass = await bcrypt.hash(req.body.password, 10);
-    users.push({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPass,
-    });
-    res.redirect("/login");
-  } catch {
-    res.redirect("/register");
-  }
-  console.log(users);
+    let flag = false;
+    users.forEach(u => {
+        u = u.email
+        if (u == req.body.email) {
+            flag = true;
+        }
+    })
+    console.log("flag" + flag)
+    if (flag == true) {
+        return res.redirect("/register")
+    }
+    else if(flag==false){
+        const hashedPass = await bcrypt.hash(req.body.password, 10);
+        userRegister.push({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPass
+        })
+        await accountModels.insertAccount(req.body.email, hashedPass, req.body.name);
+        return res.redirect("/login")
+    }
 });
+router.get("/success", async (req,res)=>{
+    try {
+        res.render("home")
+    }
+    catch (err){
+        res.sendStatus(401);
+    }
+})
+
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect("/");
+});
+
+
 
 export default router;

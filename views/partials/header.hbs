@@ -70,7 +70,8 @@
                                     <ul class="submenu">
                                         <li><a href="cart">Cart</a></li>
                                         <li><a href="elements">Element</a></li>
-                                        <li><a href="confirmation">Confirmation</a></li>
+                                        <li><a href="confirmation">Confirmation</a>
+                                        </li>
                                         <li><a href="checkout">Product Checkout</a></li>
                                     </ul>
                                 </li>
@@ -79,14 +80,24 @@
                         </nav>
                     </div>
                     <!-- Header Right -->
-                    <div class="header-right">
-                        <ul>
+                    <div class="main-menu d-none d-lg-block">
+                        <ul id="navigation">
                             <li>
                                 <div class="nav-search search-switch">
                                     <span class="flaticon-search"></span>
                                 </div>
                             </li>
-                            <li> <a href="login"><span class="flaticon-user"></span></a></li>
+                            <li>
+                                {{#if (check user)}}
+                                    <a href="/login"><span class="flaticon-user">&nbsp Welcome {{user.fullname}}</span></a>
+                                    <ul class="submenu">
+                                        <li><a href="cart">Tài khoản</a></li>
+                                        <li><a href="/logout">Đăng xuất</a></li>
+                                    </ul>
+                                {{else}}
+                                    <a href="/login"><span class="flaticon-user"></span></a>
+                                {{/if}}
+                            </li>
                             <li><a href="cart"><span
                                     class="flaticon-shopping-cart"
                             ></span></a>

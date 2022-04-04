@@ -5,6 +5,7 @@ const router = express.Router();
 router.get("/", async function (req, res) {
   const arrivalList = await shoppingModel.findNewArrivals();
   const popularList = await shoppingModel.findPopularProducts();
+
   res.render("home", {
     arrivalList,
     popularList,

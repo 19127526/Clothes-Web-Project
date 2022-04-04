@@ -1,4 +1,11 @@
-<main>
+{{#section 'js'}}
+    <script>
+        async function hash(frmRegister) {
+            document.getElementById("password").value = await bcrypt.hash(document.getElementById("password").value, 10);
+            console.log(document.getElementById("password").value)
+        }
+    </script>
+{{/section}}
     <!-- Hero Area Start-->
     <div class="slider-area ">
         <div class="single-slider slider-height2 d-flex align-items-center">
@@ -35,20 +42,26 @@
                                 Please Sign in now</h3>
                             <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="name" name="name" value=""
-                                           placeholder="Username">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value=""
+                                           placeholder="Enter email">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
+                                    <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" name="password" value=""
-                                           placeholder="Password">
+                                           placeholder="Enter password">
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
                                         <input type="checkbox" id="f-option" name="selector">
                                         <label for="f-option">Remember me</label>
                                     </div>
-                                    <button type="submit" value="submit" class="btn_3">
-                                        log in
+                                    <div class="d-flex flex-row-reverse">
+                                        <input type="button" id="f-option"  value="Email">
+                                        <input type="button" id="f-option"  value="Facebook">
+                                    </div>
+                                    <button type="submit" value="submit" class="btn_3" formaction="/login" onclick="hash()">
+                                        Sign in
                                     </button>
                                     <a class="lost_pass" href="#">forget password?</a>
                                 </div>
