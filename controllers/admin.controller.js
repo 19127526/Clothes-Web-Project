@@ -1,9 +1,10 @@
 import adminModel from "../models/admin.model.js";
+import shoppingModel from "../models/shopping.model.js";
 
 const productManagementView = async function (req, res) {
   const perPage = 12;
   const page = req.query.page || 1;
-  let { pagination, listProduct } = await adminModel.findAllProducts(
+  let { pagination, listProduct } = await shoppingModel.findAllProducts(
     page,
     perPage
   );
