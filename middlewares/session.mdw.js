@@ -9,4 +9,5 @@ export default function (app) {
         saveUninitialized: true,
         cookie: {/*secure: true*/}
     }));
+
 }
