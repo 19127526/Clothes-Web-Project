@@ -4,6 +4,10 @@ import activateViewMiddleware from "./middlewares/view.mdw.js";
 import bcrypt from 'bcrypt'
 import expresssession from 'express-session'
 import passportlocal from 'passport-local'
+import multer from 'multer'
+
+import sharp from 'sharp'
+
 //import activateRouteMiddleware from "./middlewares/routes.mdw.js";
 import activateLocalMiddleware from "./middlewares/locals.mdw.js";
 import activateSessionMiddleware from "./middlewares/session.mdw.js";

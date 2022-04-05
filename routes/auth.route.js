@@ -10,7 +10,9 @@ import bcrypt from "bcrypt";
 import initializePassport from "../passport-config.js";
 import accountModels from "../models/auth.model.js";
 
+
 router.use(flash());
+
 
 
 const userRegister=[];
@@ -38,7 +40,6 @@ router.get("/register", (req, res) => {
 router.post('/login',
     passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
     function(req, res) {
-        /*successRedirect: "/success",*/
         res.redirect('/success');
 
 });
@@ -51,24 +52,24 @@ router.post("/register", async (req, res) => {
             flag = true;
         }
     })
-    console.log("flag" + flag)
     if (flag == true) {
         return res.redirect("/register")
     }
     else if(flag==false){
         const hashedPass = await bcrypt.hash(req.body.password, 10);
         userRegister.push({
-            name: req.body.name,
+            name: req.body.firstname + req.body.lastname,
             email: req.body.email,
             password: hashedPass
         })
-        await accountModels.insertAccount(req.body.email, hashedPass, req.body.name);
+        await accountModels.insertAccount(req.body.email, hashedPass,req.body.lastname
+        ,req.body.firstname,req.body.dateofbirth,req.body.address,req.body.phonenumber);
         return res.redirect("/login")
     }
 });
 router.get("/success", async (req,res)=>{
     try {
-        res.render("home")
+        res.redirect('/');
     }
     catch (err){
         res.sendStatus(401);
@@ -77,7 +78,16 @@ router.get("/success", async (req,res)=>{
 
 router.get('/logout', function(req, res) {
     req.logout();
-    res.redirect("/");
+    const url=req.headers.referer||"/"
+    res.redirect(url);
+});
+
+router.get('/profile', function(req, res) {
+    res.render('profile')
+});
+router.post("/updateprofile", async function (req,res){
+    accountModels.updateAccount(req.body)
+    res.redirect("/profile")
 });
 
 

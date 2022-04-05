@@ -2,7 +2,7 @@ import { engine } from "express-handlebars";
 import numeral from "numeral";
 import paginateHelper from "express-handlebars-paginate";
 import express_handlebars_sections from 'express-handlebars-sections';
-
+import moment from 'moment'
 export default function (app) {
   app.engine(
     "hbs",
@@ -26,6 +26,9 @@ export default function (app) {
             }
             return false;
           },
+        time(val){
+          return moment(val).format('DD/MM/YYYY')
+        },
       },
       extname: ".hbs",
     })

@@ -89,9 +89,9 @@
                             </li>
                             <li>
                                 {{#if (check user)}}
-                                    <a href="/login"><span class="flaticon-user">&nbsp Welcome {{user.fullname}}</span></a>
+                                    <a><span class="flaticon-user">&nbsp Welcome {{user.firstname}}&nbsp{{user.lastname}} </span></a>
                                     <ul class="submenu">
-                                        <li><a href="cart">Tài khoản</a></li>
+                                        <li><a href="/profile">Tài khoản</a></li>
                                         <li><a href="/logout">Đăng xuất</a></li>
                                     </ul>
                                 {{else}}
