@@ -17,6 +17,12 @@ const productManagementView = async function (req, res) {
   });
 };
 
+const detailManagementView = async function (req, res) {
+  const proID = req.params.ProID || 0;
+  const product = await shoppingModel.findByProductID(proID);
+  res.render("detail_management", { product });
+};
+
 const AddProduct = async function (req, res) {
   const ret = await adminModel.addProduct(req.body);
   res.redirect("/admin");
@@ -27,4 +33,4 @@ const DelProduct = async function (req, res) {
   res.redirect("/admin");
 };
 
-export { productManagementView, AddProduct, DelProduct };
+export { productManagementView, detailManagementView, AddProduct, DelProduct };

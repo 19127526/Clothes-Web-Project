@@ -1,16 +1,20 @@
 import express from "express";
-const router = express.Router();
-
 import {
   productManagementView,
+  detailManagementView,
   AddProduct,
   DelProduct,
 } from "../controllers/admin.controller.js";
+import { protectAdminRoute } from "../auth/protect.js";
 
-router.get("/", productManagementView);
+const router = express.Router();
 
-router.post("/add", AddProduct);
+router.get("/", protectAdminRoute, productManagementView);
 
-router.post("/del", DelProduct);
+router.get("/product/:ProID", protectAdminRoute, detailManagementView);
+
+router.post("/add", protectAdminRoute, AddProduct);
+
+router.post("/del", protectAdminRoute, DelProduct);
 
 export default router;

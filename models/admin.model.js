@@ -15,11 +15,11 @@ export default {
     return { pagination, listProduct };
   },
 
-  async addCategories(category) {
+  async addCategory(category) {
     return await db("categories").insert(category);
   },
 
-  async patchCategories(category) {
+  async patchCategory(category) {
     const id = category.CatID;
     delete category.CatID;
     return await db("categories").where("CatID", id).update(category);
