@@ -1,24 +1,15 @@
 import db from "../utils/db.js";
 
 export default {
-  async insertAccount(
-    Email,
-    Password,
-    Firstname,
-    Lastname,
-    DateofBirth,
-    Address,
-    Phonenumber
-  ) {
+  async insertAccount(user) {
     try {
       await db("users").insert({
-        email: Email,
-        password: Password,
-        firstname: Firstname,
-        lastname: Lastname,
-        phonenumber: Phonenumber,
-        address: Address,
-        dob: DateofBirth,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        password: user.password,
+        phonenumber: user.phonenumber,
+        address: user.address,
       });
     } catch (err) {
       throw err.errno;
@@ -26,7 +17,12 @@ export default {
   },
   async updateAccount(Id, user) {
     try {
-      await db("users").where("email", Id).update(user);
+      await db("users").where("UserID", Id).update({
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phonenumber: user.phonenumber,
+        address: user.address,
+      });
     } catch (err) {
       throw err.errno;
     }

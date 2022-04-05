@@ -41,16 +41,8 @@ const registerUser = async (req, res) => {
     return;
   }
   try {
-    const hashedPass = await bcrypt.hash(req.body.password, 10);
-    await usersModel.insertAccount(
-      req.body.email,
-      hashedPass,
-      req.body.firstname,
-      req.body.lastname,
-      req.body.phonenumber,
-      req.body.address,
-      req.body.dob
-    );
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    await usersModel.insertAccount(req.body);
     res.redirect("/login");
   } catch (err) {
     switch (err) {

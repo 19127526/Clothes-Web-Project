@@ -5,7 +5,10 @@ const profileView = async function (req, res) {
 };
 
 const profileChange = async function (req, res) {
-  usersModel.updateAccount(req.session.passport.user.UserID, req.body);
+  try {
+    await usersModel.updateAccount(req.session.passport.user.id, req.body);
+    req.locals.user = req.session.passport.user;
+  } catch (err) {}
   res.redirect("/profile");
 };
 

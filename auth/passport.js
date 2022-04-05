@@ -27,7 +27,10 @@ export default {
       done(null, {
         id: user.UserID,
         email: user.email,
-        name: user.name,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        address: user.address,
+        phonenumber: user.phonenumber,
         type: user.type,
       })
     );
