@@ -1,11 +1,4 @@
-{{#section 'js'}}
-    <script>
-        async function hash(frmRegister) {
-            document.getElementById("password").value = await bcrypt.hash(document.getElementById("password").value, 10);
-            console.log(document.getElementById("password").value)
-        }
-    </script>
-{{/section}}
+<main>
     <!-- Hero Area Start-->
     <div class="slider-area ">
         <div class="single-slider slider-height2 d-flex align-items-center">
@@ -40,30 +33,28 @@
                         <div class="login_part_form_iner">
                             <h3>Welcome Back ! <br>
                                 Please Sign in now</h3>
-                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            {{#if error_message}}
+                                <div class="alert alert-danger" role="alert">
+                                {{error_message}}</div>
+                            {{/if}}
+                            <form class="row contact_form" action="/login" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value=""
-                                           placeholder="Enter email">
+                                    <input type="text" class="form-control" id="name" name="email" value=""
+                                           placeholder="Email">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" name="password" value=""
-                                           placeholder="Enter password">
+                                           placeholder="Password">
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
                                         <input type="checkbox" id="f-option" name="selector">
                                         <label for="f-option">Remember me</label>
                                     </div>
-                                    <div class="d-flex flex-row-reverse">
-                                        <a   class="btn btn-info" id="f-option"  href="/auth/google">Email</a>
-                                        <input type="button" id="f-option"  value="Facebook">
-                                    </div>
-                                    <button type="submit" value="submit" class="btn_3" formaction="/login" onclick="hash()">
-                                        Sign in
+                                    <button type="submit" value="submit" class="btn_3">
+                                        Log in
                                     </button>
-                                    <a class="lost_pass" href="#">forget password?</a>
+                                    <a class="lost_pass" href="#">Forgot password?</a>
                                 </div>
                             </form>
                         </div>
