@@ -1,6 +1,7 @@
 const protectRoute = (req, res, next) => {
   if (req.isAuthenticated()) {
-    req.session.returnTo = req.originalUrl;
+    req.session.returnTo = req.headers.referer||"/";
+    console.log(req.headers.referer);
     return next();
   }
   req.session.login_err = "Please login to continue";

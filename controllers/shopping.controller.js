@@ -1,5 +1,5 @@
 import shoppingModel from "../models/shopping.model.js";
-
+import commentModel from "../models/comment.model.js"
 const homeView = async function (req, res) {
   const arrivalList = await shoppingModel.findNewArrivals();
   const popularList = await shoppingModel.findPopularProducts();
@@ -48,7 +48,8 @@ const categoryView = async function (req, res) {
 const productView = async function (req, res) {
   const proID = req.params.ProID || 0;
   const product = await shoppingModel.findByProductID(proID);
-  res.render("product", { product });
+  const commentList=await commentModel.findAllComment(proID);
+  res.render("product", { product ,comment:commentList});
 };
 
 const aboutView = function (req, res) {

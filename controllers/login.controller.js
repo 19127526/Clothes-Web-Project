@@ -76,6 +76,7 @@ const loginUser = (req, res, next) => {
     return;
   }
   const redirect = req.session.returnTo || "/";
+  console.log("ab" + redirect)
   delete req.session.returnTo;
   passport.authenticate("local", {
     successRedirect: redirect,

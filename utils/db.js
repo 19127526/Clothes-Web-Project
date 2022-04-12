@@ -3,11 +3,11 @@ import knexObj from "knex";
 const knex = knexObj({
   client: "mysql2",
   connection: {
-    host: "db4free.net",
+    host: "localhost",
     port: 3306,
-    user: "clothesshopapp",
-    password: "b2ef08c3",
-    database: "clothesshopapp",
+    user: "root",
+    password: "123456",
+    database: "qlbh",
   },
   pool: {
     min: 0,
@@ -16,3 +16,15 @@ const knex = knexObj({
 });
 
 export default knex;
+
+
+
+
+/*
+connection: {
+  host: "db4free.net",
+      port: 3306,
+      user: "clothesshopapp",
+      password: "b2ef08c3",
+      database: "clothesshopapp",
+},*/
