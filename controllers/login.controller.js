@@ -84,4 +84,19 @@ const loginUser = (req, res, next) => {
   })(req, res, next);
 };
 
-export { registerView, loginView, registerUser, loginUser, authValidation };
+const checkEmail = async (req, res, next) => {
+  await usersModel.getUserByEmail(req.body.email).then((user) => {
+    res.json({ isTaken: !!(user), status: 200 });
+  }).catch((err => {
+    console.log(err);
+  }));
+};
+
+export {
+  registerView,
+  loginView,
+  registerUser,
+  loginUser,
+  authValidation,
+  checkEmail,
+};
