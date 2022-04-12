@@ -1,11 +1,11 @@
 import db from "../utils/db.js";
 
 export default {
-  findAllCategories() {
+  async findAllCategories() {
     return db("categories");
   },
 
-  findPopularProducts() {
+  async findPopularProducts() {
     return db("products")
       .join("orders", "products.ProID", "orders.ProID")
       .limit(6)

@@ -20,9 +20,11 @@
     <link rel="stylesheet" href="/public/assets/css/slick.css">
     <link rel="stylesheet" href="/public/assets/css/nice-select.css">
     <link rel="stylesheet" href="/public/assets/css/style.css">
+    {{!-- <link rel="stylesheet" type="text/css" href="jquery.datetimepicker.css"/> --}}
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fahkwang">
+    {{{_sections.css}}}
 </head>
 <body>
 {{>header}}
@@ -61,5 +63,8 @@
 <!-- Jquery Plugins, main Jquery -->
 <script src="/public/assets/js/plugins.js"></script>
 <script src="/public/assets/js/main.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+{{!-- <script src="jquery.datetimepicker.js"></script> --}}
+{{{_sections.js}}}
 </body>
 </html>
