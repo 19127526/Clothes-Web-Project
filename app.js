@@ -1,5 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
-import morgan from "morgan";
 import flash from "express-flash";
 import bodyParser from "body-parser";
 import passport from "passport";
@@ -25,7 +27,7 @@ app.use(
     secret: "SECRET_KEY",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 app.use(passport.initialize());

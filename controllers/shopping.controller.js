@@ -10,20 +10,7 @@ const homeView = async function (req, res) {
 };
 
 const shopView = async function (req, res) {
-  const perPage = 12;
-  const page = req.query.page || 1;
-  let { pagination, listProduct } = await shoppingModel.findAllProducts(
-    page,
-    perPage
-  );
-  res.render("shop", {
-    pagination: {
-      page: pagination.current_page,
-      limit: perPage,
-      totalRows: pagination.total_items,
-    },
-    listProduct,
-  });
+  res.render("shop");
 };
 
 const categoryView = async function (req, res) {
@@ -55,4 +42,27 @@ const aboutView = function (req, res) {
   res.render("about");
 };
 
-export { homeView, shopView, categoryView, productView, aboutView };
+const getProducts = async function (req, res) {
+  const perPage = req.query.limit;
+  const page = req.query.page;
+  const order = req.query.order;
+  const filters = req.query.filters;
+
+  const { pagination, listProduct } = await shoppingModel.findProductWithQueries(
+    page,
+    perPage,
+    order,
+    filters
+  );
+  res.json({
+    pagination: {
+      page: pagination.current_page,
+      limit: perPage,
+      totalPages: pagination.total_pages,
+      totalItems: pagination.total_items,
+    },
+    listProduct,
+  });
+};
+
+export { homeView, shopView, categoryView, productView, aboutView, getProducts };
