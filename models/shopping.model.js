@@ -1,11 +1,11 @@
 import db from "../utils/db.js";
 
 export default {
-  findAllCategories() {
+  async findAllCategories() {
     return db("categories");
   },
 
-  findPopularProducts() {
+  async findPopularProducts() {
     return db("products")
       .join("orders", "products.ProID", "orders.ProID")
       .limit(6)
@@ -24,15 +24,42 @@ export default {
     return { pagination, listProduct };
   },
 
+  async findProductWithQueries(page, perPage, order, filters) {
+    let pagination = {};
+    const total = await db("products").count("* as count").first();
+    const total_pages = Math.ceil(total.count / perPage);
+    page = Math.max(1, Math.min(page, total_pages));
+    pagination.current_page = page;
+    pagination.total_items = total.count;
+    pagination.total_pages = total_pages;
+    const offset = page - 1;
+    let listProduct;
+
+    if (order === "newest") {
+      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Arrival", "desc");
+    } else if (order === "price-desc") {
+      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Price", "desc");
+    } else {
+      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Price", "asc");
+    }
+    return { pagination, listProduct };
+  },
+
   async findByCategoryID(catID, page, perPage) {
     let pagination = {};
-    const total = await db("products").count('* as count').where("CatID", catID).first();
+    const total = await db("products")
+      .count("* as count")
+      .where("CatID", catID)
+      .first();
     const total_pages = Math.ceil(total.count / perPage);
     page = Math.max(1, Math.min(page, total_pages));
     pagination.current_page = page;
     pagination.total_items = total.count;
     const offset = page - 1;
-    const listProduct = await db("products").where("CatID", catID).limit(perPage).offset(offset * perPage);
+    const listProduct = await db("products")
+      .where("CatID", catID)
+      .limit(perPage)
+      .offset(offset * perPage);
     return { pagination, listProduct };
   },
 

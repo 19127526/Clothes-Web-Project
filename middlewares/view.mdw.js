@@ -1,6 +1,9 @@
 import { engine } from "express-handlebars";
 import numeral from "numeral";
 import paginateHelper from "express-handlebars-paginate";
+import hbsHelpers from "handlebars-helpers";
+import hbsSections from "express-handlebars-sections";
+import moment from "moment";
 
 export default function (app) {
   app.engine(
@@ -13,6 +16,11 @@ export default function (app) {
           return val + " VNĐ";
         },
         paginateHelper: paginateHelper.createPagination,
+        section: hbsSections(),
+        hbsHelpers: hbsHelpers,
+        time(val) {
+          return moment(val).format("DD/MM/YYYY");
+        },
       },
       extname: ".hbs",
     })

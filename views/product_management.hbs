@@ -1,3 +1,4 @@
+
 <main>
     <!-- Hero Area Start-->
     <div class="slider-area ">
@@ -21,11 +22,12 @@
                 <!-- Add Button start-->
                 <div class="text-center">
                     <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalContactForm">
-                    Add new product</a>
+                        Add new product</a>
                 </div>
                 <!-- Modal start -->
-                <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
+                <form method="POST">
+                <div class="modal fade " id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header text-center">
@@ -35,19 +37,13 @@
                                 </button>
                             </div>
                             <div class="modal-body mx-3">
-                                <div class="form-group">  
-                                    <label>Product name:</label>                               
-                                    <input class="form-control" type="text" name="product_name" id="product_name" placeholder="Enter product name">                                 
-                                </div>
-
                                 <div class="form-group">
-                                    <label>Manufacturer name:</label>
-                                    <input class="form-control" type="text" name="product_name" id="manufacturer_name" placeholder="Enter manufacturer name">
+                                    <label for="ProName1">Product name:</label>
+                                    <input class="form-control" type="text" name="ProName" id="ProName1" placeholder="Enter product name">
                                 </div>
-
-                                <div class="form-group">                                    
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Open this select menu</option>
+                                <div class="form-group">
+                                    <label for="CatName1">Category name:</label>
+                                    <select class="form-select form-select-lg mb-3 "aria-label=".form-select-lg example" name="CatID" id="CatName1">
                                         <option value="1">TOPS</option>
                                         <option value="2">BOTTOMS</option>
                                         <option value="3">OUTERWEAR</option>
@@ -56,33 +52,44 @@
                                         <option value="6">BAGS</option>
                                     </select>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="form34">Link product image:</label> 
-                                    <input class="form-control" type="text" name="link_product_image" id="link_product_image" placeholder="Enter link product  image">
+                                    <label for="Image1">Link product image:</label>
+                                    <input class="form-control" type="file" name="Image" id="Image1" placeholder="Enter link product image">
                                 </div>
-
                                 <div class="form-group">
-					                <label>Price:</label>
-					                <input class="form-control" type="number" name="price" id="price" placeholder="Enter price" value="0" onkeyup="updateTotalPrice()">
-				                </div>
-				                <div class="form-group">
-					                <label>Quantity:</label>
-					                <input class="form-control" type="text" name="quantity" id="quantity" placeholder="Enter quantity" value="0" onkeyup="updateTotalPrice()">
-				                </div>
-				                
-				                <div class="row justify-content-center">
+                                    <label for="Des1">Description:</label>
+                                    <input class="form-control" type="text" name="FullDes" id="Des1" placeholder="Enter Description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Arrival">Date of Arrival:</label>
+                                    <input class="form-control" type="datetime-local" name="Arrival" id="Arrival" placeholder="Enter Description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Price1">Price:</label>
+                                    <input class="form-control" type="number" name="Price" id="Price1" placeholder="Enter price" value="0" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="Quantity1">Quantity:</label>
+                                    <input class="form-control" type="text" name="Quantity" id="Quantity1" placeholder="Enter quantity" value="0">
+                                </div>
+                                <div class="row justify-content-center">
                                     <div class="col-lg-6">
-					                    <button class="btn btn-success" type="button" onclick="addProduct()">Add Product</button>
-					                </div>
+                                        <button type="submit" class="btn btn-danger" href="/admin"  formaction="/admin/add">
+                                            Add Product
+                                        </button>
+                                    </div>
                                     <div class="col-lg-6">
                                         <button class="btn btn-danger" type="reset">Reset</button>
                                     </div>
-				                </div>
-                            </div> 
-                        </div>      				
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
+                </form>
+
+
                 <!-- Modal end -->
                 <!-- Add Button end -->
                 <div class="properties__button">
@@ -103,7 +110,7 @@
                 <div class="select-this">
                     <form action="#">
                         <div class="select-itms">
-                            <select name="select" id="select1" style="display: none;">
+                            <select  id="select1" style="display: none;">
                                 <option value="">12 per page</option>
                                 <option value="">50 per page</option>
                                 <option value="">60 per page</option>
@@ -121,51 +128,53 @@
                         {{#each this.listProduct}}
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
-                                    <div class="popular-img">
-                                        <a href="product/{{ProID}}">
-                                        <img src="{{Image}}" alt="" >
+                                    <div class="popular-img" >
+                                        <a  href="/admin/product/{{ProID}}">
+                                            <img  href="/admin/product/{{ProID}}"src="{{Image}}" alt="" >
                                         </a>
-                                        <div class="img-cap">
+                                        <div class="img-cap">  <!--data-toggle="modal" data-target="#editModal"-->
                                             <div class="row">
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <a href="" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                                    <buton href="" class="btn btn-primary" >
                                                         Edit
-                                                    </a>
+                                                    </buton>
                                                 </div>
+                                                <form method="post">
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                                                    <button  name="ProID" value="{{ProID}}" type="submit" class="btn btn-danger" href="/admin"  formaction="/admin/del">
                                                         Delete
                                                     </button>
                                                 </div>
+                                                </form>
                                                 <!--Modal start -->
                                                 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span  aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <!--Modal end -->
-                                            </div>    
+                                            </div>
                                         </div>
                                         <div class="favorit-items">
                                             <span class="flaticon-heart"></span>
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product/{{ProID}}">{{ProName}}</a></h3>
+                                        <h3><a  href="/admin/product/{{ProID}}">{{ProName}}</a></h3>
                                         <span>{{format_number Price}}</span>
                                     </div>
                                 </div>
@@ -230,6 +239,66 @@
     </section>
     <!-- Latest Products End -->
     <!--? Shop Method Start-->
+    <div class="modal fade " id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Fill product information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="form-group">
+                        <label for="ProName1">Product name:</label>
+                        <input class="form-control" type="text" name="ProName" id="ProName1" placeholder="Enter product name">
+                    </div>
+                    <div class="form-group">
+                        <label for="CatName1">Category name:</label>
+                        <select class="form-select form-select-lg mb-3 "aria-label=".form-select-lg example" name="CatID" id="CatName1">
+                            <option value="1">TOPS</option>
+                            <option value="2">BOTTOMS</option>
+                            <option value="3">OUTERWEAR</option>
+                            <option value="4">FOOTWEAR</option>
+                            <option value="5">HAT</option>
+                            <option value="6">BAGS</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Image1">Link product image:</label>
+                        <input class="form-control" type="text" name="Image" id="Image1" placeholder="Enter link product image">
+                    </div>
+                    <div class="form-group">
+                        <label for="Des">Description:</label>
+                        <input class="form-control" type="text" name="FullDes" id="Des" placeholder="Enter Description">
+                    </div>
+                    <div class="form-group">
+                        <label for="Arrival">Date of Arrival:</label>
+                        <input class="form-control" type="datetime-local" name="Arrival" id="Arrival" placeholder="Enter Description">
+                    </div>
+                    <div class="form-group">
+                        <label for="Price1">Price:</label>
+                        <input class="form-control" type="number" name="Price" id="Price1" placeholder="Enter price" value="0" >
+                    </div>
+                    <div class="form-group">
+                        <label for="Quantity1">Quantity:</label>
+                        <input class="form-control" type="text" name="Quantity" id="Quantity1" placeholder="Enter quantity" value="0">
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <button type="submit" class="btn btn-danger" href="/admin"  formaction="/admin/add">
+                                Edit Product
+                            </button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button class="btn btn-danger" type="reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="shop-method-area">
         <div class="container">
             <div class="method-wrapper">
