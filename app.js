@@ -44,6 +44,7 @@ app.use(userRouter);
 app.use(vnpayRouter)
 app.use("/admin", adminRouter);
 app.use("/public", express.static("public"));
+app.use("/publicAdmin", express.static("publicAdmin"));
 
 //listen port
 app.listen(port, function () {

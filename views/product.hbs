@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-<body class="mb-5">
-=======
 
 <body class="mb-5" style="background-color: white">
->>>>>>> Stashed changes
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0 ">
             <div id="mdb-lightbox-ui"></div>
@@ -79,11 +75,9 @@
             </table>
         </div>
         <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+        <button type="button" id="addtoCart" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
         </div>
     </div>
-<<<<<<< Updated upstream
-=======
     <div class="row" >
         <div class="container mt-5 mb-5" >
             <div class="d-flex justify-content-center row">
@@ -150,7 +144,7 @@
 
 
 
-<div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<!--<div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
         <img src="..." class="rounded me-2" alt="...">
         <strong class="me-auto">Bootstrap</strong>
@@ -160,7 +154,7 @@
     <div class="toast-body">
         Hello, world! This is a toast message.
     </div>
-</div>
+</div>-->
 {{#section 'js'}}
     <script type="text/javascript" >
         let i=0;
@@ -184,6 +178,7 @@
                         quantity:($("#quantity").val()),
                     },function (data){
                 if(data){
+                    console.log(data)
                     $("#totalcart").replaceWith(data);
                 }
             });
@@ -242,11 +237,3 @@
 
 
 
-{{#section 'css'}}
-    <style>
-    body {
-    background-color: #eee
-    }
->>>>>>> Stashed changes
-
-</body>

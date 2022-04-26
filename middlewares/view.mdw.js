@@ -31,7 +31,10 @@ export default function (app) {
           },
         check(x1){
           return x1!==0
-        }
+        },
+        product(index){
+          return index+' Sản phẩm'
+        },
       },
       extname: ".hbs",
     })

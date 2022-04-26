@@ -1,0 +1,86 @@
+
+{{#section 'cssAdmin'}}
+
+
+    <!-- default icons used in the plugin are from Bootstrap 5.x icon library (which can be enabled by loading CSS below) -->
+
+    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
+    <!-- link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous" -->
+
+    <!-- the fileinput plugin styling CSS file -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+
+{{/section}}
+
+
+
+
+<form method="post" enctype="multipart/form-data">
+<body>
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content item-editor-page">
+            <div class="title-block">
+                <h3 class="title"> Sửa sản phẩm
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+            <div class="card card-block">
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right" for="mytextarea"> Fulldes </label>
+                    <div class="col-sm-10">
+                        <textarea id="mytextarea" name="Des">Hello, World!</textarea>
+                    <div  id="error" style="margin-left: 200px; margin-top: 10px">
+                    </div>
+                </div>
+                    <div class="form-group row">
+                        <label class="control-label">Select File</label>
+                        <input id="image" name="image" type="file" >
+                    </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 col-sm-offset-2">
+                        <button type="submit" id="btn" class="btn btn-primary"  > Xác nhận </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+</body>
+</form>
+{{#section 'jsAdmin'}}
+    <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: 'image paste link autolink lists media table',
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#image").fileinput({
+                showCaption: false,
+                dropZoneEnabled: false,
+                maxFileCount:5,
+                allowedFileExtensions:['jpg'],
+                theme:'fa',
+                language:'vi'
+            });
+        });
+    </script>
+{{/section}}

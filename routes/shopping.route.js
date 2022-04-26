@@ -10,13 +10,12 @@ import {
 } from "../controllers/shopping.controller.js";
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
+import {protectAdminRoute, protectRoute} from "../auth/protect.js";
 router.get("/", homeView);
 
 router.get("/shop", shopView);
 
 router.get("/category/:CatID", categoryView);
-<<<<<<< Updated upstream
-=======
 router.get("/comment",async (req,res)=>{
   res.json(!!req.isAuthenticated());
 });
@@ -37,7 +36,6 @@ router.get("/product/:ProID/hi", async (req,res)=>{
   })
 
 });
->>>>>>> Stashed changes
 
 router.get("/cart", async (req,res)=>{
   if(req.isAuthenticated()){
@@ -130,7 +128,6 @@ router.post("/gettotal",async (req,res)=>{
         cartList.forEach(u => {
           subtotal += u.Total;
         });
-
         res.json(subtotal);
       })
     }
@@ -151,14 +148,8 @@ router.post("/gettotal",async (req,res)=>{
       }
 })
 
-let checkLoggedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/login");
-  }
-  next();
-};
 
-router.get("/checkout", checkLoggedIn,async (req,res)=>{
+router.get("/checkout", protectRoute,async (req,res)=>{
   if(req.isAuthenticated()){
     const cartList = await shoppingModel.findAllCartByID(req.session.passport.user.id,res.locals.billid );
     const userList=await usersModel.getUserById(req.session.passport.user.id);
@@ -188,7 +179,7 @@ router.get("/checkout", checkLoggedIn,async (req,res)=>{
     })
   }
 });
-router.post("/checkout", checkLoggedIn,async (req,res)=> {
+router.post("/checkout", protectRoute,async (req,res)=> {
   console.log(req.body);
   const list=req.body;
   if(list.radioNoLabel==='1'){
@@ -202,11 +193,9 @@ router.get("/product/:ProID", productView);
 
 router.get("/about", aboutView);
 
-<<<<<<< Updated upstream
-export default router;
-=======
+
 router.get("/");
-router.get("/history",checkLoggedIn,async (req,res)=>{
+router.get("/history",protectRoute,async (req,res)=>{
   const list = await shoppingModel.findAllOrderByID(req.session.passport.user.id,1);
   list.forEach(u => {
     if(u.SizeID===u.SizeS){
@@ -225,7 +214,6 @@ router.get("/history",checkLoggedIn,async (req,res)=>{
   res.render("history",{
     cartlist:list
   })
-})
-
+});
 export default router;
->>>>>>> Stashed changes
+

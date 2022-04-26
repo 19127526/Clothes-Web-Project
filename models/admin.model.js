@@ -1,7 +1,25 @@
 import db from "../utils/db.js";
 
 export default {
-  async addCategory(category) {
+  async findAllProducts(page, perPage) {
+    let pagination = {};
+    const total = await db("products").count('* as count').first();
+    const total_pages = Math.ceil(total.count / perPage);
+    page = Math.max(1, Math.min(page, total_pages));
+    pagination.current_page = page;
+    pagination.total_items = total.count;
+    const offset = page - 1;
+    const listProduct = await db("products").limit(perPage).offset(offset * perPage);
+    return { pagination, listProduct };
+  },
+  async findByCatID(catID) {
+    const list = await db('products').where('CatID', catID)
+    return list
+  },
+  findTotalProDuctByID(CatID){
+    return db("products").count('CatID', {as: 'total'}).where('CatID',CatID);
+  },
+  /*async addCategory(category) {
     return await db("categories").insert(category);
   },
 
@@ -66,5 +84,5 @@ export default {
     const id=product.ProID;
     delete product.ProID;
     return db('products').where('ProID',id).update(product)
-  },
+  },*/
 };

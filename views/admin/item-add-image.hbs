@@ -1,0 +1,362 @@
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content item-editor-page">
+            <div class="title-block">
+                <h3 class="title"> Thêm sản phẩm
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+            <!--<form name="item" method="post">-->
+            <div class="card card-block">
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Images: </label>
+                    <div class="col-sm-10">
+                        <div class="images-container">
+                            <div class="image-container">
+                                <div class="controls">
+                                    <a href="#" idclass="control-btn move">
+                                        <i class="fa fa-arrows"></i>
+                                    </a>
+
+                                    <a href="#" class="add-image " id="addImage1" name="{{list.image1}}" data-toggle="modal" data-target="#modal-media">
+                                        <i class="fa fa-plus" h></i>
+                                    </a>
+
+                                    <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                                <div class="image" id="image1" style="background-image:url('{{list.image1}}')"></div>
+                            </div>
+                            <div class="image-container">
+                                <div class="controls">
+                                    <a href="#" class="control-btn move">
+                                        <i class="fa fa-arrows"></i>
+                                    </a>
+                                    <!--
+                    -->
+                                    <a href="#" class="add-image " id="addImage2" name="{{list.image2}}"data-toggle="modal" data-target="#modal-media">
+                                        <i class="fa fa-plus" h></i>
+                                    </a>
+                                    <!--
+                    -->
+                                    <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                                <div class="image" id="image2" style="background-image:url('{{list.image2}}')"></div>
+                            </div>
+                            <div class="image-container">
+                                <div class="controls">
+                                    <a href="#" class="control-btn move">
+                                        <i class="fa fa-arrows"></i>
+                                    </a>
+                                    <a href="#" class="add-image " id="addImage3" name="{{list.image3}}"data-toggle="modal" data-target="#modal-media">
+                                        <i class="fa fa-plus" h></i>
+                                    </a>
+                                    <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                                <div class="image" id="image3" style="background-image:url('{{list.image3}}')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" >
+                    <div class="col-sm-10 col-sm-offset-2 ">
+                        <button type="submit" id="post" class="btn btn-primary"> Thêm sản phẩm </button>
+                    </div>
+                </div>
+            </div>
+            <!--</form>-->
+        </article>
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                        <form method="post"  enctype="multipart/form-data">
+                            <div class="tab-content modal-tab-content">
+                                <div class="tab-pane fade active in" id="upload" role="tabpanel">
+                                    <div class="file-loading">
+                                        <input id="input-700"  type="file" name="image" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="confirm-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <i class="fa fa-pencil"></i>  &nbsp; Xác nhận cập nhật sản phẩm</h4>
+                        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn cập nhật sản phẩm này?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="success-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-check"></i> &nbsp;Thông tin sản phẩm</h4>
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="display: flex;flex-direction: row;justify-content: center">
+                <p>Đã Đăng sản phẩm thành công</p>
+            </div>
+            <!<div class="modal-footer" style="display: flex;flex-direction: row;justify-content: center">
+            <button type="button" id="submitpost" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+{{#section 'cssAdmin'}}
+    <!--<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
+{{/section}}
+{{#section 'jsAdmin'}}
+    <!--<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script>
+        function myGreeting(){
+            location.href="/"
+        }
+        $("#post").click(function (){
+            $("#success-modal").modal('show');
+            const myTimeout = setTimeout(myGreeting, 5000);
+        });
+        $("#submitpost").click(function (){
+            location.href="/"
+        });
+        $('#no').click(function (){
+            $('#confirm-modal').modal('hide');
+
+        })
+        $('#close').click(function (){
+            $('#confirm-modal').modal('hide');
+        })
+        $('#submitbtn22').click(function (){
+            $('#confirm-modal').modal('show');
+        });
+        function myGreeting(){
+            location.reload();
+        }
+        $('#submitUpdate').click(function (){
+            var des=$('#des').html().replace('contenteditable="true"',"contenteditable=false");
+            $.post("/admin/san-pham/du-an/sua-san-pham/{{list.proid}}",{title:$('#title').val(),des:des,ward:$("#ward option:selected").val(),check:true},function (data,status){
+                if(data){
+                    $('#confirm-modal').modal('hide');
+                    $('#success-modal').modal('show');
+                    $('#success-modal').click(function (e) {
+                        $('#success-modal').modal('toggle');
+                        location.reload();
+                    });
+                    const myTimeout = setTimeout(myGreeting, 5000);
+                    /*   console.log(data.update)
+                       location.reload();*/
+                }
+            });
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            /*$("#reload1").click(function (){
+                $("#step1Content").load('YourUrl');
+            })
+            $("#reload2").click(function (){
+                $("#step1Content").load('YourUrl');
+            })
+            $("#reload3").click(function (){
+                $("#step1Content").load('YourUrl');
+            })*/
+            let temp=0;
+            $("#addImage1").click(function() {
+                /*$("#modal-medial #selection option[value='file']").attr('selected', 'selected');*/
+                temp=this.name;
+                $.post("/admin/add-url-image", {
+                    parent:{{parent}},
+                    id:{{id}},
+                    category:{{category}},
+                    data:{{url}},
+                    name: "1.jpg"
+                }, function (data, status) {
+                    if (data) {
+                        $('#imagemodal').modal('show');
+                    }
+                });
+                });
+        });
+        $("#addImage2").click(function() {
+            /*$("#modal-medial #selection option[value='file']").attr('selected', 'selected');*/
+            temp=this.name;
+            $.post("/admin/add-url-image", {
+                parent:{{parent}},
+                id:{{id}},
+                category:{{category}},
+                data:{{url}},
+                name: "2.jpg"
+            }, function (data, status) {
+                if (data) {
+                    $('#imagemodal').modal('show');
+                }
+            });
+        });
+        $("#addImage3").click(function() {
+            /*$("#modal-medial #selection option[value='file']").attr('selected', 'selected');*/
+            temp=this.name;
+            $.post("/admin/add-url-image", {
+                parent:{{parent}},
+                id:{{id}},
+                category:{{category}},
+                data:{{url}},
+                name: "3.jpg"
+            }, function (data, status) {
+                if (data) {
+                    $('#imagemodal').modal('show');
+                }
+            });
+        });
+        $("#submitbtn22").attr('disabled',true);
+        $("#title").on("change", function () {
+                if($("#title").val()===""){
+                    $("#title").addClass('is-invalid')
+                    $("#title").removeClass('is-valid')
+                    $("#title").prop("placeholder","Vui lòng nhập tiêu đề");
+                    $("#submitbtn22").attr('disabled',true);
+                }
+                else
+                {
+                    $("#title").removeClass('is-invalid')
+                    $("#title").addClass('is-valid')
+                    $("#submitbtn22").attr('disabled',false);
+                }
+        });
+        $("#input-700").fileinput({
+            overwriteInitial: false,
+            validateInitialCount: true,
+            initialPreviewAsData: true,
+            previewFileType: "image",
+            browseClass: "btn btn-success",
+            browseLabel: "Chọn hình",
+            browseIcon: "<i class=\"bi-file-image\"></i> ",
+            removeClass: "btn btn-danger",
+            removeLabel: "Xóa",
+            removeIcon: "<i class=\"bi-trash\"></i> ",
+            uploadClass: "btn btn-info",
+            uploadLabel: "Upload hình",
+            uploadIcon: "<i class=\"bi-upload\"></i> ",
+            uploadUrl: "/admin/upload-image/{{id}}",
+            initialPreviewConfig: [
+                {caption: "People-1.jpg", description: 'This is a representative placeholder description for this image.', size: 576237, width: "120px", url: "/site/file-delete", key: 1},
+            ],
+            theme:'fa',
+            language:'vi',
+            allowedFileExtensions:['jpg'],
+        }).on('fileuploaded', function(e, params) {
+            console.log("heso"+params.response.detail+" "+params.response.position);
+            if(params.response.position==='1'){
+                console.log(params.response.detail);
+                $.ajax({
+                    async:false,
+                    type:"POST",
+                    url:"/admin/geturl",
+                    data:{url:params.response.detail,id:"image1"},
+                    success:function (data){
+                        $("#image1").replaceWith(data)
+                    },
+                    err:function (xhr,ajaxOptions,thrownError){
+                        alert("Lỗi")
+                    }
+                })
+            }
+            else if(params.response.position==='2'){
+                console.log(params.response.detail);
+
+                $.ajax({
+                    async:false,
+                    type:"POST",
+                    url:"/admin/geturl",
+                    data:{url:params.response.detail,id:"image2"},
+                    success:function (data){
+                        $("#image2").replaceWith(data)
+                    },
+                    err:function (xhr,ajaxOptions,thrownError){
+                        alert("Lỗi")
+                    }
+                })
+            }
+            else if(params.response.position==='3'){
+                console.log(params.response.detail);
+                $.ajax({
+                    async:false,
+                    type:"POST",
+                    url:"/admin/geturl",
+                    data:{url:params.response.detail,id:"image3"},
+                    success:function (data){
+                        $("#image3").replaceWith(data)
+                    },
+                    err:function (xhr,ajaxOptions,thrownError){
+                        alert("Lỗi")
+                    }
+                })
+            }
+        });
+    </script>
+{{/section}}

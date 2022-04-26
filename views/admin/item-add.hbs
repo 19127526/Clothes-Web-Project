@@ -1,0 +1,230 @@
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+
+
+
+        <article class="content item-editor-page" id="ajax">
+            <div class="title-block">
+                <h3 class="title"> Thêm sản phẩm
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+            <!--<form name="item" method="post">-->
+            <form method="post" >
+            <div class="card card-block" >
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Tiêu đề: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control boxed" name="title" id="title" placeholder="" value="{{list.title}}"> </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Content: </label>
+                    <div class="col-sm-10">
+                        <textarea id="des" name="des">
+
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Quận: </label>
+                    <div class="col-sm-10">
+                        <select class="c-select form-control boxed" name="ward" id="ward">
+                            {{#each listward}}
+                                {{#if this.check}}
+                                    <option selected>{{this.ward}}</option>
+                                {{else}}
+                                    <option >{{this.ward}}</option>
+                                {{/if}}
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row" >
+                    <div class="col-sm-10 col-sm-offset-2 ">
+                        <button type="submit" id="submitbtn22" class="btn btn-primary"> Tiếp theo </button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </article>
+
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                        <form method="post"  enctype="multipart/form-data">
+                            <div class="tab-content modal-tab-content">
+                                <div class="tab-pane fade active in" id="upload" role="tabpanel">
+                                    <div class="file-loading">
+                                        <input id="input-700"  type="file" name="image" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="confirm-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <i class="fa fa-pencil"></i>  &nbsp; Xác nhận cập nhật sản phẩm</h4>
+                        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn cập nhật sản phẩm này?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+
+
+
+
+
+{{#section 'cssAdmin'}}
+    <link rel="stylesheet" href="/public/assets/modal/successfully.css">
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!--<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
+{{/section}}
+{{#section 'jsAdmin'}}
+    <!--<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $('#no').click(function (){
+            $('#confirm-modal').modal('hide');
+
+        })
+        $('#close').click(function (){
+            $('#confirm-modal').modal('hide');
+        })
+      /*  $('#submitbtn22').click(function (){
+            const id=localStorage.getItem("categoryid");
+            localStorage.removeItem("categoryid");
+        })*/
+    </script>
+    <script>
+        tinymce.init({
+            selector: '#des',
+            /* width and height of the editor */
+            width: "100%",
+            height: 600,
+            /* display statusbar */
+            statusbar: true,
+            /* plugin */
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            /* toolbar */
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+            /* style */
+            style_formats: [
+                {title: "Headers", items: [
+                        {title: "Header 1", format: "h1"},
+                        {title: "Header 2", format: "h2"},
+                        {title: "Header 3", format: "h3"},
+                        {title: "Header 4", format: "h4"},
+                        {title: "Header 5", format: "h5"},
+                        {title: "Header 6", format: "h6"}
+                    ]},
+                {title: "Inline", items: [
+                        {title: "Bold", icon: "bold", format: "bold"},
+                        {title: "Italic", icon: "italic", format: "italic"},
+                        {title: "Underline", icon: "underline", format: "underline"},
+                        {title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
+                        {title: "Superscript", icon: "superscript", format: "superscript"},
+                        {title: "Subscript", icon: "subscript", format: "subscript"},
+                        {title: "Code", icon: "code", format: "code"}
+                    ]},
+                {title: "Blocks", items: [
+                        {title: "Paragraph", format: "p"},
+                        {title: "Blockquote", format: "blockquote"},
+                        {title: "Div", format: "div"},
+                        {title: "Pre", format: "pre"}
+                    ]},
+                {title: "Alignment", items: [
+                        {title: "Left", icon: "alignleft", format: "alignleft"},
+                        {title: "Center", icon: "aligncenter", format: "aligncenter"},
+                        {title: "Right", icon: "alignright", format: "alignright"},
+                        {title: "Justify", icon: "alignjustify", format: "alignjustify"}
+                    ]}
+            ],
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            /*$("#reload1").click(function (){
+                $("#step1Content").load('YourUrl');
+            })
+            $("#reload2").click(function (){
+                $("#step1Content").load('YourUrl');
+            })
+            $("#reload3").click(function (){
+                $("#step1Content").load('YourUrl');
+            })*/
+            $("#submitbtn22").attr('disabled', true);
+            $("#title").on("change", function () {
+                if ($("#title").val() === "") {
+                    $("#title").addClass('is-invalid')
+                    $("#title").removeClass('is-valid')
+                    $("#title").prop("placeholder", "Vui lòng nhập tiêu đề");
+                    $("#submitbtn22").attr('disabled', true);
+                } else {
+                    $("#title").removeClass('is-invalid')
+                    $("#title").addClass('is-valid')
+                    $("#submitbtn22").attr('disabled', false);
+                }
+            });
+        });
+
+    </script>
+{{/section}}

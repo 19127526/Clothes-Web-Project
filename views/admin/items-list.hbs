@@ -1,0 +1,339 @@
+
+<style>
+    img {
+        object-fit: cover;
+        width: 59px;
+        height: 59px;
+    }
+</style>
+<body>
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content items-list-page">
+            <div class="title-search-block">
+                <div class="title-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="title"> Hello
+                                    <a href="/admin/san-pham/{{calling}}/them-san-pham" class="btn btn-primary btn-sm rounded-s" id="addnew"> Add New </a>
+                                <div class="action dropdown">
+                                    <button class="btn  btn-sm rounded-s btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More actions... </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fa fa-pencil-square-o icon"></i>Mark as a draft</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#confirm-modal">
+                                            <i class="fa fa-close icon"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </h3>
+                            <p class="title-description"> Tổng sản phẩm: {{totalProduct.total}} </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="items-search">
+                    <form class="form-inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control boxed rounded-s" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                        <button class="btn btn-secondary rounded-s" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card items">
+                <ul class="item-list striped">
+                    <li class="item item-list-header">
+                        <div class="item-row">
+                            <div class="item-col fixed item-col-check">
+                                <label class="item-check" id="select-all-items">
+                                    <input type="checkbox" class="checkbox">
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="item-col item-col-header fixed item-col-img md">
+                                <div>
+                                    <span>Hình ảnh</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-title">
+                                <div>
+                                    <span>Tên Sản phẩm</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-sales">
+                                <div>
+                                    <span>Giá tiền&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-stats">
+                                <div class="no-overflow">
+                                    <span>Stats&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-category">
+                                <div class="no-overflow">
+                                    <span>Số lượng &nbsp;&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-date">
+                                <div>
+                                    <span>Ngày đăng</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header fixed item-col-actions-dropdown"> </div>
+                        </div>
+                    </li>
+                    {{#each listProduct}}
+                        <li class="item">
+                            <div class="item-row">
+                                <div class="item-col fixed item-col-check">
+                                    <label class="item-check" id="select-all-items">
+                                        <input type="checkbox" class="checkbox">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="item-col fixed item-col-img md">
+                                    <a>
+                                        <div class="item-img rounded  " >
+                                            <img src="{{this.Image}}" alt="{{this.ProName}}" />
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="item-col fixed pull-left item-col-title">
+                                    <div class="item-heading">Tên tiêu đề</div>
+                                    <div>
+                                        <a  class="">
+                                            <h4 class="item-title"> {{this.ProName}} </h4>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item-col item-col-sales">
+                                    <div class="item-heading">Giá</div>
+                                        <div> {{format_number this.Price}} </div>
+                                </div>
+                                <div class="item-col item-col-stats no-overflow">
+                                    <div class="item-heading">Stats</div>
+                                    <div class="no-overflow">
+                                        <div class="item-stats sparkline" data-type="bar"></div>
+                                    </div>
+                                </div>
+                                <div class="item-col item-col-category no-overflow">
+                                    <div class="item-heading">Số lượng</div>
+                                        <div class="no-overflow">
+                                            <div> {{this.Quantity}} </div>
+                                        </div>
+
+                                </div>
+                                <div class="item-col item-col-date">
+                                    <div class="item-heading">Published</div>
+                                    <div class="no-overflow"> {{time this.Arrival}} </div>
+                                </div>
+                                <div class="item-col fixed item-col-actions-dropdown">
+                                    <div class="item-actions-dropdown">
+                                        <a class="item-actions-toggle-btn">
+                                                <span class="inactive">
+                                                    <i class="fa fa-cog"></i>
+                                                </span>
+                                            <span class="active">
+                                                    <i class="fa fa-chevron-circle-right"></i>
+                                                </span>
+                                        </a>
+                                        <div class="item-actions-block">
+                                            <ul class="item-actions-list">
+                                                <li>
+                                                    <li>
+                                                        <a class="edit" href="sua-san-pham/{{this.id}}">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="edit" href="#" name="{{this.id}}" id="removeproduct">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="edit" href="/admin/xem-chi-tiet-san-pham/{{this.id}}">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    </li>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {{/each}}
+            <nav class="text-right">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#"> Prev </a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#"> 1 </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> 2 </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> 3 </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> 4 </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> 5 </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> Next </a>
+                    </li>
+                </ul>
+            </nav>
+        </article>
+        <footer class="footer">
+            <div class="footer-block buttons">
+                <iframe class="footer-github-btn" src="https://ghbtns.com/github-btn.html?user=modularcode&amp;repo=modular-admin-html&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="140px" height="20px"></iframe>
+            </div>
+            <div class="footer-block author">
+                <ul>
+                    <li> created by
+                        <a href="https://github.com/modularcode">ModularCode</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/modularcode/modular-admin-html#get-in-touch">get in touch</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content modal-tab-content">
+                            <div class="tab-pane fade" id="gallery" role="tabpanel">
+                                <div class="images-container">
+                                    <div class="row"> </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade active in" id="upload" role="tabpanel">
+                                <div class="upload-container">
+                                    <div id="dropzone">
+                                        <form action="https://modularcode.io/" method="POST" enctype="multipart/form-data" class="dropzone needsclick dz-clickable" id="demo-upload">
+                                            <div class="dz-message-block">
+                                                <div class="dz-message needsclick"> Drop files here or click to upload. </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Insert Selected</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+</body>
+<div class="position-fixed bottom-0 end-0 p-3" id="toast" style="z-index: 11">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="/public/assets/estate/realestate.png" style="width: 30px;height: 30px" class="rounded me-2" alt="...">
+            <strong class="me-auto">Thông tin sản phẩm</strong>
+            <small>Hiện tại</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Xóa sản phẩm thành công. Vui lòng đợi ít phút để tải lại
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="cofirm-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xóa sản phẩm này ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="button" id="cofirmremove" class="btn btn-b-n">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#section 'jsAdmin'}}
+    <script type="text/javascript">
+    $('[id="removeproduct"]').click(function (){
+        $("#cofirm-modal").modal('show');
+        a=$(this).attr('name');
+    });
+
+    $('[id="cofirmremove"]').click(function (){
+        console.log(a)
+        $.post("/admin/product/remove-product",{proid:a},function (data,status){
+            if(data){
+                console.log(data);
+                $("#cofirm-modal").modal('hide');
+                $("#liveToast").toast('show');
+                const myTimeout = setTimeout(function (){
+                    location.reload();
+                }, 3000);
+
+            }
+        });
+    })
+
+    $(".remove").click(function(){
+        $.post("/admin/danh-muc/:calling/xoa-san-pham",{proID:this.id},function (data,status){
+            console.log(data);
+            if(data){
+                alert("Hello")
+            }
+        });
+    });
+    $("#addnew").click(function (){
+        localStorage.setItem("categoryid",{{catID}})
+    })
+</script>
+{{/section}}

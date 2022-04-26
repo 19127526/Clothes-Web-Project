@@ -20,14 +20,13 @@ var something = (function() {
 export default function (app) {
   app.use(async function (req, res, next) {
     something();
-
     const rawData = await shoppingModel.findAllCategories();
     res.locals.lcCategories = rawData;
     res.locals.billid=BillID;
     if (req.session.passport && req.session.passport.user) {
       res.locals.user = req.session.passport.user;
       const total=await shoppingModel.totalProDuctInCartGuest(BillID);
-      if(total){
+      if(total[0].total!==0){
           const promise=new Promise(async (resolve, reject) => {
             try {
               const changeAuthen = await shoppingModel.changeProductInCartAuthen(req.session.passport.user.id);

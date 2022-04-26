@@ -1,0 +1,166 @@
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content item-editor-page">
+            <div class="title-block">
+                <h3 class="title"> Chi tiết sản phẩm
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+            <form name="item" method="post" enctype="multipart/form-data">
+               <!-- <div class="form-group row">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" id="quaylai" class="btn btn-danger" > Quay lại </button>
+                    </div>
+                </div>-->
+                <div class="card card-block">
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title"> Tiêu đề: </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="title" placeholder="" readonly value="{{list.title}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title"> Diện tích </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="title" placeholder="" readonly value="{{list.acreage}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title"> Giá tiền </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="title" placeholder="" readonly value="{{list.current}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Mô tả:</label>
+                        <div class="col-sm-10">
+                            <div class="card">
+                                <div class="card-body">
+
+                                <div class="editor" id="des">{{{list.des}}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+
+                        <label class="col-sm-2 form-control-label text-xs-right"> Mô tả chi tiết:</label>
+                        <div class="col-sm-10">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="editor" id="des">{{{list.detail_description}}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Mô tả khác:</label>
+                        <div class="col-sm-10">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="editor" id="des">{{{list.other_detail}}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Quận: </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="title" placeholder="" readonly value="{{list.ward}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Hình ảnh: </label>
+                        <div class="col-sm-10">
+                            <div class="images-container">
+                                <div class="image-container">
+                                    <div class="controls">
+                                        <a href="#" class="control-btn move">
+                                            <i class="fa fa-arrows"></i>
+                                        </a>
+
+
+                                    </div>
+                                    <div class="image" id="image1" style="background-image:url('{{list.image1}}')"></div>
+                                </div>
+                                <div class="image-container">
+                                    <div class="controls">
+                                        <a href="#" class="control-btn move">
+                                            <i class="fa fa-arrows"></i>
+                                        </a>
+                                    </div>
+                                    <div class="image" id="image2" style="background-image:url('{{list.image2}}')"></div>
+                                </div>
+                                <div class="image-container">
+                                    <div class="controls">
+                                        <a href="#" class="control-btn move">
+                                            <i class="fa fa-arrows"></i>
+                                        </a>
+                                    </div>
+                                    <div class="image" id="image3" style="background-image:url('{{list.image3}}')"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </article>
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                        <form method="post" enctype="multipart/form-data">
+                            <input id="url" name="url" value="" readonly>
+                        <div class="tab-content modal-tab-content">
+                                <div class="tab-pane fade active in" id="upload" role="tabpanel">
+
+                                    <div class="file-loading">
+                                        <input id="input-21"  type="file" name="image" value="">
+                                    </div>
+                                </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+
+</div>
+{{#section 'cssAdmin'}}
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+{{/section}}
+{{#section 'jsAdmin'}}
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{/section}}
