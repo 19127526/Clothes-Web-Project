@@ -1,0 +1,83 @@
+<main>
+    <div class="slider-area ">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>History</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Area End-->
+    <!-- About Details Start -->
+    <div class="about-details section-padding30">
+        <section class="cart_area section_padding">
+            <div class="container">
+                <div class="cart_inner" style="height:1000px; overflow: auto;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each cartlist}}
+                                <tr id="cartproduct">
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img src="{{this.Image}}" alt="" />
+                                            </div>
+                                            <div class="media-body">
+                                                <p>{{this.ProName}}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p id="price">{{format_number this.Price}}</p>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <div class="def-number-input number-input safari_only mb-0">
+                                               <p class="quantity">{{this.Amount}}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p id="size">{{this.Size}}</p>
+                                    </td>
+                                    <td >
+                                        <a id="{{this.OrderID}}" name="total" >{{format_number this.Total}}</a>
+                                    </td>
+
+
+                                    <td>
+                                        {{#if (check this.status)}}
+                                            <p >Đang giao hàng</p>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

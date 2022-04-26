@@ -17,6 +17,8 @@ router.get("/login", loginView);
 router.post("/login", authValidation("loginUser"), loginUser);
 
 router.get("/logout", (req, res) => {
+  req.session.passport
+
   req.logout();
   res.redirect("/");
 });

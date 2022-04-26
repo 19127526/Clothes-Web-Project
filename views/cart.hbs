@@ -1,0 +1,138 @@
+<main>
+    <!-- Hero Area Start-->
+    <div class="slider-area ">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>Cart List</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================Cart Area =================-->
+    <section class="cart_area section_padding">
+        <div class="container">
+            <div class="cart_inner" style="height:1000px; overflow: auto;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each cartlist}}
+                            <tr id="cartproduct">
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{{this.Image}}" alt="" />
+                                        </div>
+                                        <div class="media-body">
+                                            <p>{{this.ProName}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p id="price">{{format_number this.Price}}</p>
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <div class="def-number-input number-input safari_only mb-0">
+                                            <input class="quantity" min="0" id="quantity" name="{{this.OrderID}}" value="{{this.Amount}}" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p id="size">{{this.Size}}</p>
+                                </td>
+                                <td >
+                                    <a id="{{this.OrderID}}" name="total" >{{format_number this.Total}}</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a>Subtotal</a>
+                            </td>
+                            <td>
+                                <a id="subtotal">{{ subtotal}}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="checkout_btn_inner float-right">
+                <a class="btn btn-primary btn-md mr-1 mb-2" href="/checkout">Check Out</a>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+</main>>
+
+{{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" >
+        function formatMoney(n) {
+            return (Math.round(n * 100) / 100).toLocaleString() +" VNĐ";
+        }
+        $(document).ready(function() {
+                const total=document.getElementById("subtotal");
+                total.textContent=formatMoney(total.textContent)
+                $("tr [id=quantity]").on("change", function () {
+                   /* console.log($(this).val());
+                    console.log($(this).prop("name"));*!/*/
+                    const a=$(this).prop("name");
+                    const x=document.getElementById(a);
+                    let price;
+                    {{#each cartlist}}
+                        if({{this.OrderID}}==a){
+                            price={{this.Price}};
+                            x.textContent=formatMoney(parseInt(price*$(this).val()));
+
+                            $.post("/gettotal",{
+                                id:a,
+                                total:total.textContent,
+                                amount:$(this).val(),
+                                price:price},function (data){
+                           if(data){
+                               console.log(data)
+                               total.textContent=formatMoney(data)
+                            }
+                            })
+                        }
+                    {{/each}}
+
+                  /*  $.post("/gettotal",{id:a, amount:$(this).val()},function (){
+                        if(data){
+                            x.replaceWith(data);
+                        }
+                    })*/
+                });
+        });
+
+    </script>
+
+{{/section}}
+
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{{/section}}

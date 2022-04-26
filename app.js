@@ -12,6 +12,7 @@ import loginRouter from "./routes/login.route.js";
 import shoppingRouter from "./routes/shopping.route.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/user.route.js";
+import vnpayRouter from "./routes/paypal.route.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,12 +21,13 @@ app.use(flash());
 //app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
 app.use(
   session({
-    secret: "SECRET_KEY",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60000 },
+      secret: 'secret',
+      resave: true,
+      saveUninitialized: true,
+      cookie: { secure: false, maxAge: expiryDate},
   })
 );
 app.use(passport.initialize());
@@ -39,6 +41,7 @@ activateViewMiddleware(app);
 app.use(loginRouter);
 app.use(shoppingRouter);
 app.use(userRouter);
+app.use(vnpayRouter)
 app.use("/admin", adminRouter);
 app.use("/public", express.static("public"));
 

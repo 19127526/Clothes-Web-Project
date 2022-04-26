@@ -21,6 +21,17 @@ export default function (app) {
         time(val) {
           return moment(val).format("DD/MM/YYYY");
         },
+          equal(x1,x2){
+            return x1===x2;
+          },
+          multi(x1,x2){
+            x1=parseInt(x1);
+            x2=parseInt(x2)
+            return x1+x2;
+          },
+        check(x1){
+          return x1!==0
+        }
       },
       extname: ".hbs",
     })
