@@ -16,9 +16,36 @@ export default {
     const list = await db('products').where('CatID', catID)
     return list
   },
+  async removeProDuctById(proid){
+    const check=db('products').where('ProID',proid).del();
+    return check;
+  },
   findTotalProDuctByID(CatID){
     return db("products").count('CatID', {as: 'total'}).where('CatID',CatID);
   },
+  async findDetailByProductID(proID) {
+    const list = await db("products")
+        .join("categories", "products.CatID", "=", "categories.CatID")
+        .where("products.ProID", proID);
+    return list[0];
+  },
+  async updateDesByProID(proID,product){
+    const check=db('products').where('ProID',proID).update({
+      ProName:product.title,
+      Price:product.price,
+      FullDes:product.des,
+      CatID:product.category,
+      Quantity:product.quantity,
+      Arrival:product.arrival,
+    })
+    return check;
+  },
+  async findDetailAccountByID(userID){
+    const list = await db("users")
+        .join("", "products.CatID", "=", "categories.CatID")
+        .where("products.ProID", proID);
+    return list[0];
+  }
   /*async addCategory(category) {
     return await db("categories").insert(category);
   },

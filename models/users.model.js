@@ -43,4 +43,22 @@ export default {
       throw err.errno;
     }
   },
+  findTotalAccount(){
+    return db("users").count('users.email', {as: 'total'});
+  },
+  async findAllAccount(page, perPage) {
+    let pagination = {};
+    const total = await db("users").count('* as count').first();
+    const total_pages = Math.ceil(total.count / perPage);
+    page = Math.max(1, Math.min(page, total_pages));
+    pagination.current_page = page;
+    pagination.total_items = total.count;
+    const offset = page - 1;
+    const listProduct = await db("users").limit(perPage).offset(offset * perPage);
+    return { pagination, listProduct };
+  },
+  /*async findAllAccount(){
+    const list=await db('users').select('users.*');
+    return list
+  },*/
 };

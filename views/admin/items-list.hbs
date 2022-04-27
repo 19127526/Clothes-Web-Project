@@ -12,13 +12,13 @@
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
         <div class="mobile-menu-handle"></div>
-        <article class="content items-list-page">
+        <article class="content items-list-page" id="Ajax">
             <div class="title-search-block">
                 <div class="title-block">
                     <div class="row">
                         <div class="col-md-6">
                             <h3 class="title"> Hello
-                                    <a href="/admin/san-pham/{{calling}}/them-san-pham" class="btn btn-primary btn-sm rounded-s" id="addnew"> Add New </a>
+                                    <a href="/admin/Add-Product" class="btn btn-primary btn-sm rounded-s" id="addnew"> Add New </a>
                                 <div class="action dropdown">
                                     <button class="btn  btn-sm rounded-s btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More actions... </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -148,17 +148,17 @@
                                             <ul class="item-actions-list">
                                                 <li>
                                                     <li>
-                                                        <a class="edit" href="sua-san-pham/{{this.id}}">
+                                                        <a class="edit" href="/admin/category/editproduct/{{this.ProID}}">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="edit" href="#" name="{{this.id}}" id="removeproduct">
+                                                        <a class="edit" href="#" name="{{this.ProID}}" id="removeproduct">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="edit" href="/admin/xem-chi-tiet-san-pham/{{this.id}}">
+                                                        <a class="edit" href="/admin/category/product/{{this.ProID}}">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     </li>
@@ -170,10 +170,11 @@
                             </div>
                         </li>
                     {{/each}}
+                    {{{paginateHelper pagination paginationClass="pagination pagination-lg justify-content-center"}}}
             <nav class="text-right">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#"> Prev </a>
+                        <a class="page-link" href="#"> </a>
                     </li>
                     <li class="page-item active">
                         <a class="page-link" href="#"> 1 </a>
@@ -311,7 +312,7 @@
 
     $('[id="cofirmremove"]').click(function (){
         console.log(a)
-        $.post("/admin/product/remove-product",{proid:a},function (data,status){
+        $.post("/admin/category/remove-product",{proid:a},function (data,status){
             if(data){
                 console.log(data);
                 $("#cofirm-modal").modal('hide');

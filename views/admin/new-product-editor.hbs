@@ -14,178 +14,60 @@
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Tiêu đề: </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control boxed" id="title" placeholder="" value="{{list.title}}"> </div>
+                            <input type="text" class="form-control boxed" id="title" placeholder="" value="{{list.ProName}}"> </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label text-xs-right"> Content: </label>
+                        <label class="col-sm-2 form-control-label text-xs-right"> Giá tiền: </label>
                         <div class="col-sm-10">
-                            <div class="wyswyg">
-                                <div class="toolbar">
-                                    <select class="ql-size">
-                                        <option value="small"></option>
-                                        <option selected></option>
-                                        <option value="large"></option>
-                                        <option value="huge"></option>
-                                    </select>
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                    <button class="ql-strike"></button>
-                                    <select title="Text Color" class="ql-color">
-                                        <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)" selected></option>
-                                        <option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option>
-                                        <option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option>
-                                        <option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option>
-                                        <option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option>
-                                        <option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option>
-                                        <option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option>
-                                        <option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)"></option>
-                                        <option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option>
-                                        <option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option>
-                                        <option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option>
-                                        <option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option>
-                                        <option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option>
-                                        <option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option>
-                                        <option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option>
-                                        <option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option>
-                                        <option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option>
-                                        <option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option>
-                                        <option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option>
-                                        <option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option>
-                                        <option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option>
-                                        <option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option>
-                                        <option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option>
-                                        <option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option>
-                                        <option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option>
-                                        <option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option>
-                                        <option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option>
-                                        <option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option>
-                                        <option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option>
-                                        <option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option>
-                                        <option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option>
-                                        <option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option>
-                                        <option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option>
-                                        <option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option>
-                                        <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
-                                    </select>
-                                    <select title="Background Color" class="ql-background">
-                                        <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
-                                        <option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option>
-                                        <option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option>
-                                        <option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option>
-                                        <option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option>
-                                        <option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option>
-                                        <option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option>
-                                        <option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)" selected></option>
-                                        <option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option>
-                                        <option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option>
-                                        <option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option>
-                                        <option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option>
-                                        <option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option>
-                                        <option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option>
-                                        <option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option>
-                                        <option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option>
-                                        <option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option>
-                                        <option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option>
-                                        <option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option>
-                                        <option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option>
-                                        <option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option>
-                                        <option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option>
-                                        <option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option>
-                                        <option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option>
-                                        <option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option>
-                                        <option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option>
-                                        <option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option>
-                                        <option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option>
-                                        <option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option>
-                                        <option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option>
-                                        <option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option>
-                                        <option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option>
-                                        <option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option>
-                                        <option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option>
-                                        <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
-                                    </select>
-                                    <button class="ql-list" value="ordered"></button>
-                                    <button class="ql-list" value="bullet"></button>
-                                    <select title="Text Alignment" class="ql-align">
-                                        <option selected></option>
-                                        <option value="center" label="Center"></option>
-                                        <option value="right" label="Right"></option>
-                                        <option value="justify" label="Justify"></option>
-                                    </select>
-                                    <button class="ql-link"></button>
-                                    <button style="width: auto;" type="button" title="Image" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-media">
-                                        <i class="fa fa-image"></i> Media </button>
-                                </div>
-                                <div class="editor" id="des">{{{list.des}}} </div>
-                            </div>
+                            <input type="text" data-type="currency" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}"> </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Số lượng: </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="quantity" placeholder="" value="{{list.Quantity}}"> </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Chi tiết sản phẩm </label>
+                        <div class="col-sm-10">
+                            <textarea id="des" name="des">{{{list.FullDes}}}</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label text-xs-right"> Quận: </label>
+                        <label class="col-sm-2 form-control-label text-xs-right"> Loại: </label>
                         <div class="col-sm-10">
-                            <select class="c-select form-control boxed" id="ward">
-                                {{#each listward}}
+                            <select class="c-select form-control boxed" id="category">
+                                {{#each listCategory}}
                                     {{#if this.check}}
-                                        <option selected>{{this.ward}}</option>
+                                        <option value="{{this.CatID}}" selected>{{this.CatName}}</option>
                                     {{else}}
-                                        <option >{{this.ward}}</option>
+                                        <option value="{{this.CatID}}">{{this.CatName}}</option>
                                     {{/if}}
                                 {{/each}}
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label text-xs-right"> Images: </label>
+                        <label class="col-sm-2 form-control-label text-xs-right"> Trạng thái: </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" id="status" placeholder="" value="{{time list.Arrival}}"> </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Hình ảnh: </label>
                         <div class="col-sm-10">
                             <div class="images-container">
                                 <div class="image-container">
                                     <div class="controls">
-                                        <a href="#" idclass="control-btn move">
-                                            <i class="fa fa-arrows"></i>
-                                        </a>
-
-                                        <a href="#" class="add-image " id="addImage1" name="{{list.image1}}" data-toggle="modal" data-target="#modal-media">
-                                            <i class="fa fa-plus" h></i>
-                                        </a>
-
-                                        <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
-                                    </div>
-                                    <div class="image" id="image1" style="background-image:url('{{list.image1}}')"></div>
-                                </div>
-                                <div class="image-container">
-                                    <div class="controls">
                                         <a href="#" class="control-btn move">
                                             <i class="fa fa-arrows"></i>
                                         </a>
-                                        <!--
-                        -->
-                                        <a href="#" class="add-image " id="addImage2" name="{{list.image2}}"data-toggle="modal" data-target="#modal-media">
-                                            <i class="fa fa-plus" h></i>
-                                        </a>
-                                        <!--
-                        -->
-                                        <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
-                                    </div>
-                                    <div class="image" id="image2" style="background-image:url('{{list.image2}}')"></div>
-                                </div>
-                                <div class="image-container">
-                                    <div class="controls">
-                                        <a href="#" class="control-btn move">
-                                            <i class="fa fa-arrows"></i>
-                                        </a>
-                                        <a href="#" class="add-image " id="addImage3" name="{{list.image3}}"data-toggle="modal" data-target="#modal-media">
+                                        <a href="#" class="add-image " id="addImage3" name="{{list.Image}}"data-toggle="modal" data-target="#modal-media">
                                             <i class="fa fa-plus" h></i>
                                         </a>
                                         <a href="#" id="reload2" class="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </div>
-                                    <div class="image" id="image3" style="background-image:url('{{list.image3}}')"></div>
+                                    <div class="image" id="image3" style="background-image:url('{{list.Image}}')"></div>
                                 </div>
                             </div>
                         </div>
@@ -293,12 +175,66 @@
     <!-- /.modal-dialog -->
 </div>
 {{#section 'cssAdmin'}}
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
     <!--<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
 {{/section}}
 {{#section 'jsAdmin'}}
-    <!--<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script>
+        tinymce.init({
+            selector: '#des',
+            /* width and height of the editor */
+            width: "100%",
+            height: 600,
+            /* display statusbar */
+            statusbar: true,
+            /* plugin */
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            /* toolbar */
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+            /* style */
+            style_formats: [
+                {title: "Headers", items: [
+                        {title: "Header 1", format: "h1"},
+                        {title: "Header 2", format: "h2"},
+                        {title: "Header 3", format: "h3"},
+                        {title: "Header 4", format: "h4"},
+                        {title: "Header 5", format: "h5"},
+                        {title: "Header 6", format: "h6"}
+                    ]},
+                {title: "Inline", items: [
+                        {title: "Bold", icon: "bold", format: "bold"},
+                        {title: "Italic", icon: "italic", format: "italic"},
+                        {title: "Underline", icon: "underline", format: "underline"},
+                        {title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
+                        {title: "Superscript", icon: "superscript", format: "superscript"},
+                        {title: "Subscript", icon: "subscript", format: "subscript"},
+                        {title: "Code", icon: "code", format: "code"}
+                    ]},
+                {title: "Blocks", items: [
+                        {title: "Paragraph", format: "p"},
+                        {title: "Blockquote", format: "blockquote"},
+                        {title: "Div", format: "div"},
+                        {title: "Pre", format: "pre"}
+                    ]},
+                {title: "Alignment", items: [
+                        {title: "Left", icon: "alignleft", format: "alignleft"},
+                        {title: "Center", icon: "aligncenter", format: "aligncenter"},
+                        {title: "Right", icon: "alignright", format: "alignright"},
+                        {title: "Justify", icon: "alignjustify", format: "alignjustify"}
+                    ]}
+            ],
+        });
+    </script>
+
+
+
     <script>
         $('#no').click(function (){
             $('#confirm-modal').modal('hide');
@@ -314,8 +250,14 @@
             location.reload();
         }
         $('#submitUpdate').click(function (){
-            var des=$('#des').html().replace('contenteditable="true"',"contenteditable=false");
-            $.post("/admin/san-pham/du-an/sua-san-pham/{{list.proid}}",{title:$('#title').val(),des:des,ward:$("#ward option:selected").val(),check:true},function (data,status){
+            const message = tinyMCE.activeEditor.getContent();
+            $.post("/admin/category/editproduct/{{list.ProID}}",{
+                title:$('#title').val(),
+                des:message,
+                quantity:$('#quantity').val(),
+                price:$("#price").val(),
+                arrival:$("#arrival").val(),
+                category:$("#category option:selected").val()},function (data,status){
                 if(data){
                     $('#confirm-modal').modal('hide');
                     $('#success-modal').modal('show');
@@ -331,6 +273,70 @@
         })
     </script>
     <script>
+        $("input[data-type='currency']").on({
+            keyup: function() {
+                formatCurrency($(this));
+            },
+            blur: function() {
+                formatCurrency($(this), "blur");
+            }
+        });
+        function formatNumber(n) {
+            // format number 1000000 to 1,234,567
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+        function formatCurrency(input, blur) {
+            // appends $ to value, validates decimal side
+            // and puts cursor back in right position.
+            // get input value
+            var input_val = input.val();
+            // don't validate empty input
+            if (input_val === "") { return; }
+            // original length
+            var original_len = input_val.length;
+            // initial caret position
+            var caret_pos = input.prop("selectionStart");
+            // check for decimal
+            if (input_val.indexOf(".") >= 0) {
+                // get position of first decimal
+                // this prevents multiple decimals from
+                // being entered
+                var decimal_pos = input_val.indexOf(".");
+                // split number by decimal point
+                var left_side = input_val.substring(0, decimal_pos);
+                var right_side = input_val.substring(decimal_pos);
+                // add commas to left side of number
+                left_side = formatNumber(left_side);
+                // validate right side
+                right_side = formatNumber(right_side);
+                // On blur make sure 2 numbers after decimal
+                if (blur === "blur") {
+                    right_side += "00";
+                }
+                // Limit decimal to only 2 digits
+                right_side = right_side.substring(0, 2);
+                // join number by .
+                input_val =  + left_side + "." + right_side;
+            } else {
+                // no decimal entered
+                // add commas to number
+                // remove all non-digits
+                input_val = formatNumber(input_val);
+                input_val =  input_val +" VNĐ";
+                // final formatting
+                /* if (blur === "blur") {
+                     input_val += ".00";
+                 }*/
+            }
+            // send updated string to input
+            input.val(input_val);
+            // put caret back in the right position
+            var updated_len = input_val.length;
+            caret_pos = updated_len - original_len + caret_pos;
+            input[0].setSelectionRange(caret_pos, caret_pos);
+        }
+    </script>
+    <script>
         $(document).ready(function() {
             /*$("#reload1").click(function (){
                 $("#step1Content").load('YourUrl');
@@ -341,31 +347,11 @@
             $("#reload3").click(function (){
                 $("#step1Content").load('YourUrl');
             })*/
-            let temp=0;
-            $("#addImage1").click(function() {
-                /*$("#modal-medial #selection option[value='file']").attr('selected', 'selected');*/
-                temp=this.name;
-                $.post("/admin/url-image",{url:temp},function (data,status){
-                    if(data){
-                        console("getlinksucess");
-
-                    }
-                });
-            });
-            });
-            $("#addImage2").click(function() {
-                temp=this.name;
-                $.post("/admin/url-image",{url:temp},function (data,status){
-                    if(data){
-                        console("getlinksucess")
-                    }
-                });
-            });
-            $("#addImage3").click(function() {
-                temp=this.name;
-                $.post("/admin/url-image",{url:temp},function (data,status){
+            $("#addImage3").click(function () {
+                temp = this.name;
+                $.post("/admin/url-image", {url: temp}, function (data, status) {
                     console.log(data);
-                    if(data){
+                    if (data) {
                         console("getlinksucess")
                     }
                 });
@@ -386,64 +372,70 @@
                 uploadIcon: "<i class=\"bi-upload\"></i> ",
                 uploadUrl: "/admin/upload/{{list.pro_id}}",
                 initialPreviewConfig: [
-                    {caption: "People-1.jpg", description: 'This is a representative placeholder description for this image.', size: 576237, width: "120px", url: "/site/file-delete", key: 1},
+                    {
+                        caption: "People-1.jpg",
+                        description: 'This is a representative placeholder description for this image.',
+                        size: 576237,
+                        width: "120px",
+                        url: "/site/file-delete",
+                        key: 1
+                    },
                 ],
-                theme:'fa',
-                language:'vi',
-                allowedFileExtensions:['jpg'],
-            }).on('fileuploaded', function(e, params) {
+                theme: 'fa',
+                language: 'vi',
+                allowedFileExtensions: ['jpg'],
+            })/*.on('fileuploaded', function (e, params) {
                 console.log(params.response.filename)
-                if(params.response.filename.includes("1")){
+                if (params.response.filename.includes("1")) {
                     console.log(params.response.detail);
                     console.log("1");
                     $.ajax({
-                        async:false,
-                        type:"POST",
-                        url:"/admin/geturl",
-                        data:{url:params.response.detail,id:"image1"},
-                        success:function (data){
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image1"},
+                        success: function (data) {
                             $("#image1").replaceWith(data);
                         },
-                        err:function (xhr,ajaxOptions,thrownError){
+                        err: function (xhr, ajaxOptions, thrownError) {
                             alert("Lỗi")
                         }
                     })
-                }
-                else if(params.response.filename.includes("2")){
+                } else if (params.response.filename.includes("2")) {
                     console.log(params.response.detail);
                     console.log("2");
                     $.ajax({
-                        async:false,
-                        type:"POST",
-                        url:"/admin/geturl",
-                        data:{url:params.response.detail,id:"image2"},
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image2"},
 
-                        success:function (data){
+                        success: function (data) {
                             $("#image2").replaceWith(data)
                         },
-                        err:function (xhr,ajaxOptions,thrownError){
+                        err: function (xhr, ajaxOptions, thrownError) {
                             alert("Lỗi")
                         },
                     })
-                }
-                else if(params.response.filename.includes("3")){
+                } else if (params.response.filename.includes("3")) {
                     console.log(params.response.detail);
                     console.log("3");
                     $.ajax({
-                        async:false,
-                        type:"POST",
-                        url:"/admin/geturl",
-                        data:{url:params.response.detail,id:"image3"},
-                        success:function (data){
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image3"},
+                        success: function (data) {
                             $("#image3").replaceWith(data);
                             console.log(data);
                         },
-                        err:function (xhr,ajaxOptions,thrownError){
+                        err: function (xhr, ajaxOptions, thrownError) {
                             alert("Lỗi")
                         }
                     })
                 }
-            });
+            });*/
+        });
 
     </script>
 {{/section}}

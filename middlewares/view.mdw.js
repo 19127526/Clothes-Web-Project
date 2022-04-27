@@ -35,6 +35,12 @@ export default function (app) {
         product(index){
           return index+' Sản phẩm'
         },
+        format_name(x1,x2){
+          return x1+ " "+x2;
+        },
+        checkBlock(x1){
+          return x1!==-1;
+        }
       },
       extname: ".hbs",
     })
