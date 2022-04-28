@@ -12,10 +12,46 @@ import moment from "moment";
 import dateformat from "dateformat"
 import fs from "fs";
 import usersModel from "../models/users.model.js";
-import {reject} from "bcrypt/promises.js";
+import multer from 'multer';
+import request from'request'
+import http from'https'
 
+const options = {
+    'method': 'POST',
+    'hostname': 'api.sirv.com',
+    'path': '/v2/token',
+    'headers': {
+        'content-type': 'application/json'
+    }
+};
 
+const clientId = 'VGfLmn2v9Q15z4udmTIFf3BPhpV';
+const clientSecret = 'pTstWTU/d8MiZj2em9Vc6z28bintsE8dggX0Z0wa0dSAwhFSI+kq9BVkjQyytT8nmyjJnwgmc3J4wGdCFn2PcA==';
 const router = express.Router();
+const req = http.request(options, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+        chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+        const body = Buffer.concat(chunks);
+        const apiResponse = JSON.parse(body.toString());
+        console.log(apiResponse)
+        console.log('token:', apiResponse.token);
+        console.log('expiresIn:', apiResponse.expiresIn);
+        console.log('scope:', apiResponse.scope);
+    });
+});
+
+req.write(JSON.stringify({
+    clientId,
+    clientSecret
+}));
+
+req.end();
+
 
 router.get("/",/* protectAdminRoute,*/ async function (req,res){
     res.render('admin/home',{
@@ -225,6 +261,63 @@ router.post("/change-status-bill",async function(req,res){
             list:  listDetailUser
         })
     })
+});
+var temp=0;
+const storage = multer.diskStorage({
+    destination:async function (req, file, cb) {
+        if((file.mimetype=="image/jpg")
+            ||(file.mimetype=="image/png")
+            ||(file.mimetype=="image/jpeg")){
+            cb(null, 'public/temp');
+        }
+        else{
+            cb(new Error('not Image'), false);
+        }
+    },
+    filename:async function (req, file, cb) {
+        cb(null, file.originalname)
+        temp++;
+    }
+});
+var upload=multer({storage:storage})
+router.post("/upload-image-product",upload.array('image',5),async function(req,res){
+    let TempFile
+    fs.readdir("./public/temp", (err, files) => {
+        if(err){
+
+        }
+        else{
+            files.forEach(file=>{
+                fs.readFile("./public/temp/"+file.toString(),(err,data)=>{
+                    if(err){
+                        throw err
+                    }
+                    else{
+                        var options = {
+                            "method": "POST",
+                            "hostname": "api.sirv.com",
+                            "port": null,
+                            "path": "/v2/files/upload?filename=%2Fpath%2Fto%2Fuploaded-image.jpg",
+                            "headers": {
+                                "content-type": "application/json",
+                                "authorization": "Bearer BEARER_TOKEN_HERE"
+                            },
+                            'url': 'https://api.sirv.com/v2/files/upload',
+                        };
+                        request(options, function (error, response, body) {
+                            if (error) throw error;
+                            else{console.log(body)}
+
+                        });
+                    }
+
+                })
+            })
+
+        }
+    });
+
+
 
 })
 
@@ -246,6 +339,7 @@ router.get("/product/:ProID", async function (req, res) {
 
 
 
+
 router.post("/add", async function (req, res) {
     console.log(req.body);
     const ret=await adminModel.addProduct(req.body)
@@ -257,6 +351,8 @@ router.post("/del", async function (req, res) {
     const ret=await adminModel.delProduct(req.body.ProID)
     res.redirect('/admin')
 });
+
+
 
 router.get("/product/:ProID", protectAdminRoute, detailManagementView);
 

@@ -155,6 +155,29 @@
 
 </html>
 
+<div class="modal fade" id="success-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-check"></i> &nbsp;Thông tin Bill</h4>
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Đã cập nhật trạng thái thành công !!</p>
+            </div>
+            <!-- <div class="modal-footer">
+                 <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                 <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">No</button>
+             </div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 {{#section 'cssAdmin'}}
 
 {{/section}}
@@ -181,7 +204,7 @@
                                 document.getElementById({{this.BillID}}).
                                 parentElement.
                                 getElementsByTagName("section")[0].innerHTML=data;
-                                /*alert(data)*/
+                                $("#success-modal").modal('show')
                             }
                         })
             })

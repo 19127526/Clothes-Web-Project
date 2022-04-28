@@ -99,7 +99,7 @@
                             <div class="tab-content modal-tab-content">
                                 <div class="tab-pane fade active in" id="upload" role="tabpanel">
                                     <div class="file-loading">
-                                        <input id="input-700"  type="file" name="image" >
+                                        <input id="input-700"  multiple type="file" name="image" >
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +172,6 @@
 </div>
 {{#section 'cssAdmin'}}
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-    <!--<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
 {{/section}}
 {{#section 'jsAdmin'}}
     <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -334,24 +333,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            /*$("#reload1").click(function (){
-                $("#step1Content").load('YourUrl');
-            })
-            $("#reload2").click(function (){
-                $("#step1Content").load('YourUrl');
-            })
-            $("#reload3").click(function (){
-                $("#step1Content").load('YourUrl');
-            })*/
-            $("#addImage3").click(function () {
-                temp = this.name;
-                $.post("/admin/url-image", {url: temp}, function (data, status) {
-                    console.log(data);
-                    if (data) {
-                        console("getlinksucess")
-                    }
-                });
-            });
+            var i=1;
             $("#input-700").fileinput({
                 overwriteInitial: false,
                 validateInitialCount: true,
@@ -366,7 +348,7 @@
                 uploadClass: "btn btn-info",
                 uploadLabel: "Upload hình",
                 uploadIcon: "<i class=\"bi-upload\"></i> ",
-                uploadUrl: "/admin/upload/{{list.pro_id}}",
+                uploadUrl: "/admin/upload-image-product",
                 initialPreviewConfig: [
                     {
                         caption: "People-1.jpg",
@@ -379,8 +361,8 @@
                 ],
                 theme: 'fa',
                 language: 'vi',
-                allowedFileExtensions: ['jpg'],
-            })/*.on('fileuploaded', function (e, params) {
+              /*  allowedFileExtensions: ['jpg'],*/
+            }).on('')/*.on('fileuploaded', function (e, params) {
                 console.log(params.response.filename)
                 if (params.response.filename.includes("1")) {
                     console.log(params.response.detail);
