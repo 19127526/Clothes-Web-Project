@@ -26,6 +26,7 @@ export default {
   async findDetailByProductID(proID) {
     const list = await db("products")
         .join("categories", "products.CatID", "=", "categories.CatID")
+        .join('statusproduct','statusproduct.IdStatus','products.status')
         .where("products.ProID", proID);
     return list[0];
   },
@@ -37,15 +38,67 @@ export default {
       CatID:product.category,
       Quantity:product.quantity,
       Arrival:product.arrival,
+      status:product.IdStatus
     })
     return check;
   },
+  async findAllStatusProduct() {
+    return db("statusproduct");
+  },
+
   async findDetailAccountByID(userID){
+    const list = await db("users").join('statususer','statususer.IdStatus','users.type').where("users.UserID", userID);
+    const totalBill=await db('bill').count('BillID', {as: 'total'})
+        .where('bill.User',userID)
+    return {list ,totalBill };
+  },
+  async findDetailOrder(billid){
+    const list3=await db('orders')
+        .join('bill','bill.BillID','orders.BillID')
+        .join('products','products.ProID','orders.ProID')
+        .join('statusbill','statusbill.idstatus','orders.status')
+        .where("orders.BillID", billid);
+    return list3;
+  },
+  async findDetailBillByID(userID){
     const list = await db("users")
-        .join("", "products.CatID", "=", "categories.CatID")
-        .where("products.ProID", proID);
-    return list[0];
-  }
+        .join("orders", "orders.UserID", "users.UserID")
+        .join('bill','bill.BillID','orders.BillID')
+        .join('statusbill','statusbill.idstatus','bill.Status')
+        .join('products','products.ProID','orders.ProID').where("users.UserID", userID);
+    const list2 = await db("bill")
+        .join('statusbill','statusbill.idstatus','bill.Status')
+        .where("bill.User", userID).select('*');
+    const count=await db('bill').count('BillID', {as: 'total'}).where("bill.User", userID);
+   /* list2.product=list;*/
+    return {list2,count};
+  },
+  async findAllStatusBill(){
+    return db('statusbill')
+  },
+  async changeMethodBillAdmin(billid,status){
+    const list=await db("bill").where('BillID',billid).update({
+      Status:status,
+    })
+    return list;
+  },
+  async changeMethodOrderAdmin(billid,status){
+    const list=await db("orders").where('BillID',billid).update({
+      Status:status,
+    });
+    return list;
+  },
+
+  /*const totalBill=await db('bill')
+      .join('orders','orders.BillID','bill.BillID')
+      .join('statusbill','statusbill.idstatus','bill.Status')
+      .where('orders.UserID',userID)*/
+  /*const list = await db("users")
+  .join("orders", "orders.UserID", "users.UserID")
+      .join('bill','bill.BillID','orders.BillID')
+      .join('statusbill','statusbill.idstatus','bill.Status')
+      .join('products','products.ProID','orders.ProID').where("users.UserID", userID);*/
+
   /*async addCategory(category) {
     return await db("categories").insert(category);
   },

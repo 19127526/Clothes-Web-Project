@@ -12,6 +12,7 @@ import moment from "moment";
 import dateformat from "dateformat"
 import fs from "fs";
 import usersModel from "../models/users.model.js";
+import {reject} from "bcrypt/promises.js";
 
 
 const router = express.Router();
@@ -23,7 +24,6 @@ router.get("/",/* protectAdminRoute,*/ async function (req,res){
 });
 router.get("/category/product/:proID"/*,,protectAdminRoute*/, async function (req,res){
     const productDetail=await adminModel.findDetailByProductID(req.params.proID);
-
     res.render("admin/detail-product",{
             layout:'layoutAdmin.hbs',
             list:productDetail
@@ -31,6 +31,12 @@ router.get("/category/product/:proID"/*,,protectAdminRoute*/, async function (re
 });
 router.get("/category/editproduct/:proID"/*,,protectAdminRoute*/, async function (req,res){
     const productDetail=await adminModel.findDetailByProductID(req.params.proID);
+    const listStatusProduct=await adminModel.findAllStatusProduct();
+    listStatusProduct.forEach(u=>{
+        if(u.IdStatus===productDetail.IdStatus){
+            u.check=true;
+        }
+    });
     const listCategory=await shoppingModel.findAllCategories();
     listCategory.forEach(u=>{
         if(u.CatID===productDetail.CatID){
@@ -40,7 +46,8 @@ router.get("/category/editproduct/:proID"/*,,protectAdminRoute*/, async function
     res.render("admin/new-product-editor",{
         layout:'layoutAdmin.hbs',
         list:productDetail,
-        listCategory
+        listCategory,
+        listStatus:listStatusProduct
     })
 });
 
@@ -57,7 +64,6 @@ router.post("/category/editproduct/:proID"/*,,protectAdminRoute*/, async functio
         }
         const list = req.body;
         list.price = resultPrice;
-        console.log(list)
         resolve(list)
     });
     promise.then(async function (data){
@@ -67,7 +73,6 @@ router.post("/category/editproduct/:proID"/*,,protectAdminRoute*/, async functio
 });
 
 router.post("/category/remove-product"/*,,protectAdminRoute*/, async function (req,res){
-    console.log(req.body);
     const myPromise=new Promise(async (resolve, reject) => {
         const delProduct = await adminModel.removeProDuctById(req.body.proid);
         resolve("done");
@@ -117,6 +122,15 @@ router.get("/account-management"/*,,protectAdminRoute*/, async function (req,res
     })
 });
 
+router.get("/account-detail/:UserID",async function(req,res){
+    const listDetailUser=await adminModel.findDetailAccountByID(req.params.UserID);
+    res.render("admin/detail-account",{
+        layout:'layoutAdmin.hbs',
+        listDetailUser:listDetailUser.list[0],
+        totalBill:listDetailUser.totalBill[0]
+    })
+});
+
 router.get("/account-detail/:UserID", async function (req,res){
     const productDetail=await adminModel.findDetailByProductID(req.params.proID);
     const totalEmail= await usersModel.findTotalAccount().then(async (u)=>{
@@ -142,21 +156,95 @@ router.get("/Add-Product", async function (req,res){
         listCategory
     })
 });
+router.get("/detail-bill/:UserID",async function(req,res){
+    const listDetailUser=await adminModel.findDetailBillByID(req.params.UserID);
+    const user=await usersModel.getUserById(req.params.UserID);
+    const size=listDetailUser.count[0].total;
+
+    for (let i=0;i<size;i++){
+        const temp=await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
+        temp.forEach(u => {
+            if(u.SizeID===u.SizeS){
+                u.Size="S"
+            }
+            else if(u.SizeID===u.SizeM){
+                u.Size="M"
+            }
+            else if(u.SizeID===u.SizeL){
+                u.Size="L"
+            }
+            else if(u.SizeID===u.SizeXL){
+                u.Size="XL"
+            }
+        });
+        listDetailUser.list2[i].listProduct=temp;
+        const listStatusProduct=await adminModel.findAllStatusBill();
+        listStatusProduct.forEach(u=>{
+            if(u.idstatus===listDetailUser.list2[i].Status){
+                u.check=true;
+            }
+        });
+        listDetailUser.list2[i].AmountStatus=listStatusProduct;
+    };
+    console.log(listDetailUser.count[0])
+
+    res.render("admin/detail-bill",{
+        layout:'layoutAdmin.hbs',
+        list:listDetailUser.list2,
+        total:listDetailUser.count[0],
+        user
+    })
+});
+
+
+router.post("/change-status-bill",async function(req,res){
+    const promise=new Promise(async (resolve, reject) => {
+        console.log(req.body);
+        const changeStatusBill = await adminModel.changeMethodBillAdmin(req.body.id, req.body.status)
+        const changeStatusOrder = await adminModel.changeMethodOrderAdmin(req.body.id, req.body.status)
+        resolve(req.body.id)
+    })
+    promise.then(async function (data) {
+        const listDetailUser = await adminModel.findDetailOrder(req.body.id);
+        listDetailUser.forEach(u => {
+            if(u.SizeID===u.SizeS){
+                u.Size="S"
+            }
+            else if(u.SizeID===u.SizeM){
+                u.Size="M"
+            }
+            else if(u.SizeID===u.SizeL){
+                u.Size="L"
+            }
+            else if(u.SizeID===u.SizeXL){
+                u.Size="XL"
+            }
+        });
+        res.render("admin/detail-bill-reload", {
+            layout: false,
+            list:  listDetailUser
+        })
+    })
+
+})
 
 
 
 
-router.get("/product/:ProID", protectAdminRoute, detailManagementView);
 
-router.post("/add", protectAdminRoute, AddProduct);
 
-router.post("/del", protectAdminRoute, DelProduct);
+
+
 
 router.get("/product/:ProID", async function (req, res) {
     const proID = req.params.ProID || 0;
     const product = await shoppingModel.findByProductID(proID);
     res.render("product_detail_management", { product });
 });
+
+
+
+
 
 router.post("/add", async function (req, res) {
     console.log(req.body);
@@ -170,7 +258,11 @@ router.post("/del", async function (req, res) {
     res.redirect('/admin')
 });
 
+router.get("/product/:ProID", protectAdminRoute, detailManagementView);
 
+router.post("/add", protectAdminRoute, AddProduct);
+
+router.post("/del", protectAdminRoute, DelProduct);
 
 
 export default router;

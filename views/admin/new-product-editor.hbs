@@ -49,7 +49,15 @@
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Trạng thái: </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control boxed" id="status" placeholder="" value="{{time list.Arrival}}"> </div>
+                            <select class="c-select form-control boxed" id="statusproduct">
+                                {{#each listStatus}}
+                                    {{#if this.check}}
+                                        <option value="{{this.IdStatus}}" selected>{{this.NameStatus}}</option>
+                                    {{else}}
+                                        <option value="{{this.IdStatus}}" >{{this.NameStatus}}</option>
+                                    {{/if}}
+                                {{/each}}
+                            </select>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Hình ảnh: </label>
@@ -257,6 +265,7 @@
                 quantity:$('#quantity').val(),
                 price:$("#price").val(),
                 arrival:$("#arrival").val(),
+                IdStatus:$("#statusproduct option:selected").val(),
                 category:$("#category option:selected").val()},function (data,status){
                 if(data){
                     $('#confirm-modal').modal('hide');

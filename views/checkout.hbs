@@ -12,14 +12,14 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="firstName">First name</label>
-                            <input  type="text" class="form-control" name="firstname" id="firstName" placeholder="" value="{{userList.firstname}}" required="">
+                            <input  readonly type="text" class="form-control" name="firstname" id="firstName" placeholder="" value="{{userList.firstname}}" required="">
                             <div class="invalid-feedback">
                                 Valid first name is required.
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="lastName">Last name</label>
-                            <input  type="text" class="form-control" id="lastName" name="lastname" placeholder="" value="{{userList.lastname}}" required="">
+                            <input readonly type="text" class="form-control" id="lastName" name="lastname" placeholder="" value="{{userList.lastname}}" required="">
                             <div class="invalid-feedback">
                                 Valid last name is required.
                             </div>
@@ -141,7 +141,7 @@
                         </form>
                     </div>
                     <div class="col-md-6 col-lg-4 col-xl-6">
-                                <div class="cart_inner" style="width:1000px; height:1000px; overflow: auto;">
+                                <div class="cart_inner" style="width:1000px; height:400px; overflow: auto;">
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -217,17 +217,10 @@
     <script type="text/javascript" >
         $(document).ready(function() {
             $("#buttonTotaltax").prop('disabled', false)
-            let a1 = false;
-            let a2 = false;
             let a3 = false;
             let a4 = false;
             let a5 = false;
-            if($("#firstName").val()!=""){
-                a1=true;
-            }
-            if($("#lastName").val()!=""){
-                a2=true;
-            }
+
             if($("#email").val()!=""){
                 a3=true;
             }
@@ -237,37 +230,6 @@
             if($("#phone").val()!=""){
                 a5=true;
             }
-            $("#firstName").on("change", function () {
-                if ($(this).val() == "") {
-                    $("#firstName").addClass('is-invalid')
-                    $("#firstName").removeClass('is-valid');
-                    a1 = false;
-                    $("#buttonTotaltax").prop('disabled', true)
-                } else {
-                    $("#firstName").removeClass('is-invalid')
-                    $("#firstName").addClass('is-valid');
-                    a1 = true;
-                    if ((a1 === true) && (a2 === true) && (a3 === true) && (a4 === true) && (a5 === true)) {
-                        $("#buttonTotaltax").prop('disabled', false)
-                    }
-                }
-            });
-
-            $("#lastName").on("change", function () {
-                if ($(this).val() == "") {
-                    $("#lastName").addClass('is-invalid')
-                    $("#lastName").removeClass('is-valid')
-                    $("#buttonTotaltax").prop('disabled', true)
-                    a2 = false;
-                } else {
-                    a2 = true;
-                    $("#lastName").removeClass('is-invalid')
-                    $("#lastName").addClass('is-valid');
-                    if ((a1 === true) && (a2 === true) && (a3 === true) && (a4 === true) && (a5 === true)) {
-                        $("#buttonTotaltax").prop('disabled', false)
-                    }
-                }
-            })
             $("#email").on("change", function () {
                 if ($(this).val() == "") {
                     a3 = false;
@@ -278,7 +240,7 @@
                     a3 = true;
                     $("#email").removeClass('is-invalid')
                     $("#email").addClass('is-valid')
-                    if ((a1 === true) && (a2 === true) && (a3 === true) && (a4 === true) && (a5 === true)) {
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
                         $("#buttonTotaltax").prop('disabled', false)
                     }
                 }
@@ -293,7 +255,7 @@
                     a4 = true;
                     $("#address").removeClass('is-invalid')
                     $("#address").addClass('is-valid')
-                    if ((a1 === true) && (a2 === true) && (a3 === true) && (a4 === true) && (a5 === true)) {
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
                         $("#buttonTotaltax").prop('disabled', false)
                     }
                 }
@@ -309,7 +271,7 @@
                     a5 = true;
                     $("#phone").removeClass('is-invalid')
                     $("#phone").addClass('is-valid')
-                    if ((a1 === true) && (a2 === true) && (a3 === true) && (a4 === true) && (a5 === true)) {
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
                         $("#buttonTotaltax").prop('disabled', false)
                     }
                 }

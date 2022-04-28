@@ -10,6 +10,7 @@ import  paypal from 'paypal-rest-sdk';
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
 var total =0;
+var entity;
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': 'AYmVcsQqf47NY436c-PpR_NAFJBWAjbJuzrF30kib-PW6V_Px_CVlHrYTEC2_ZNbcPN2j34nK6UHQUjt',
@@ -48,11 +49,14 @@ router.get("/checkout/success",(req,res)=>{
     } else {
       const promise=new Promise(async (resolve, reject) => {
         console.log("Get Payment Response");
-        const changeBill = await shoppingModel.changeMethodBill(res.locals.billid);
+        entity.User=req.session.passport.user.id;
+        const changeBill = await shoppingModel.changeMethodBill(res.locals.billid,entity);
         const changeOrder = await shoppingModel.changeMethodOrder(res.locals.billid);
         resolve("hello")
       });
       promise.then(async function (data) {
+        const data3= await shoppingModel.insertBill();
+        res.locals.billid=data3[0]
         res.redirect("/history")
       })
 
@@ -66,6 +70,7 @@ function formatMoney(n) {
 }
 router.post("/checkoutpaypal",async (req, res) => {
   const promise=new Promise(async (resolve, reject) => {
+    entity=req.body;
     const cartList = await shoppingModel.findAllCartByID(req.session.passport.user.id, res.locals.billid);
     const userList = await usersModel.getUserById(req.session.passport.user.id);
     let subtotal = 0;

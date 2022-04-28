@@ -35,7 +35,7 @@ export default {
     pagination.current_page = page;
     pagination.total_items = total.count;
     const offset = page - 1;
-    const listProduct = await db("products").where("CatID", catID).limit(perPage).offset(offset * perPage);
+    const listProduct = await db("products").join('statusproduct','statusproduct.IdStatus','products.status').where("CatID", catID).limit(perPage).offset(offset * perPage);
     return { pagination, listProduct };
   },
 
@@ -65,7 +65,7 @@ export default {
       Amount:entity.quantity,
       Total:entity.total,
       BillID:entity.billid,
-      status:0
+      status:-1
     })
   },
 
@@ -78,31 +78,31 @@ export default {
       Amount:entity.quantity,
       Total:entity.total,
       BillID:entity.billid,
-      status:0
+      status:-1
     })
   },
  totalProDuctInCartAuthen(id,billid){
    return db("orders").count('OrderID', {as: 'total'}).join('bill','bill.BillID','orders.BillID').andWhere(function (){
      this.where( 'orders.UserID',id);
-     this.where('orders.BillID',billid)
+     this.where('orders.BillID',billid);
+     this.where('orders.status',-1)
    })
   },
   async delProDuctInCartGuest(){
-    /*const list=await db("orders").where('UserID', -1).del();*/
-    const list2=await db("orders").where('orders.status',0).del()
+    const list2=await db("orders").where('orders.status',-1).del()
     return list2;
   },
 
   async delBill(){
-    /*const list=await db("orders").where('UserID', -1).del();*/
-    const list2=await db("bill").where('bill.Status',0).del()
-    console.log("hehe")
+    const list2=await db("bill").where('bill.Status',-1).del()
+
     return list2;
   },
    totalProDuctInCartGuest(billid){
     return db("orders").count('OrderID', {as: 'total'}).join('bill','bill.BillID','orders.BillID').andWhere(function (){
       this.where( 'orders.UserID',-1);
-      this.where('orders.BillID',billid)
+      this.where('orders.BillID',billid);
+      this.where('orders.status',-1)
     });
   },
   async findAllCartByUserID() {
@@ -134,20 +134,26 @@ export default {
     })
     return list;
   },
-  async changeMethodBill(billid){
+  async changeMethodBill(billid,entity){
     const list=await db("bill").where('BillID',billid).update({
-      Status:1
+      Status:1,
+      Address:entity.address,
+      PhoneNumber:entity.phonenumber,
+      Email:entity.email,
+      Date:new Date(),
+      User:entity.User
     })
     return list;
   },
   async changeMethodOrder(billid){
     const list=await db("orders").where('BillID',billid).update({
-      Status:1
+      Status:1,
+      OrderDate:new Date()
     });
     return list;
   },
   async updateQuantityByOrderID(entity){
-    if(entity.amount===0){
+    if(entity.amount==='0'){
       const list=await db("orders").where('OrderID',entity.id).del();
       return list;
     }
@@ -162,7 +168,7 @@ export default {
 
   async insertBill(){
     const list =await db("bill").insert({
-      Status:0
+      Status:-1
     }).select("bill.BillID");
     return list;
   },

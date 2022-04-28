@@ -180,13 +180,13 @@ router.get("/checkout", protectRoute,async (req,res)=>{
   }
 });
 router.post("/checkout", protectRoute,async (req,res)=> {
-  console.log(req.body);
-  const list=req.body;
-  if(list.radioNoLabel==='1'){
-    const changeBill=await shoppingModel.changeMethodBill(res.locals.billid);
+    const entity=req.body;
+    entity.User=req.session.passport.user.id;
+    const changeBill=await shoppingModel.changeMethodBill(res.locals.billid,entity);
     const changeOrder=await shoppingModel.changeMethodOrder(res.locals.billid);
+    const data3= await shoppingModel.insertBill();
+    res.locals.billid=data3[0]
     res.redirect("/history")
-  }
 
 });
 router.get("/product/:ProID", productView);

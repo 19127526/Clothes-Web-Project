@@ -87,15 +87,9 @@
                                 </div>
                                 <div class="item-col item-col-category no-overflow">
                                     <div class="item-heading">Trạng thái</div>
-                                    {{#if ( checkBlock this.type)}}
-                                        <div>
-                                            <a >Tồn tại</a>
-                                        </div>
-                                    {{else}}
-                                        <div class="no-overflow">
-                                            <a>Đã Khóa</a>
-                                        </div>
-                                    {{/if}}
+                                    <div class="no-overflow">
+                                        <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                                    </div>
                                 </div>
                                 <div class="item-col item-col-author">
                                     <div class="item-heading">Name User</div>

@@ -54,7 +54,8 @@ export default {
     pagination.current_page = page;
     pagination.total_items = total.count;
     const offset = page - 1;
-    const listProduct = await db("users").limit(perPage).offset(offset * perPage);
+
+    const listProduct = await db("users").join('statususer','statususer.IdStatus','users.type').limit(perPage).offset(offset * perPage);
     return { pagination, listProduct };
   },
   /*async findAllAccount(){
