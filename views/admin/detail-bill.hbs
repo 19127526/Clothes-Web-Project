@@ -64,9 +64,59 @@
                                             </table>
                                         </div>
                                     </section>
+                                    <button class="btn btn-primary btn-sm rounded-s" name="DetailOrder"> Detail Order </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+
+                    <div class="modal fade" id="detailbill" >
+                        <div class="modal-dialog" role="document" style="display: flex; flex-direction: row;justify-content: center; object-fit: fill">
+                            <div class="modal-content" style="width: fit-content;height: fit-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        <i class="fa fa-check"></i> &nbsp;Thông tin Bill</h4>
+                                    <button type="button" id="close" class="btn-close" data-dismiss="modal" aria-label="Close">
+
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID Bill</th>
+                                                    <th>Email</th>
+                                                    <th>Address</th>
+                                                    <th>Phone Number</th>
+
+                                                    <th>Order Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                                </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>{{this.BillID}}</td>
+                                                        <td>{{this.Email}}</td>
+                                                        <td >{{this.Address}}</td>
+                                                        <td>{{this.PhoneNumber}}</td>
+                                                        <td>{{time this.Date}}</td>
+                                                        <td>{{this.Name}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
                     </div>
                 </section>
             {{/each}}
@@ -76,8 +126,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">Media Library</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
+                            <span aria-hidden="true">x</span>
                         </button>
                     </div>
                     <div class="modal-body modal-tab-container">
@@ -124,7 +173,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">
                             <i class="fa fa-warning"></i> Alert</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="no">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -178,21 +227,15 @@
     <!-- /.modal-dialog -->
 </div>
 
+
+
 {{#section 'cssAdmin'}}
 
 {{/section}}
 {{#section 'jsAdmin'}}
     <script>
             {{#each list}}
-            /*document.getElementById({{this.BillID}}).addEventListener("click",function (){
-                const temp=this.getElementsByTagName('select');
-                console.log(temp[0].options)
-                console.log(parseInt(temp[0].options.selectedIndex)-1);
-                console.log({{this.BillID}});*/
-               /* console.log($(this #status option:selected).val())*/
-           /* })*/
             document.getElementById({{this.BillID}}).getElementsByTagName("a")[0].addEventListener("click",function (){
-                console.log(document.getElementById({{this.BillID}}).parentElement.getElementsByTagName("section")[0])
                 $.post("/admin/change-status-bill",
                         {
                             userid:{{this.User}},
@@ -211,5 +254,19 @@
             {{/each}}
     </script>
     <script>
+            {{#each list}}
+                    document.getElementById({{this.BillID}})
+                            .parentElement
+                            .getElementsByTagName("button")[0].addEventListener("click",function (){
+                        console.log(document.getElementById({{this.BillID}}).
+                                parentElement
+                                .parentElement
+                                .parentElement
+                                .parentElement
+                                .parentElement.getElementsByClassName('modal')[0].getElementsByClassName('modal-dialog')[0])
+                        $(this).parent().parent().parent().parent().parent().find('#detailbill').modal('show')
+                    })
+
+            {{/each}}
     </script>
 {{/section}}

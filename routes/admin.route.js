@@ -15,8 +15,7 @@ import usersModel from "../models/users.model.js";
 import multer from 'multer';
 import request from'request'
 import http from'https'
-
-const options = {
+/*const options = {
     'method': 'POST',
     'hostname': 'api.sirv.com',
     'path': '/v2/token',
@@ -27,7 +26,7 @@ const options = {
 
 const clientId = 'VGfLmn2v9Q15z4udmTIFf3BPhpV';
 const clientSecret = 'pTstWTU/d8MiZj2em9Vc6z28bintsE8dggX0Z0wa0dSAwhFSI+kq9BVkjQyytT8nmyjJnwgmc3J4wGdCFn2PcA==';
-const router = express.Router();
+
 const req = http.request(options, (res) => {
     const chunks = [];
 
@@ -50,9 +49,9 @@ req.write(JSON.stringify({
     clientSecret
 }));
 
-req.end();
+req.end();*/
 
-
+const router = express.Router();
 router.get("/",/* protectAdminRoute,*/ async function (req,res){
     res.render('admin/home',{
         layout:'layoutAdmin.hbs',
@@ -222,7 +221,6 @@ router.get("/detail-bill/:UserID",async function(req,res){
         });
         listDetailUser.list2[i].AmountStatus=listStatusProduct;
     };
-    console.log(listDetailUser.count[0])
 
     res.render("admin/detail-bill",{
         layout:'layoutAdmin.hbs',
@@ -232,6 +230,17 @@ router.get("/detail-bill/:UserID",async function(req,res){
     })
 });
 
+router.post("/setting-account",async function(req,res){
+    console.log(req.body);
+    const promise =new Promise(async (resolve, reject) => {
+        const updateStatusAccount = await adminModel.updateStatusAccount(req.body);
+        resolve("done")
+    })
+   promise.then(function (){
+       res.send(true)
+   })
+
+})
 
 router.post("/change-status-bill",async function(req,res){
     const promise=new Promise(async (resolve, reject) => {
@@ -294,15 +303,14 @@ router.post("/upload-image-product",upload.array('image',5),async function(req,r
                     }
                     else{
                         var options = {
-                            "method": "POST",
-                            "hostname": "api.sirv.com",
-                            "port": null,
-                            "path": "/v2/files/upload?filename=%2Fpath%2Fto%2Fuploaded-image.jpg",
-                            "headers": {
-                                "content-type": "application/json",
-                                "authorization": "Bearer BEARER_TOKEN_HERE"
+                            method: 'POST',
+                            url: 'https://my.sirv.com/#/browse/upload',
+                            qs: {filename: '/path/to/uploaded-image.jpg'},
+                            headers: {
+                                'content-type': 'image/jpeg',
+                                authorization: 'Bearer eyJhb...BZCSg'
                             },
-                            'url': 'https://api.sirv.com/v2/files/upload',
+                            body: data
                         };
                         request(options, function (error, response, body) {
                             if (error) throw error;
@@ -310,7 +318,6 @@ router.post("/upload-image-product",upload.array('image',5),async function(req,r
 
                         });
                     }
-
                 })
             })
 

@@ -88,6 +88,11 @@ export default {
     });
     return list;
   },
+  async updateStatusAccount(entity){
+    const list=await db("users").where('UserID',entity.id).update({
+      type:entity.type
+    })
+  }
 
   /*const totalBill=await db('bill')
       .join('orders','orders.BillID','bill.BillID')
