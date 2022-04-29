@@ -174,10 +174,10 @@ export default {
   },
 
 
-  async findAllOrderByID(id,status) {
-    const list = await db("orders").join("products", "products.ProID", "orders.ProID").join('bill','bill.BillID','orders.BillID').andWhere(function (){
+  async findAllOrderByID(id) {
+    const list = await db("orders").join("products", "products.ProID", "orders.ProID").join('bill','bill.BillID','orders.BillID').join('statusbill','statusbill.idstatus','orders.status').andWhere(function (){
       this.where('UserID',id);
-      this.where('orders.status',status)
+      this.where('orders.status','!=',-1)
     })
     return list;
   },

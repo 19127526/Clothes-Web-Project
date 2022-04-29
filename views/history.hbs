@@ -59,12 +59,8 @@
                                     <td >
                                         <p id="{{this.OrderID}}" name="total" >{{format_number this.Total}}</p>
                                     </td>
-
-
                                     <td>
-                                        {{#if (check this.status)}}
-                                            <p >Đang giao hàng</p>
-                                        {{/if}}
+                                        <p>{{this.Name}}</p>
                                     </td>
                                 </tr>
                             {{/each}}

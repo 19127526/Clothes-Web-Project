@@ -60,18 +60,30 @@ export default {
         .where("orders.BillID", billid);
     return list3;
   },
-  async findDetailBillByID(userID){
-    const list = await db("users")
-        .join("orders", "orders.UserID", "users.UserID")
-        .join('bill','bill.BillID','orders.BillID')
-        .join('statusbill','statusbill.idstatus','bill.Status')
-        .join('products','products.ProID','orders.ProID').where("users.UserID", userID);
-    const list2 = await db("bill")
-        .join('statusbill','statusbill.idstatus','bill.Status')
-        .where("bill.User", userID).select('*');
-    const count=await db('bill').count('BillID', {as: 'total'}).where("bill.User", userID);
-   /* list2.product=list;*/
-    return {list2,count};
+  async findDetailBillByID(userID,filter){
+    if(filter=='0'){
+      const list = await db("users")
+          .join("orders", "orders.UserID", "users.UserID")
+          .join('bill','bill.BillID','orders.BillID')
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .join('products','products.ProID','orders.ProID').where("users.UserID", userID);
+      const list2 = await db("bill")
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .where("bill.User", userID).orderBy('bill.Date','asc')
+      const count=await db('bill').count('BillID', {as: 'total'}).where("bill.User", userID);
+      /* list2.product=list;*/
+      return {list2,count};
+    }
+    else if (filter=='1'){
+      console.log("hello")
+      const list2 = await db("bill")
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .where("bill.User", userID).orderBy('bill.Status','asc')
+      const count=await db('bill').count('BillID', {as: 'total'}).where("bill.User", userID);
+      /* list2.product=list;*/
+      return {list2,count};
+    }
+
   },
   async findAllStatusBill(){
     return db('statusbill')
@@ -92,6 +104,12 @@ export default {
     const list=await db("users").where('UserID',entity.id).update({
       type:entity.type
     })
+  },
+  async findBillDetailByBillID(billid){
+    const list2 = await db("bill")
+        .join('statusbill','statusbill.idstatus','bill.Status')
+        .where("bill.BillID", billid).select('*');
+    return list2;
   }
 
   /*const totalBill=await db('bill')

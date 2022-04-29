@@ -10,7 +10,8 @@ import {
 } from "../controllers/shopping.controller.js";
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
-import {protectAdminRoute, protectRoute} from "../auth/protect.js";
+import { protectAdminRoute, protectRoute} from "../auth/protect.js";
+import BillID from "../auth/Bill.js"
 router.get("/", homeView);
 
 router.get("/shop", shopView);
@@ -98,7 +99,7 @@ router.post("/getproductAuthen",async (req,res)=>{
   if(req.isAuthenticated()){
     let userid = req.session.passport.user.id;
     const addCart=await shoppingModel.addOrderAuthen(userid,list);
-    const totalProDuctInCart=await shoppingModel.totalProDuctInCartAuthen(userid,list.billid);
+    const totalProDuctInCart=await shoppingModel.totalProDuctInCartAuthen(userid,res.locals.billid);
     res.render("reload-cart",{
       layout:false,
       total:totalProDuctInCart[0]
@@ -179,13 +180,15 @@ router.get("/checkout", protectRoute,async (req,res)=>{
     })
   }
 });
+
 router.post("/checkout", protectRoute,async (req,res)=> {
     const entity=req.body;
     entity.User=req.session.passport.user.id;
     const changeBill=await shoppingModel.changeMethodBill(res.locals.billid,entity);
     const changeOrder=await shoppingModel.changeMethodOrder(res.locals.billid);
-    const data3= await shoppingModel.insertBill();
-    res.locals.billid=data3[0]
+    const data3 = await shoppingModel.insertBill();
+    BillID.setvalue(data3[0])
+
     res.redirect("/history")
 
 });
@@ -196,7 +199,7 @@ router.get("/about", aboutView);
 
 router.get("/");
 router.get("/history",protectRoute,async (req,res)=>{
-  const list = await shoppingModel.findAllOrderByID(req.session.passport.user.id,1);
+  const list = await shoppingModel.findAllOrderByID(req.session.passport.user.id);
   list.forEach(u => {
     if(u.SizeID===u.SizeS){
       u.Size="S"

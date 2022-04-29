@@ -191,9 +191,20 @@ router.get("/Add-Product", async function (req,res){
         listCategory
     })
 });
+router.post("/filter-bill",async function(req,res){
+    console.log(req.body)
+    if(req.body.index===0){
+        res.redirect("/admin/detail-bill/"+req.body.userID);
+    }
+    else if(req.body.index===1){
+        res.redirect("/admin/detail-bill/"+req.body.userID+"/?filter=1");
+    }
+})
 router.get("/detail-bill/:UserID",async function(req,res){
-    const listDetailUser=await adminModel.findDetailBillByID(req.params.UserID);
+
+    const listDetailUser=await adminModel.findDetailBillByID(req.params.UserID,req.query.filter||0);
     const user=await usersModel.getUserById(req.params.UserID);
+    listDetailUser.filter=req.query.filter||0;
     const size=listDetailUser.count[0].total;
 
     for (let i=0;i<size;i++){
@@ -226,7 +237,8 @@ router.get("/detail-bill/:UserID",async function(req,res){
         layout:'layoutAdmin.hbs',
         list:listDetailUser.list2,
         total:listDetailUser.count[0],
-        user
+        user,
+        filter:listDetailUser.filter
     })
 });
 
@@ -241,6 +253,14 @@ router.post("/setting-account",async function(req,res){
    })
 
 })
+router.post("/reload-bill",async function(req,res){
+    const listDetail=await adminModel.findBillDetailByBillID(req.body.billid);
+    console.log(listDetail[0])
+    res.render("admin/detail-bill-modal-reload",{
+        layout:false,
+        list:listDetail[0],
+    })
+});
 
 router.post("/change-status-bill",async function(req,res){
     const promise=new Promise(async (resolve, reject) => {

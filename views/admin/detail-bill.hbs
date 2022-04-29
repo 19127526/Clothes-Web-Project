@@ -4,12 +4,28 @@
         <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
         <div class="mobile-menu-handle"></div>
         <article class="content responsive-tables-page">
-
+            <div class="row">
+                <div class="col-md-10">
             <div class="title-block">
+
                 <h1 class="title"> Chi tiết hóa đơn </h1>
                 <p class="title-description"> Người dùng: {{format_name user.firstname user.lastname}} </p>
                 <p class="title-description"> Số đơn hàng: {{total.total}} </p>
             </div>
+                </div>
+                <div class="col-md-2 mt-4" id="filter">
+                    Filter:
+                    {{#if (checkFilter filter)}}
+                        <button id="filter" class="btn btn-primary btn-sm rounded-s">Status</button>
+                    
+                    {{else}}
+                        <button id="filter" class="btn btn-primary btn-sm rounded-s">Order Time</button>
+                    {{/if}}
+
+
+                </div>
+            </div>
+
             {{#each list}}
                 <section class="section">
                     <div class="row">
@@ -56,7 +72,7 @@
                                                         <td>{{this.Size}}</td>
                                                         <td>{{this.Amount}}</td>
                                                         <td>{{format_number this.Total}}</td>
-                                                        <td>{{time this.OrderDate}}</td>
+                                                        <td>{{timeBill this.OrderDate}}</td>
                                                         <td>{{this.Name}}</td>
                                                     </tr>
                                                     </tbody>
@@ -102,7 +118,7 @@
                                                         <td>{{this.Email}}</td>
                                                         <td >{{this.Address}}</td>
                                                         <td>{{this.PhoneNumber}}</td>
-                                                        <td>{{time this.Date}}</td>
+                                                        <td>{{timeBill this.Date}}</td>
                                                         <td>{{this.Name}}</td>
                                                     </tr>
                                                     </tbody>
@@ -162,9 +178,7 @@
                         <button type="button" class="btn btn-primary">Insert Selected</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
         <div class="modal fade" id="confirm-modal">
@@ -227,15 +241,45 @@
     <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="filter-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-check"></i> &nbsp;Filter</h4>
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select class="c-select form-control boxed" id="filterOption" style="text-align: center">
+                    {{#if (checkFilter filter)}}
+                        <option value="1" selected>Status</option>
+                        <option value="0" >Order Time</option>
+                    {{else}}
+                        <option value="0" selected>Order Time</option>
+                        <option value="1" >Status</option>
+                    {{/if}}
+                </select>
+            </div>
+            <div class="modal-footer">
+                 <button type="button" id="submitfilter" class="btn btn-primary" data-dismiss="modal">Submit</button>
+             </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 
 
 {{#section 'cssAdmin'}}
-
 {{/section}}
 {{#section 'jsAdmin'}}
     <script>
             {{#each list}}
             document.getElementById({{this.BillID}}).getElementsByTagName("a")[0].addEventListener("click",function (){
+
                 $.post("/admin/change-status-bill",
                         {
                             userid:{{this.User}},
@@ -251,22 +295,50 @@
                             }
                         })
             })
+            $("#submitfilter").on("click",function (){
+                if($("#filterOption option:selected").val()=='0'){
+                    window.location.href = "/admin/detail-bill/"+{{this.User}}+"?filter=0";
+
+                }
+                else{
+                    window.location.href = "/admin/detail-bill/"+{{this.User}}+"?filter=1";
+                }
+            })
             {{/each}}
+        document.getElementById("filter").addEventListener("click",function () {
+            $("#filter-modal").modal("show")
+        });
     </script>
     <script>
+        $(document).ready(function() {
             {{#each list}}
-                    document.getElementById({{this.BillID}})
-                            .parentElement
-                            .getElementsByTagName("button")[0].addEventListener("click",function (){
-                        console.log(document.getElementById({{this.BillID}}).
-                                parentElement
-                                .parentElement
-                                .parentElement
-                                .parentElement
-                                .parentElement.getElementsByClassName('modal')[0].getElementsByClassName('modal-dialog')[0])
-                        $(this).parent().parent().parent().parent().parent().find('#detailbill').modal('show')
+                document.getElementById({{this.BillID}})
+                        .parentElement
+                        .getElementsByTagName("button")[0].addEventListener("click", function () {
+                    let temp = $(this).parent().parent().parent()
+                            .parent().parent()
+                            .find('#detailbill').find(".modal-dialog")
+                            .find(".modal-content").find(".modal-body");
+                    let temp2 = $(this).parent().parent().parent()
+                            .parent().parent()
+                            .find('#detailbill')
+                    $.post("/admin/reload-bill", {
+                        billid:{{this.BillID}}
+                    }, function (data) {
+                        if (data) {
+                            const promise = new Promise((resolve, reject) => {
+                                temp.replaceWith(data);
+                                resolve("helo")
+                            });
+                            promise.then(function (data) {
+                                temp2.modal('show');
+                            })
+
+                        }
                     })
+                })
 
             {{/each}}
+        });
     </script>
 {{/section}}

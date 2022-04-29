@@ -5,10 +5,11 @@ import {
   AddProduct,
   DelProduct,
 } from "../controllers/admin.controller.js";
-import { protectAdminRoute } from "../auth/protect.js";
+import {protectAdminRoute} from "../auth/protect.js";
 import  paypal from 'paypal-rest-sdk';
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
+import BillID from "../auth/Bill.js"
 var total =0;
 var entity;
 paypal.configure({
@@ -56,11 +57,9 @@ router.get("/checkout/success",(req,res)=>{
       });
       promise.then(async function (data) {
         const data3= await shoppingModel.insertBill();
-        res.locals.billid=data3[0]
+        BillID.setvalue(data3[0])
         res.redirect("/history")
       })
-
-
     }
   });
 });

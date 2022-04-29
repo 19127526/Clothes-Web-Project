@@ -1,5 +1,5 @@
 import shoppingModel from "../models/shopping.model.js";
-let BillID=0;
+import BillID from "../auth/Bill.js"
 var something = (function() {
   var executed = false;
   return async function() {
@@ -12,20 +12,21 @@ var something = (function() {
       });
       promise.then(async function (){
         const data3= await shoppingModel.insertBill();
-        BillID=data3[0];
+        BillID.setvalue(data3[0])
       })
     }
   };
 })();
+
 export default function (app) {
   app.use(async function (req, res, next) {
     something();
     const rawData = await shoppingModel.findAllCategories();
     res.locals.lcCategories = rawData;
-    res.locals.billid=BillID;
+    res.locals.billid = BillID.getValue();
     if (req.session.passport && req.session.passport.user) {
       res.locals.user = req.session.passport.user;
-      const total=await shoppingModel.totalProDuctInCartGuest(BillID);
+      const total=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
       if(total[0].total!==0){
           const promise=new Promise(async (resolve, reject) => {
             try {
@@ -34,13 +35,13 @@ export default function (app) {
             }
               catch (e){
 
-                  const totalProDuctInCart=await shoppingModel.totalProDuctInCartGuest(BillID);
+                  const totalProDuctInCart=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
                   res.locals.cart=totalProDuctInCart[0];
               }
           });
         promise.then(async function (data) {
           try {
-            const totalProDuctInCart = await shoppingModel.totalProDuctInCartAuthen(req.session.passport.user.id,BillID);
+            const totalProDuctInCart = await shoppingModel.totalProDuctInCartAuthen(req.session.passport.user.id,BillID.getValue());
             res.locals.cart = totalProDuctInCart[0];
           }
           catch (e){
@@ -50,7 +51,7 @@ export default function (app) {
               resolve("done");
             });
             promise.then(async function () {
-              const totalProDuctInCart = await shoppingModel.totalProDuctInCartGuest(BillID);
+              const totalProDuctInCart = await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
               res.locals.cart = totalProDuctInCart[0];
             })
           }
@@ -58,12 +59,12 @@ export default function (app) {
       }
       else
       {
-        const totalProDuctInCart=await shoppingModel.totalProDuctInCartAuthen(req.session.passport.user.id,BillID);
+        const totalProDuctInCart=await shoppingModel.totalProDuctInCartAuthen(req.session.passport.user.id,BillID.getValue());
         res.locals.cart=totalProDuctInCart[0];
       }
     }
     else{
-      const totalProDuctInCart=await shoppingModel.totalProDuctInCartGuest(BillID);
+      const totalProDuctInCart=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
       res.locals.cart=totalProDuctInCart[0];
     }
     next();
