@@ -45,7 +45,12 @@
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label text-xs-right"> Trạng thái: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control boxed" id="status" placeholder="" value=""> </div>
+                        <select class="c-select form-control boxed" id="status">
+                            {{#each listStatusProduct}}
+                                <option value="{{this.IdStatus}}">{{this.NameStatus}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label text-xs-right"> Hình ảnh: </label>
@@ -159,7 +164,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Đã cập nhật sản phẩm thành công !!</p>
+                <p>Đã tạo sản phẩm thành công !!</p>
             </div>
             <!-- <div class="modal-footer">
                  <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
@@ -227,9 +232,67 @@
             ],
         });
     </script>
+    <script>
+        $(" #submitbtn22").prop('disabled', true)
+        let a3 = false;
+        let a4 = false;
+        let a5 = false;
+        if($('#title').val()!=""){
+            a3=true;
+        }
+        if($('#quantity').val()!=""){
+            a4=true;
+        }
+        if($("#price").val()!=""){
+            a5=true;
+        }
+        $('#title').on("change", function () {
+            if ($(this).val() == "") {
+                a3 = false;
+                $('#title').addClass('is-invalid')
+                $('#title').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a3 = true;
+                $('#title').removeClass('is-invalid')
+                $('#title').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
+        $('#quantity').on("change", function () {
+            if ($(this).val() == "") {
+                a4 = false;
+                $('#quantity').addClass('is-invalid')
+                $('#quantity').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a4 = true;
+                $('#quantity').removeClass('is-invalid')
+                $('#quantity').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
 
-
-
+        $("#price").on("change", function () {
+            if ($(this).val() == "") {
+                a5 = false;
+                $("#price").addClass('is-invalid')
+                $("#price").removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a5 = true;
+                $("#price").removeClass('is-invalid')
+                $("#price").addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        });
+    </script>
     <script>
         $('#no').click(function (){
             $('#confirm-modal').modal('hide');
@@ -244,28 +307,8 @@
         function myGreeting(){
             location.reload();
         }
-        $('#submitUpdate').click(function (){
-            const message = tinyMCE.activeEditor.getContent();
-            $.post("/admin/category/editproduct/{{list.ProID}}",{
-                title:$('#title').val(),
-                des:message,
-                quantity:$('#quantity').val(),
-                price:$("#price").val(),
-                arrival:$("#arrival").val(),
-                category:$("#category option:selected").val()},function (data,status){
-                if(data){
-                    $('#confirm-modal').modal('hide');
-                    $('#success-modal').modal('show');
-                    $('#success-modal').click(function (e) {
-                        $('#success-modal').modal('toggle');
-                        location.reload();
-                    });
-                    const myTimeout = setTimeout(myGreeting, 5000);
-                    /*   console.log(data.update)
-                       location.reload();*/
-                }
-            });
-        })
+
+
     </script>
     <script>
         $("input[data-type='currency']").on({
@@ -362,8 +405,11 @@
                 theme: 'fa',
                 language: 'vi',
               /*  allowedFileExtensions: ['jpg'],*/
-            }).on('')/*.on('fileuploaded', function (e, params) {
-                console.log(params.response.filename)
+            }).on('fileuploaded', function (e, params) {
+                $.post("/admin/post-image-sirv",{},function (data){
+
+                })
+                /*console.log(params.response.filename)
                 if (params.response.filename.includes("1")) {
                     console.log(params.response.detail);
                     console.log("1");
@@ -411,8 +457,31 @@
                             alert("Lỗi")
                         }
                     })
-                }
-            });*/
+                }*/
+            });
+
+            $('#submitUpdate').click(function (){
+                const message = tinyMCE.activeEditor.getContent();
+                $.post("/admin/add-product",{
+                    title:$('#title').val(),
+                    des:message,
+                    quantity:$('#quantity').val(),
+                    price:$("#price").val(),
+                    statusproduct:$("#status option:selected").val(),
+                    category:$("#category option:selected").val()},function (data,status){
+                    if(data){
+                        $('#confirm-modal').modal('hide');
+                        $('#success-modal').modal('show');
+                        $('#success-modal').click(function (e) {
+                            $('#success-modal').modal('toggle');
+                            location.reload();
+                        });
+                        const myTimeout = setTimeout(myGreeting, 5000);
+                        /*   console.log(data.update)
+                           location.reload();*/
+                    }
+                });
+            })
         });
 
     </script>

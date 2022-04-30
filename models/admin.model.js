@@ -1,4 +1,5 @@
 import db from "../utils/db.js";
+import bcrypt from "bcrypt";
 
 export default {
   async findAllProducts(page, perPage) {
@@ -37,7 +38,7 @@ export default {
       FullDes:product.des,
       CatID:product.category,
       Quantity:product.quantity,
-      Arrival:product.arrival,
+      Arrival:new Date(),
       status:product.IdStatus
     })
     return check;
@@ -110,6 +111,23 @@ export default {
         .join('statusbill','statusbill.idstatus','bill.Status')
         .where("bill.BillID", billid).select('*');
     return list2;
+  },
+  async insertNewProduct(entity){
+
+    const insert=await db('products').insert({
+        ProName:entity.title,
+        Price:entity.price,
+        SizeL:entity.SizeL,
+        SizeM:entity.SizeM,
+        SizeS:entity.SizeS,
+        SizeXL:entity.SizeXL,
+        Arrival:new Date(),
+        CatID:entity.category,
+        Quantity:entity.quantity,
+        status:entity.statusproduct,
+        FullDes:entity.des,
+    }).select('products.ProID')
+    return insert;
   }
 
   /*const totalBill=await db('bill')

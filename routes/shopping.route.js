@@ -24,13 +24,13 @@ router.post('/product/comment',async (req,res)=>{
 
   if(req.body.userid) {
     let userid = req.session.passport.user.id;
-    const check = await commentModel.insertCommentByUserId(req.body.content, userid, req.body.proID);
+    const check = await shoppingModel.insertCommentByUserId(req.body.content, userid, req.body.proID);
     res.redirect("/product/"+req.body.proID);
   }
 });
 
 router.get("/product/:ProID/hi", async (req,res)=>{
-  const commentList = await commentModel.findAllComment(req.params.ProID);
+  const commentList = await shoppingModel.findAllComment(req.params.ProID);
   res.render('comment_load',{
     layout:false,
     comment:commentList

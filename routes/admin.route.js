@@ -15,41 +15,12 @@ import usersModel from "../models/users.model.js";
 import multer from 'multer';
 import request from'request'
 import http from'https'
-/*const options = {
-    'method': 'POST',
-    'hostname': 'api.sirv.com',
-    'path': '/v2/token',
-    'headers': {
-        'content-type': 'application/json'
-    }
-};
+import getToken from "../utils/sirv.js";
+import BillID from "../auth/Bill.js";
+import bcrypt from "bcrypt";
 
-const clientId = 'VGfLmn2v9Q15z4udmTIFf3BPhpV';
-const clientSecret = 'pTstWTU/d8MiZj2em9Vc6z28bintsE8dggX0Z0wa0dSAwhFSI+kq9BVkjQyytT8nmyjJnwgmc3J4wGdCFn2PcA==';
 
-const req = http.request(options, (res) => {
-    const chunks = [];
 
-    res.on('data', (chunk) => {
-        chunks.push(chunk);
-    });
-
-    res.on('end', () => {
-        const body = Buffer.concat(chunks);
-        const apiResponse = JSON.parse(body.toString());
-        console.log(apiResponse)
-        console.log('token:', apiResponse.token);
-        console.log('expiresIn:', apiResponse.expiresIn);
-        console.log('scope:', apiResponse.scope);
-    });
-});
-
-req.write(JSON.stringify({
-    clientId,
-    clientSecret
-}));
-
-req.end();*/
 
 const router = express.Router();
 router.get("/",/* protectAdminRoute,*/ async function (req,res){
@@ -185,14 +156,14 @@ router.get("/account-detail/:UserID", async function (req,res){
 
 router.get("/Add-Product", async function (req,res){
     const listCategory=await shoppingModel.findAllCategories();
-
+    const listStatusProduct=await adminModel.findAllStatusProduct();
     res.render("admin/item-add",{
         layout:'layoutAdmin.hbs',
-        listCategory
+        listCategory,
+        listStatusProduct:listStatusProduct
     })
 });
 router.post("/filter-bill",async function(req,res){
-    console.log(req.body)
     if(req.body.index===0){
         res.redirect("/admin/detail-bill/"+req.body.userID);
     }
@@ -243,7 +214,6 @@ router.get("/detail-bill/:UserID",async function(req,res){
 });
 
 router.post("/setting-account",async function(req,res){
-    console.log(req.body);
     const promise =new Promise(async (resolve, reject) => {
         const updateStatusAccount = await adminModel.updateStatusAccount(req.body);
         resolve("done")
@@ -255,7 +225,6 @@ router.post("/setting-account",async function(req,res){
 })
 router.post("/reload-bill",async function(req,res){
     const listDetail=await adminModel.findBillDetailByBillID(req.body.billid);
-    console.log(listDetail[0])
     res.render("admin/detail-bill-modal-reload",{
         layout:false,
         list:listDetail[0],
@@ -264,7 +233,6 @@ router.post("/reload-bill",async function(req,res){
 
 router.post("/change-status-bill",async function(req,res){
     const promise=new Promise(async (resolve, reject) => {
-        console.log(req.body);
         const changeStatusBill = await adminModel.changeMethodBillAdmin(req.body.id, req.body.status)
         const changeStatusOrder = await adminModel.changeMethodOrderAdmin(req.body.id, req.body.status)
         resolve(req.body.id)
@@ -291,62 +259,185 @@ router.post("/change-status-bill",async function(req,res){
         })
     })
 });
-var temp=0;
-const storage = multer.diskStorage({
-    destination:async function (req, file, cb) {
-        if((file.mimetype=="image/jpg")
-            ||(file.mimetype=="image/png")
-            ||(file.mimetype=="image/jpeg")){
-            cb(null, 'public/temp');
-        }
-        else{
-            cb(new Error('not Image'), false);
-        }
-    },
-    filename:async function (req, file, cb) {
-        cb(null, file.originalname)
-        temp++;
-    }
-});
-var upload=multer({storage:storage})
-router.post("/upload-image-product",upload.array('image',5),async function(req,res){
-    let TempFile
-    fs.readdir("./public/temp", (err, files) => {
+function renamefile(old,New){
+    fs.rename(old, New,function (err){
         if(err){
 
         }
         else{
-            files.forEach(file=>{
-                fs.readFile("./public/temp/"+file.toString(),(err,data)=>{
-                    if(err){
-                        throw err
-                    }
-                    else{
-                        var options = {
-                            method: 'POST',
-                            url: 'https://my.sirv.com/#/browse/upload',
-                            qs: {filename: '/path/to/uploaded-image.jpg'},
-                            headers: {
-                                'content-type': 'image/jpeg',
-                                authorization: 'Bearer eyJhb...BZCSg'
-                            },
-                            body: data
-                        };
-                        request(options, function (error, response, body) {
-                            if (error) throw error;
-                            else{console.log(body)}
+        }
+    });
+}
+const tempDir=[];
+const DirNew=[];
 
-                        });
-                    }
-                })
-            })
+
+router.post("/upload-image-product",async function(req,res){
+    const storage = multer.diskStorage({
+        destination:async function (req, file, cb) {
+            if((file.mimetype=="image/jpg")
+                ||(file.mimetype=="image/png")
+                ||(file.mimetype=="image/jpeg")){
+                cb(null, 'public/temp');
+            }
+            else{
+                cb(new Error('not Image'), false);
+            }
+        },
+        filename:async function (req, file, cb) {
+            tempDir.push("./public/temp/"+file.originalname);
+            cb(null, file.originalname);
 
         }
     });
+    const upload=multer({storage:storage})
+    upload.array('image',5)(req,res,function (err){
+        if(err){
 
+        }
+        else{
+            let index=1;
+            const promise=new Promise((resolve,reject)=>{
+            for (let i=0;i<tempDir.length;i++){
+                if(fs.existsSync(tempDir[i])){
+                    console.log(index)
+                    renamefile(tempDir[i],"./public/temp/("+index+")"+".jpg")
+                    DirNew.push("("+index+")"+".jpg")
+                }
+                index+=1;
+            }
+            resolve("data")
+            });
+            promise.then(function (data){
+                return res.send(true);
+            })
+        }
+    })
+});
 
+router.post("/add-product",async function(req,res){
+    const list=req.body;
+    const promise=new Promise(async (resolve, reject) => {
+        const price = req.body.price.toString();
+        let pos;
+        pos = price.lastIndexOf(" VNĐ");
+        let Price = price.substring(0, pos);
+        const tempPrice = Price.split(",");
+        let resultPrice = "";
+        for (let i = 0; i < tempPrice.length; i++) {
+            resultPrice += tempPrice[i];
+        }
+        list.price = resultPrice;
+        let SizeS = await bcrypt.hash("SizeS", 8);
+        SizeS = SizeS.toString().substring(0, 8);
+        let SizeM = await bcrypt.hash("SizeM", 8);
+        SizeM = SizeM.toString().substring(0, 8);
+        let SizeL = await bcrypt.hash("SizeL", 8);
+        SizeL = SizeL.toString().substring(0, 8);
+        let SizeXl = await bcrypt.hash("SizeXL", 8);
+        SizeXl = SizeXl.toString().substring(0, 8);
+        list.SizeS = SizeS;
+        list.SizeM = SizeM;
+        list.SizeL = SizeL;
+        list.SizeXL = SizeXl;
+        const proID=adminModel.insertNewProduct(list);
+        resolve({ProID:proID[0],CatID:list.category})
+    });
+    promise.then(function (data){
+        console.log(data);
+
+    })
 
 })
+router.post("/post-image-sirv",async function(req,res){
+
+    const promise=new Promise((resolve,reject)=>{
+        const token=getToken()
+        resolve(token)
+    });
+    promise.then(function (data){
+        for (let i = 0; i < DirNew.length; i++) {
+            readFileData(DirNew[i], data,)
+        }
+    })
+})
+
+function readFileData(dir,token,CatPro){
+    const promise=new Promise((resolve,reject)=> {
+        fs.readFile("./public/temp/" + dir, (err, data2) => {
+            if (err) {
+                throw err
+            } else {
+                var options = {
+                    method: 'POST',
+                    url: 'https://api.sirv.com/v2/files/upload',
+                    qs: {filename: '/imgs/'+CatPro.CatID+"/"+ CatPro.ProID+"/"+ dir},
+                    headers: {
+                        'content-type': 'image/jpeg',
+                        authorization: 'Bearer' + token
+                    },
+                    body: data2
+                };
+                request(options, function (error, response, body) {
+                    if (error) throw error;
+                    else resolve("./public/temp/" + dir)
+                });
+            }
+        });
+
+    });
+    promise.then(function (data){
+
+        if (fs.existsSync(data)) {
+            tempDir.splice(0,tempDir.length)
+            DirNew.splice(0,tempDir.length)
+            fs.unlinkSync(data);
+        }
+    })
+}
+/*const promise=new Promise((resolve,reject)=>{
+    let i=1;
+    let file;
+    for(file of files) {
+        const promise2=new Promise((resolve,reject)=>{
+            try {
+                fs.renameSync("./public/temp/" + file.toString(), "./public/temp/" + i + ".jpg");
+                resolve(i + ".jpg");
+            }
+            catch (err){
+
+            }
+        })
+        promise2.then(function (data){
+            fs.readFile("./public/temp/"+data, (err, data2) => {
+                if(err){
+                    throw err
+                }
+                else{
+                    var options = {
+                        method: 'POST',
+                        url: 'https://api.sirv.com/v2/files/upload',
+                        qs: {filename: '/imgs/' + data},
+                        headers: {
+                            'content-type': 'image/jpeg',
+                            authorization: 'Bearer' + token
+                        },
+                        body: data2
+                    };
+                    request(options, function (error, response, body) {
+                        if (error) throw error;
+                        else console.log("hhe")
+                    });
+                }
+            });
+        })
+    }
+    resolve("done")
+});
+promise.then(function (){
+    return res.send(true);
+})
+});*/
 
 
 
@@ -368,13 +459,11 @@ router.get("/product/:ProID", async function (req, res) {
 
 
 router.post("/add", async function (req, res) {
-    console.log(req.body);
     const ret=await adminModel.addProduct(req.body)
     res.redirect('/admin')
 });
 
 router.post("/del", async function (req, res) {
-    console.log(req.body);
     const ret=await adminModel.delProduct(req.body.ProID)
     res.redirect('/admin')
 });
