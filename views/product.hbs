@@ -97,15 +97,8 @@
                             <input type="text" id="contentComment" class="form-control mr-3" placeholder="Add comment">
                             <button class="btn btn-primary btn btn-primary btn-md mr-1 mb-2"  id="commentbtn" type="button" style="width: 200px;" >Comment</button>
                         </div>
-                        <div id="ajax">
-                        {{#each comment}}
-                            <div class="commented-section mt-2">
-                                <div class="d-flex flex-row align-items-center commented-user">
-                                    <h5 class="mr-2">{{this.firstname}} {{this.lastname}}</h5><span class="dot mb-1"></span><span class="mb-1 ml-2">{{this.date}}</span>
-                                </div>
-                                <div class="comment-text-sm"><span>{{this.content}}</span></div>
-                            </div>
-                        {{/each}}
+                        <div id="ajax"> </div>
+                        <div id="pagination-container">
                         </div>
                     </div>
                 </div>
@@ -202,19 +195,13 @@
 
 
 
-<!--<div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-        <img src="..." class="rounded me-2" alt="...">
-        <strong class="me-auto">Bootstrap</strong>
-        <small>11 mins ago</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-        Hello, world! This is a toast message.
-    </div>
-</div>-->
+{{#section 'css'}}
+    <link rel="stylesheet" href="/public/assets/css/pagination.css">
+{{/section}}
+
 {{#section 'js'}}
-    <script type="text/javascript" >
+    <script src="/public/assets/js/pagination.min.js"></script>
+    <script>
         let i=0;
         $("#addtoCart").click(function (){
             const cart=[
@@ -229,66 +216,83 @@
                 }
             ];
             $.post("/getproductAuthen",{id:{{this.product.ProID}},category:"{{this.product.CatName}}",
-                        name:$("#ProName").text(),
-                        image:'{{this.product.Image}}',
-                        size:$("input[name=materialExampleRadios]:checked").val(),
-                        price:{{this.product.Price}},
-                        quantity:($("#quantity").val()),
-                    },function (data){
-                if(data){
-                    console.log(data)
+                name:$("#ProName").text(),
+                image:'{{this.product.Image}}',
+                size:$("input[name=materialExampleRadios]:checked").val(),
+                price:{{this.product.Price}},
+                quantity:($("#quantity").val()),
+            },function (data){
+                if(data) {
                     $("#totalcart").replaceWith(data);
                 }
             });
-            });
-         /*   let storage=localStorage.getItem("cart"+{{this.product.ProID}});
-            if(!storage){
-                localStorage.setItem("cart",JSON.stringify(cart));
-            }
-            else{
-                const temp=JSON.parse(storage);
-
-                console.log(a)
-                localStorage.setItem("cart",JSON.stringify(a));
-            }*/
-    </script>
-    <script>
+        });
         $('#commentbtn').click(function () {
             $.getJSON('/comment', function (data) {
-                try {
-                    if (!data) {
-                        alert("Vui lòng đăng nhập thì mới được comment!")
-                        $('#commentbtn').prop('disabled', true);
-                    } else {
-                        $('#commentbtn').prop('disabled', false);
-                        $.post("/product/comment" , {
-                            content: $("#contentComment").val(),
-                            userid: true,
-                            proID:{{product.ProID}} }, function (data, status) {
-                            if (data) {
-                                $.ajax({
-                                    async:false,
-                                    type:"GET",
-                                    url:"/product/"+{{product.ProID}}+"/hi",
-                                    success:function (data){
-                                        alert("Bình luận thành công")
-                                        $("#contentComment").prop('value',"")
-                                        $("#ajax").replaceWith(data)
-                                    },
-                                    err:function (xhr,ajaxOptions,thrownError){
-                                        alert("Lỗi")
+                        try {
+                            if (!data) {
+                                alert("Vui lòng đăng nhập thì mới được comment!")
+                                $('#commentbtn').prop('disabled', true);
+                            } else {
+                                $('#commentbtn').prop('disabled', false);
+                                $.post("/product/comment", {
+                                    content: $("#contentComment").val(),
+                                    userid: true,
+                                    proID:{{product.ProID}} }, function (data, status) {
+                                    if (data) {
+                                        $.ajax({
+                                            async:false,
+                                            type:"GET",
+                                            url:"/product/"+{{product.ProID}}+"/hi",
+                                            success:function (data) {
+                                                alert("Bình luận thành công");
+                                                $("#contentComment").prop('value',"");
+                                            },
+                                            err:function (xhr,ajaxOptions,thrownError){
+                                                alert("Lỗi");
+                                            }
+                                        })
                                     }
-                                })
+                                });
                             }
-                        });
-                    }
-                }
-                catch (e){
-                    alert("Vui lòng đăng nhập thì mới được comment!");
-                    $('#commentbtn').prop('disabled', true);
-                }
-            },
+                        }
+                        catch (e){
+                            alert("Vui lòng đăng nhập thì mới được comment!");
+                            $('#commentbtn').prop('disabled', true);
+                        }
+                    },
             );
+        });
+        $("#pagination-container").pagination({
+            dataSource: function(done) {
+                $.ajax({
+                    type: "GET",
+                    url: "/product/"+{{product.ProID}}+"/hi",
+                    success: function(response) {
+                        done(response);
+                    }
+                });
+            },
+            pageSize: 5,
+            callback: function(data, pagination) {
+                let html = "";
+                for (item of data) {
+                    html += `
+                    <div class="commented-section mt-2 mx-5">
+                        <div class="d-flex flex-row align-items-center commented-user justify-content-between">
+                            <h5 class="mr-2">${item.firstname} ${item.lastname}</h5>
+                            <span class="mb-1 ml-2">${item.date}</span>
+                        </div>
+                        <div class="comment-text-sm mb-5">
+                            <input class="rounded-3 border-info form-control px-3" value="${item.content}" readonly>
+                            <br>
+                        </div>
+                    </div>
+                `;
+                }
+                $("#ajax").html(html);
+            },
+            className: "paginationjs-theme-blue",
         });
     </script>
 {{/section}}

@@ -50,11 +50,22 @@ router.get("/category/editproduct/:proID"/*,,protectAdminRoute*/, async function
             u.check=true;
         }
     });
+    let pos;
+    let image=productDetail.Image.toString();
+    pos=image.lastIndexOf("s/"+productDetail.CatID.toString()+"/");
+    const TempName=image.substring(pos,image.lastIndexOf("/"));
+    const pos2=TempName.lastIndexOf("/");
+    const ResultName=TempName.substring(pos2+1,TempName.length)
+    console.log(ResultName)
+ /*   https://mascaper.sirv.com/Images/1/6/(1).jpg*/
     res.render("admin/new-product-editor",{
         layout:'layoutAdmin.hbs',
         list:productDetail,
         listCategory,
-        listStatus:listStatusProduct
+        listStatus:listStatusProduct,
+        catID:productDetail.CatID,
+        proID:req.params.proID,
+        total:ResultName
     })
 });
 
@@ -85,7 +96,7 @@ router.post("/category/remove-product"/*,,protectAdminRoute*/, async function (r
         resolve("done");
     });
     myPromise.then(async function (data) {
-        
+
         return res.send(true);
     })
 });
@@ -362,12 +373,63 @@ router.post("/post-image-sirv",async function(req,res){
     });
     promise.then(function (data){
         for (let i = 0; i < DirNew.length; i++) {
-            readFileData(DirNew[i], data,req.body)
+            readImageNew(DirNew[i], data,req.body)
         }
     })
 })
 
-function readFileData(dir,token,CatPro){
+
+router.post("/edit-image-sirv",async function(req,res){
+    const promise=new Promise((resolve,reject)=>{
+        const token=getToken()
+        resolve(token)
+    });
+    promise.then(function (data){
+        for (let i = 0; i < DirNew.length; i++) {
+            readImageEdit(DirNew[i], data,req.body)
+        }
+    })
+})
+
+function readImageEdit(dir,token,CatPro){
+    const promise=new Promise((resolve,reject)=> {
+        fs.readFile("./public/temp/" + dir, (err, data2) => {
+            if (err) {
+                throw err
+            } else {
+                var options = {
+                    method: 'POST',
+                    url: 'https://api.sirv.com/v2/files/upload',
+                    qs: {filename: '/imgs/'+CatPro.catid+"/"+ CatPro.total+"/"+ dir},
+                    headers: {
+                        'content-type': 'image/jpeg',
+                        authorization: 'Bearer' + token
+                    },
+                    body: data2
+                };
+                request(options, function (error, response, body) {
+                    if (error) throw error;
+                    else resolve("./public/temp/" + dir)
+                });
+            }
+        });
+
+    });
+    promise.then(async function (data){
+        if (fs.existsSync(data)) {
+            tempDir.splice(0,tempDir.length)
+            DirNew.splice(0,tempDir.length)
+            fs.unlinkSync(data);
+        }
+    })
+}
+
+
+
+
+
+
+function readImageNew(dir,token,CatPro){
     const promise=new Promise((resolve,reject)=> {
         fs.readFile("./public/temp/" + dir, (err, data2) => {
             if (err) {

@@ -49,8 +49,7 @@ const categoryView = async function (req, res) {
 const productView = async function (req, res) {
   const proID = req.params.ProID || 0;
   const product = await shoppingModel.findByProductID(proID);
-  const commentList=await shoppingModel.findAllComment(proID);
-  res.render("product", { product ,comment:commentList});
+  res.render("product", { product });
 };
 
 const aboutView = function (req, res) {

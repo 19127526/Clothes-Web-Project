@@ -86,6 +86,7 @@ export default {
     }
 
   },
+
   async findAllStatusBill(){
     return db('statusbill')
   },
@@ -133,6 +134,13 @@ export default {
     const temp="https://encinver.sirv.com/imgs/"+entity.catid+"/"+entity.proid+"/(1).jpg";
     const update=await db("products").where('products.ProID',entity.proid).update({
       Image:temp
+    })
+    return update
+  },
+
+  async updateEditImageProduct(entity){
+    const update=await db("products").where('products.ProID',entity.proid).update({
+      Image:temp.image
     })
     return update
   }

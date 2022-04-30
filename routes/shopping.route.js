@@ -12,6 +12,7 @@ import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
 import { protectAdminRoute, protectRoute} from "../auth/protect.js";
 import BillID from "../auth/Bill.js"
+import adminModel from "../models/admin.model.js";
 router.get("/", homeView);
 
 router.get("/shop", shopView);
@@ -29,13 +30,9 @@ router.post('/product/comment',async (req,res)=>{
   }
 });
 
-router.get("/product/:ProID/hi", async (req,res)=>{
+router.get("/product/:ProID/hi", async (req, res) => {
   const commentList = await shoppingModel.findAllComment(req.params.ProID);
-  res.render('comment_load',{
-    layout:false,
-    comment:commentList
-  })
-
+  res.json(commentList);
 });
 
 router.get("/cart", async (req,res)=>{
@@ -211,9 +208,53 @@ router.get("/about", aboutView);
 
 
 router.get("/");
+
 router.get("/history",protectRoute,async (req,res)=>{
-  const list = await shoppingModel.findAllOrderByID(req.session.passport.user.id);
-  list.forEach(u => {
+  const listDetailUser=await shoppingModel.findDetailBillByID(req.session.passport.user.id);
+  const user=await usersModel.getUserById(req.session.passport.user.id);
+  listDetailUser.filter=req.query.filter||0;
+  const size=listDetailUser.count[0].total;
+
+  for (let i=0;i<size;i++){
+    const temp=await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
+    temp.forEach(u => {
+      if(u.SizeID===u.SizeS){
+        u.Size="S"
+      }
+      else if(u.SizeID===u.SizeM){
+        u.Size="M"
+      }
+      else if(u.SizeID===u.SizeL){
+        u.Size="L"
+      }
+      else if(u.SizeID===u.SizeXL){
+        u.Size="XL"
+      }
+    });
+    listDetailUser.list2[i].listProduct=temp;
+    const listStatusProduct=await adminModel.findAllStatusBill();
+    listStatusProduct.forEach(u=>{
+      if(u.idstatus===listDetailUser.list2[i].Status){
+        u.check=true;
+      }
+    });
+    listDetailUser.list2[i].AmountStatus=listStatusProduct;
+  };
+
+  res.render("history",{
+    list:listDetailUser.list2,
+    total:listDetailUser.count[0],
+    user,
+    filter:listDetailUser.filter
+  })
+})
+
+
+
+router.post("/history/detail/:BillID",protectRoute,async (req,res)=>{
+  console.log(req.params.BillID);
+  const temp=await adminModel.findDetailOrder(req.params.BillID);
+  temp.forEach(u => {
     if(u.SizeID===u.SizeS){
       u.Size="S"
     }
@@ -227,9 +268,11 @@ router.get("/history",protectRoute,async (req,res)=>{
       u.Size="XL"
     }
   });
-  res.render("history",{
-    cartlist:list
+  console.log(temp);
+  res.render("detail-bill",{
+    list:temp[0]
   })
+
 });
 export default router;
 

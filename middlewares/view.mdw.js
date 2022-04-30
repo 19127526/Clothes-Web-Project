@@ -48,7 +48,7 @@ export default function (app) {
           return x1===1;
         },
         timeBill(val){
-          return moment(val).format("hh:mm:ss DD/MM/YYYY");
+          return moment(val).format("HH:mm:ss DD/MM/YYYY");
         },
       },
       extname: ".hbs",

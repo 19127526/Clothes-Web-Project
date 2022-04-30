@@ -13,22 +13,34 @@
             <!--<form name="item" method="post">-->
             <div class="card card-block">
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label text-xs-right"> Tiêu đề: </label>
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Product name: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control boxed" name="title" id="title" placeholder="" value=""> </div>
+                            <input type="text" class="form-control boxed" name="title" id="title" placeholder="" value="">
+                            <div class="invalid-feedback">
+                                Please enter product name.
+                            </div>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label text-xs-right"> Giá tiền: </label>
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Giá tiền: </label>
                     <div class="col-sm-10">
-                        <input type="text" data-type="currency"name="price" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}"> </div>
+                        <input type="text" data-type="currency"name="price" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}">
+                        <div class="invalid-feedback">
+                            Please enter price for your product.
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label text-xs-right"> Số lượng: </label>
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Số lượng: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control boxed"name="quantity" id="quantity" placeholder="" value=""> </div>
+                        <input type="text" class="form-control boxed"name="quantity" id="quantity" placeholder="" value="">
+                        <div class="invalid-feedback">
+                            Please enter quantity for your product.
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label text-xs-right"> Chi tiết sản phẩm </label>
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Chi tiết sản phẩm </label>
                     <div class="col-sm-10">
                         <textarea id="des" name="des"></textarea>
                     </div>
@@ -62,7 +74,6 @@
             <!--</form>-->
         </article>
         </form>
-
         <div class="modal fade" id="modal-media">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

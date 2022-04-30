@@ -230,11 +230,25 @@ export default {
       'comment.productid':proid
     })
   },
-  async findAllComment(proID){
-    const list =await db('comment')
-        .join("users","users.UserID","comment.userid")
-        .where('comment.productid',proID).orderBy('comment.commentid','desc')
-    return list
-  }
-
+    async findAllComment(proID) {
+        const list = await db("comment")
+            .join("users", "users.UserID", "comment.userid")
+            .where("comment.productid", proID)
+            .select(["users.firstname", "users.lastname", "comment.content", "comment.date", "comment.commentid"])
+            .orderBy('comment.commentid','desc');
+        return list;
+    },
+    async findDetailBillByID(userID){
+            const list = await db("users")
+                .join("orders", "orders.UserID", "users.UserID")
+                .join('bill','bill.BillID','orders.BillID')
+                .join('statusbill','statusbill.idstatus','bill.Status')
+                .join('products','products.ProID','orders.ProID').where("users.UserID", userID);
+            const list2 = await db("bill")
+                .join('statusbill','statusbill.idstatus','bill.Status')
+                .where("bill.User", userID).orderBy('bill.Date','desc')
+            const count=await db('bill').count('BillID', {as: 'total'}).where("bill.User", userID);
+            /* list2.product=list;*/
+            return {list2,count};
+    },
 };

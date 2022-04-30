@@ -12,19 +12,32 @@
             <!--<form name="item" method="post">-->
                 <div class="card card-block">
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label text-xs-right"> Tiêu đề: </label>
+                        <label class="col-sm-2 form-control-label text-xs-right mt-2"> Tiêu đề: </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control boxed" id="title" placeholder="" value="{{list.ProName}}"> </div>
+                            <input type="text" class="form-control boxed" id="title" placeholder="" value="{{list.ProName}}">
+                            <div class="invalid-feedback">
+                                Please enter product name.
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Giá tiền: </label>
                         <div class="col-sm-10">
-                            <input type="text" data-type="currency" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}"> </div>
+                            <input type="text" data-type="currency" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}">
+                            <div class="invalid-feedback">
+                                Please enter price for your product.
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Số lượng: </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control boxed" id="quantity" placeholder="" value="{{list.Quantity}}"> </div>
+                            <input type="text" class="form-control boxed" id="quantity" placeholder="" value="{{list.Quantity}}">
+                            <div class="invalid-feedback">
+                                Please enter quantity for your product.
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label text-xs-right"> Chi tiết sản phẩm </label>
@@ -111,7 +124,7 @@
                         <div class="tab-content modal-tab-content">
                                 <div class="tab-pane fade active in" id="upload" role="tabpanel">
                                     <div class="file-loading">
-                                        <input id="input-700"  type="file" name="image" >
+                                        <input id="input-700" multiple type="file"  name="image" >
                                     </div>
                                 </div>
                         </div>
@@ -190,6 +203,66 @@
     <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let a3 = false;
+        let a4 = false;
+        let a5 = false;
+        if($('#title').val()!=""){
+            a3=true;
+        }
+        if($('#quantity').val()!=""){
+            a4=true;
+        }
+        if($("#price").val()!=""){
+            a5=true;
+        }
+        $('#title').on("change", function () {
+            if ($(this).val() == "") {
+                a3 = false;
+                $('#title').addClass('is-invalid')
+                $('#title').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a3 = true;
+                $('#title').removeClass('is-invalid')
+                $('#title').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
+        $('#quantity').on("change", function () {
+            if ($(this).val() == "") {
+                a4 = false;
+                $('#quantity').addClass('is-invalid')
+                $('#quantity').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a4 = true;
+                $('#quantity').removeClass('is-invalid')
+                $('#quantity').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
+
+        $("#price").on("change", function () {
+            if ($(this).val() == "") {
+                a5 = false;
+                $("#price").addClass('is-invalid')
+                $("#price").removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a5 = true;
+                $("#price").removeClass('is-invalid')
+                $("#price").addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        });
+    </script>
     <script>
         tinymce.init({
             selector: '#des',
@@ -371,7 +444,6 @@
                 initialPreviewAsData: true,
                 previewFileType: "image",
                 browseClass: "btn btn-success",
-
                 browseLabel: "Chọn hình",
                 browseIcon: "<i class=\"bi-file-image\"></i> ",
                 removeClass: "btn btn-danger",
@@ -380,7 +452,7 @@
                 uploadClass: "btn btn-info",
                 uploadLabel: "Upload hình",
                 uploadIcon: "<i class=\"bi-upload\"></i> ",
-                uploadUrl: "/admin/upload/{{list.pro_id}}",
+                uploadUrl: "/admin/upload-image-product",
                 initialPreviewConfig: [
                     {
                         caption: "People-1.jpg",
@@ -393,58 +465,18 @@
                 ],
                 theme: 'fa',
                 language: 'vi',
-                allowedFileExtensions: ['jpg'],
-            })/*.on('fileuploaded', function (e, params) {
-                console.log(params.response.filename)
-                if (params.response.filename.includes("1")) {
-                    console.log(params.response.detail);
-                    console.log("1");
-                    $.ajax({
-                        async: false,
-                        type: "POST",
-                        url: "/admin/geturl",
-                        data: {url: params.response.detail, id: "image1"},
-                        success: function (data) {
-                            $("#image1").replaceWith(data);
-                        },
-                        err: function (xhr, ajaxOptions, thrownError) {
-                            alert("Lỗi")
-                        }
-                    })
-                } else if (params.response.filename.includes("2")) {
-                    console.log(params.response.detail);
-                    console.log("2");
-                    $.ajax({
-                        async: false,
-                        type: "POST",
-                        url: "/admin/geturl",
-                        data: {url: params.response.detail, id: "image2"},
+                /*  allowedFileExtensions: ['jpg'],*/
+                }).on('fileuploaded', function (e, params) {
+                $.post("/admin/edit-image-sirv", {
+                    catid:{{catID}},
+                    proid:{{proID}},
+                    total:{{total}}
+                }, function (data) {
+                    if(data){
 
-                        success: function (data) {
-                            $("#image2").replaceWith(data)
-                        },
-                        err: function (xhr, ajaxOptions, thrownError) {
-                            alert("Lỗi")
-                        },
-                    })
-                } else if (params.response.filename.includes("3")) {
-                    console.log(params.response.detail);
-                    console.log("3");
-                    $.ajax({
-                        async: false,
-                        type: "POST",
-                        url: "/admin/geturl",
-                        data: {url: params.response.detail, id: "image3"},
-                        success: function (data) {
-                            $("#image3").replaceWith(data);
-                            console.log(data);
-                        },
-                        err: function (xhr, ajaxOptions, thrownError) {
-                            alert("Lỗi")
-                        }
-                    })
-                }
-            });*/
+                    }
+                });
+            });
         });
 
     </script>
