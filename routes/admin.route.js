@@ -18,6 +18,7 @@ import http from'https'
 import getToken from "../utils/sirv.js";
 import BillID from "../auth/Bill.js";
 import bcrypt from "bcrypt";
+import AdminModel from "../models/admin.model.js";
 
 
 
@@ -84,6 +85,7 @@ router.post("/category/remove-product"/*,,protectAdminRoute*/, async function (r
         resolve("done");
     });
     myPromise.then(async function (data) {
+        
         return res.send(true);
     })
 });
@@ -293,7 +295,6 @@ router.post("/upload-image-product",async function(req,res){
     const upload=multer({storage:storage})
     upload.array('image',5)(req,res,function (err){
         if(err){
-
         }
         else{
             let index=1;
@@ -340,24 +341,28 @@ router.post("/add-product",async function(req,res){
         list.SizeM = SizeM;
         list.SizeL = SizeL;
         list.SizeXL = SizeXl;
-        const proID=adminModel.insertNewProduct(list);
+        const proID=await adminModel.insertNewProduct(list);
         resolve({ProID:proID[0],CatID:list.category})
     });
     promise.then(function (data){
-        console.log(data);
-
+        console.log(data.ProID);
+        console.log(data.CatID)
+        res.render("admin/item-add-image",{
+            layout:'layoutAdmin.hbs',
+            catID:data.CatID,
+            proID:data.ProID
+        })
     })
 
 })
 router.post("/post-image-sirv",async function(req,res){
-
     const promise=new Promise((resolve,reject)=>{
         const token=getToken()
         resolve(token)
     });
     promise.then(function (data){
         for (let i = 0; i < DirNew.length; i++) {
-            readFileData(DirNew[i], data,)
+            readFileData(DirNew[i], data,req.body)
         }
     })
 })
@@ -371,7 +376,7 @@ function readFileData(dir,token,CatPro){
                 var options = {
                     method: 'POST',
                     url: 'https://api.sirv.com/v2/files/upload',
-                    qs: {filename: '/imgs/'+CatPro.CatID+"/"+ CatPro.ProID+"/"+ dir},
+                    qs: {filename: '/imgs/'+CatPro.catid+"/"+ CatPro.proid+"/"+ dir},
                     headers: {
                         'content-type': 'image/jpeg',
                         authorization: 'Bearer' + token
@@ -386,8 +391,8 @@ function readFileData(dir,token,CatPro){
         });
 
     });
-    promise.then(function (data){
-
+    promise.then(async function (data){
+        const updateImageProduct=await AdminModel.updateImageProduct(CatPro);
         if (fs.existsSync(data)) {
             tempDir.splice(0,tempDir.length)
             DirNew.splice(0,tempDir.length)

@@ -8,6 +8,7 @@ export default {
     return db("categories");
   },
 
+
   async findPopularProducts() {
     return db("products")
       .join("orders", "products.ProID", "orders.ProID")
@@ -48,10 +49,23 @@ export default {
     const data = await db.raw(sql);
     return data[0];
   },
+     async findAllProductsToChange() {
+         const total = await db("products").count('ProID', {as: 'total'});
+         const list =await db("products");
+         return {total,list}
+     },
+
+    async ChangeStatusProduct(entity,status) {
+        const list =await db("products").where('products.ProID',entity.ProID).update({
+            status:status
+        })
+        return list;
+    },
 
   async findByProductID(proID) {
     const list = await db("products")
       .join("categories", "products.CatID", "=", "categories.CatID")
+        .join('statusproduct','statusproduct.IdStatus','products.status')
       .where("products.ProID", proID);
     return list[0];
   },
@@ -153,6 +167,7 @@ export default {
     return list;
   },
   async updateQuantityByOrderID(entity){
+
     if(entity.amount==='0'){
       const list=await db("orders").where('OrderID',entity.id).del();
       return list;
@@ -164,6 +179,25 @@ export default {
       })
       return list;
     }
+  },
+  async selectProductAfterOrder(billid){
+    const list=await db("orders").join('products','products.ProID','orders.ProID').andWhere(function (){
+      this.where('orders.BillID',billid)
+      this.where('orders.status','!=',-1)
+    }).select('orders.ProID', 'orders.Amount','products.Quantity');
+
+    return list;
+  },
+  async totalOrder(billid){
+    const total= await db("orders").count('OrderID', {as: 'total'}).where('orders.BillID',billid);
+    return total
+  },
+  async updateQuantityProduct(entity){
+    console.log(entity)
+    const list=await db("products").where('ProID',entity.ProID).update({
+      Quantity:(entity.Quantity-entity.Amount)
+    });
+    return list;
   },
 
   async insertBill(){
@@ -197,7 +231,9 @@ export default {
     })
   },
   async findAllComment(proID){
-    const list =await db('comment').join("users","users.UserID","comment.userid").where('comment.productid',proID);
+    const list =await db('comment')
+        .join("users","users.UserID","comment.userid")
+        .where('comment.productid',proID).orderBy('comment.commentid','desc')
     return list
   }
 

@@ -18,6 +18,7 @@
             <p class="mb-2 text-muted text-uppercase small">Loại: {{this.product.CatName}}</p>
             <p class="mb-2 text-muted text-uppercase small">Số lượng: {{this.product.Quantity}}</p>
             <p class="mb-2 text-muted text-uppercase small">Giá tiền: {{format_number this.product.Price}}</p>
+            <p class="mb-2 text-muted text-uppercase small">Trạng thái: {{this.product.NameStatus}}</p>
             <p><span class="mr-1"><strong>Mô tả sản phẩm</strong></span></p>
             <p class="pt-1">{{{this.product.FullDes}}}</p>
         </div>
@@ -72,8 +73,12 @@
                 </tbody>
             </table>
         </div>
-        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-        <button type="button" id="addtoCart" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+            {{#if (checkProDuctStatus this.product.IdStatus)}}
+                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                <button type="button" id="addtoCart" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+            {{else}}
+            {{/if}}
+
         </div>
     </div>
     <div class="row" >

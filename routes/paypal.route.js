@@ -56,9 +56,20 @@ router.get("/checkout/success",(req,res)=>{
         resolve("hello")
       });
       promise.then(async function (data) {
-        const data3= await shoppingModel.insertBill();
-        BillID.setvalue(data3[0])
-        res.redirect("/history")
+        const promise3=new Promise(async (resolve,reject)=>{
+          const total=await shoppingModel.totalOrder(res.locals.billid);
+          console.log(total[0].total);
+          for (let i=0;i<total[0].total;i++){
+            const select= await shoppingModel.selectProductAfterOrder(res.locals.billid);
+            let update=await shoppingModel.updateQuantityProduct(select[i]);
+          }
+          resolve("done")
+        });
+        promise3.then(async function () {
+          const data3 = await shoppingModel.insertBill();
+          BillID.setvalue(data3[0])
+          return res.redirect("/history")
+        })
       })
     }
   });

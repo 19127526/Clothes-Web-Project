@@ -42,8 +42,10 @@ export default function (app) {
           return x1!==-1;
         },
         checkFilter(x1){
-          console.log(x1)
           return x1==='1';
+        },
+        checkProDuctStatus(x1){
+          return x1===1;
         },
         timeBill(val){
           return moment(val).format("hh:mm:ss DD/MM/YYYY");

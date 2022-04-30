@@ -21,6 +21,12 @@ var something = (function() {
 export default function (app) {
   app.use(async function (req, res, next) {
     something();
+    const rawProduct=await shoppingModel.findAllProductsToChange();
+    for (let i=0;i<rawProduct.total[0].total;i++){
+      if(rawProduct.list[i].Quantity===0){
+        const update=await shoppingModel.ChangeStatusProduct(rawProduct.list[i],0);
+      }
+    }
     const rawData = await shoppingModel.findAllCategories();
     res.locals.lcCategories = rawData;
     res.locals.billid = BillID.getValue();

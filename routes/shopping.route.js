@@ -95,7 +95,6 @@ router.post("/getproductAuthen",async (req,res)=>{
   const list =req.body;
   list.total=parseInt(req.body.price *req.body.quantity);
   list.billid=res.locals.billid;
-  console.log(res.locals.billid)
   if(req.isAuthenticated()){
     let userid = req.session.passport.user.id;
     const addCart=await shoppingModel.addOrderAuthen(userid,list);
@@ -182,15 +181,29 @@ router.get("/checkout", protectRoute,async (req,res)=>{
 });
 
 router.post("/checkout", protectRoute,async (req,res)=> {
-    const entity=req.body;
-    entity.User=req.session.passport.user.id;
-    const changeBill=await shoppingModel.changeMethodBill(res.locals.billid,entity);
-    const changeOrder=await shoppingModel.changeMethodOrder(res.locals.billid);
-    const data3 = await shoppingModel.insertBill();
-    BillID.setvalue(data3[0])
-
-    res.redirect("/history")
-
+    const promise=new Promise(async (resolve, reject) => {
+      const entity = req.body;
+      entity.User = req.session.passport.user.id;
+      const changeBill = await shoppingModel.changeMethodBill(res.locals.billid, entity);
+      const changeOrder = await shoppingModel.changeMethodOrder(res.locals.billid);
+      resolve("done")
+    });
+    promise.then(function (data){
+      const promise3=new Promise(async (resolve,reject)=>{
+      const total=await shoppingModel.totalOrder(res.locals.billid);
+      console.log(total[0].total);
+      for (let i=0;i<total[0].total;i++){
+        const select= await shoppingModel.selectProductAfterOrder(res.locals.billid);
+        let update=await shoppingModel.updateQuantityProduct(select[i]);
+      }
+      resolve("done")
+        promise3.then(async function () {
+          const data3 = await shoppingModel.insertBill();
+          BillID.setvalue(data3[0])
+          return res.redirect("/history")
+        })
+      })
+    });
 });
 router.get("/product/:ProID", productView);
 

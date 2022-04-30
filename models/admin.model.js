@@ -128,6 +128,13 @@ export default {
         FullDes:entity.des,
     }).select('products.ProID')
     return insert;
+  },
+  async updateImageProduct(entity){
+    const temp="https://encinver.sirv.com/imgs/"+entity.catid+"/"+entity.proid+"/(1).jpg";
+    const update=await db("products").where('products.ProID',entity.proid).update({
+      Image:temp
+    })
+    return update
   }
 
   /*const totalBill=await db('bill')
