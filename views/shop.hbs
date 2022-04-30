@@ -1,14 +1,18 @@
 {{#section "css"}}
 <link rel="stylesheet" href="/public/assets/css/pagination.css">
+<link rel="stylesheet" href="/public/assets/css/jquery-ui.min.css">
+<link rel="stylesheet" href="/public/assets/css/price_range_style.css">
 {{/section}}
 {{#section "js"}}
 <script src="/public/assets/js/pagination.min.js"></script>
+<script src="/public/assets/js/jquery-ui.min.js"></script>
+
 <script>
     let pagination = {};
     let currPage = 1;
     let initialized = false;
     let productOrder = "newest";
-    let productFilter = { price: [], category: [], brand: [] };
+    let productFilter = { price: { min: {{ priceRange.min }}, max: {{ priceRange.max }} }, categories: {{{listCatID}}}, name: "" };
 
     function getProducts() {
         $.ajax({
@@ -19,7 +23,7 @@
                 page: currPage,
                 limit: $("#select1 option:selected").val(),
                 order: productOrder,
-                filter: productFilter,
+                filters: productFilter,
             },
             success: function (result) {
                 pagination = result.pagination;
@@ -29,7 +33,7 @@
                     $('#pagination-container').pagination({
                         dataSource: [...Array(pagination.totalItems).keys()],
                         pageSize: pagination.limit,
-                        callback:function (data, pagination) {
+                        callback: function (data, pagination) {
                             currPage = pagination.pageNumber;
                             getProducts();
                         },
@@ -47,6 +51,7 @@
             }
         });
     }
+
     $('document').ready(function () {
         getProducts();
         $("#select1").change(function () {
@@ -54,7 +59,7 @@
             initialized = false;
             getProducts();
         });
-        // loop over child elements of sort
+
         $("#sort").children().each(function () {
             $(this).click(function () {
                 productOrder = $(this).attr("id");
@@ -62,6 +67,56 @@
                 initialized = false;
                 getProducts();
             });
+        });
+
+        $("#categories").children().each(function () {
+            $(this).click(function () {
+                let category = Number($(this).attr("id").split("-")[1]);
+                if (productFilter.categories.includes(category)) {
+                    productFilter.categories.splice(productFilter.categories.indexOf(category), 1);
+                } else {
+                    productFilter.categories.push(category);
+                }
+                if (productFilter.categories.length === 0) {
+                    $("#products").empty();
+                } else {
+                    currPage = 1;
+                    initialized = false;
+                    getProducts();
+                }
+            });
+        });
+
+        $("#slider-range").slider({
+            range: true,
+            orientation: "horizontal",
+            min: {{ priceRange.min }},
+            max: {{ priceRange.max }},
+            values: [{{ priceRange.min }}, {{ priceRange.max }}],
+            step: ({{ priceRange.max }} - {{ priceRange.min }}) / 100,
+            slide: function (event, ui) {
+                if (ui.values[0] > ui.values[1]) {
+                    return false;
+                }
+                $("#min_price").val(ui.values[0]);
+                $("#max_price").val(ui.values[1]);
+                productFilter.price.min = ui.values[0];
+                productFilter.price.max = ui.values[1];
+            },
+            stop: function (event, ui) {
+                currPage = 1;
+                initialized = false;
+                getProducts();
+            },
+        });
+
+        $("#name-search").focusout(function () {
+            if (productFilter.name !== $(this).val()) {
+                productFilter.name = $(this).val();
+                currPage = 1;
+                initialized = false;
+                getProducts();
+            }
         });
     });
 </script>
@@ -87,14 +142,38 @@
     <!-- Latest Products Start -->
     <section class="popular-items latest-padding">
         <div class="container">
+            <div class="row justify-content-between">
+                <div id="slider-range" class="price-filter-range mb-5" name="rangeInput">
+                    <input type="number" min={{{priceRange.min}}} max={{{priceRange.max}}} id="min_price"
+                        oninput="validity.valid||(value={{priceRange.min}});" value={{{priceRange.min}}}
+                        class="price-range-field mt-4" />
+                    <input type="number" min={{{priceRange.min}}} max={{{priceRange.max}}} id="max_price"
+                        oninput="validity.valid||(value={{priceRange.max}});" value={{{priceRange.max}}}
+                        class="price-range-field mt-4 ml-2" />
+                </div>
+                <div class="col text-right">
+                    <div class="form-check" id="categories">
+                        {{#each listCat}}
+                            <input class="ml-3" class="form-check-input" type="checkbox" id="cat-{{this.CatID}}" checked>
+                            {{this.CatName}}
+                        {{/each}}
+                    </div>
+                    <div>
+                        <input class="form-control mb-2" type="text" placeholder="Search" id="name-search" style="width: 200px; float: right;">
+                    </div>
+                </div>
+            </div>
             <div class="row product-btn justify-content-between mb-40">
                 <div class="properties__button">
                     <!--Nav Button  -->
                     <nav>
                         <div class="nav nav-tabs" id="sort" role="tablist">
-                            <a class="nav-item nav-link active" id="newest" data-toggle="tab" href="#" role="tab" aria-controls="newest" aria-selected="true">New Arrivals</a>
-                            <a class="nav-item nav-link" id="price-desc" data-toggle="tab" href="#" role="tab" aria-controls="price-desc" aria-selected="false">Price high to low</a>
-                            <a class="nav-item nav-link" id="price-asc" data-toggle="tab" href="#" role="tab" aria-controls="price-asc" aria-selected="false">Price low to high</a>
+                            <a class="nav-item nav-link active" id="newest" data-toggle="tab" href="#" role="tab"
+                                aria-controls="newest" aria-selected="true">New Arrivals</a>
+                            <a class="nav-item nav-link" id="price-desc" data-toggle="tab" href="#" role="tab"
+                                aria-controls="price-desc" aria-selected="false">Price high to low</a>
+                            <a class="nav-item nav-link" id="price-asc" data-toggle="tab" href="#" role="tab"
+                                aria-controls="price-asc" aria-selected="false">Price low to high</a>
                         </div>
                     </nav>
                     <!--End Nav Button  -->
@@ -124,7 +203,6 @@
                     <div class="row" id="products"> </div>
                 </div>
             </div>
-
             <!-- Render pagination -->
             <div id="pagination-container">
 

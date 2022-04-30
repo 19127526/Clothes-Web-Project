@@ -8,7 +8,7 @@ const knex = knexObj({
   client: "mysql2",
   acquireConnectionTimeout: 60000,
   connection:
-    process.env.app_env === "production"
+    process.env.APP_ENV === "production"
       ? {
           host: process.env.DB_PROD_HOST,
           user: process.env.DB_PROD_USER,

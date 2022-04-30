@@ -10,7 +10,8 @@ const homeView = async function (req, res) {
 };
 
 const shopView = async function (req, res) {
-  res.render("shop");
+  const { priceRange, listCat } = await shoppingModel.findAllFilters();
+  res.render("shop", {priceRange, listCat, listCatID: JSON.stringify(listCat.map(item => item.CatID))});
 };
 
 const categoryView = async function (req, res) {

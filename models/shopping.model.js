@@ -14,19 +14,26 @@ export default {
 
   async findAllProducts(page, perPage) {
     let pagination = {};
-    const total = await db("products").count('* as count').first();
+    const total = await db("products").count("* as count").first();
     const total_pages = Math.ceil(total.count / perPage);
     page = Math.max(1, Math.min(page, total_pages));
     pagination.current_page = page;
     pagination.total_items = total.count;
     const offset = page - 1;
-    const listProduct = await db("products").limit(perPage).offset(offset * perPage);
+    const listProduct = await db("products")
+      .limit(perPage)
+      .offset(offset * perPage);
     return { pagination, listProduct };
   },
 
   async findProductWithQueries(page, perPage, order, filters) {
     let pagination = {};
-    const total = await db("products").count("* as count").first();
+    const total = await db("products")
+      .count("* as count")
+      .first()
+      .whereBetween("Price", [filters.price.min, filters.price.max])
+      .whereIn("CatID", filters.categories)
+      .whereILike("ProName", `%${filters.name}%`);
     const total_pages = Math.ceil(total.count / perPage);
     page = Math.max(1, Math.min(page, total_pages));
     pagination.current_page = page;
@@ -34,13 +41,24 @@ export default {
     pagination.total_pages = total_pages;
     const offset = page - 1;
     let listProduct;
+    let orderBy = { column: "ProID", direction: "desc" };
 
-    if (order === "newest") {
-      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Arrival", "desc");
-    } else if (order === "price-desc") {
-      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Price", "desc");
-    } else {
-      listProduct = await db("products").limit(perPage).offset(offset * perPage).orderBy("Price", "asc");
+    if (order === "price-desc") {
+      orderBy.column = "Price";
+    } else if (order === "price-asc") {
+      orderBy.column = "Price";
+      orderBy.direction = "asc";
+    }
+    try {
+      listProduct = await db("products")
+        .whereBetween("Price", [filters.price.min, filters.price.max])
+        .whereIn("CatID", filters.categories)
+        .whereILike("ProName", `%${filters.name}%`)
+        .orderBy(orderBy.column, orderBy.direction)
+        .limit(perPage)
+        .offset(offset * perPage);
+    } catch (error) {
+      console.log(error);
     }
     return { pagination, listProduct };
   },
@@ -78,5 +96,31 @@ export default {
       .join("categories", "products.CatID", "=", "categories.CatID")
       .where("products.ProID", proID);
     return list[0];
+  },
+
+  async findAllFilters() {
+    const list = await db("products");
+
+    let minPrice = list[0].Price;
+    let maxPrice = list[0].Price;
+
+    for (let i = 1; i < list.length; i++) {
+      if (list[i].Price < minPrice) {
+        minPrice = list[i].Price;
+      }
+      if (list[i].Price > maxPrice) {
+        maxPrice = list[i].Price;
+      }
+    }
+
+    const listCat = await db("categories");
+
+    return {
+      priceRange: {
+        min: minPrice,
+        max: maxPrice,
+      },
+      listCat,
+    };
   },
 };
