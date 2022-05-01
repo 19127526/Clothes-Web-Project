@@ -5,7 +5,7 @@ import {
   AddProduct,
   DelProduct,
 } from "../controllers/admin.controller.js";
-import { protectAdminRoute } from "../auth/protect.js";
+import { protectAdminRoute } from "../middlewares/auth/protect.js";
 import shoppingModel from "../models/shopping.model.js";
 import adminModel from "../models/admin.model.js";
 import moment from "moment";
@@ -16,7 +16,7 @@ import multer from 'multer';
 import request from'request'
 import http from'https'
 import getToken from "../utils/sirv.js";
-import BillID from "../auth/Bill.js";
+import BillID from "../middlewares/auth/Bill.js";
 import bcrypt from "bcrypt";
 import AdminModel from "../models/admin.model.js";
 

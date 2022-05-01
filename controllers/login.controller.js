@@ -1,6 +1,6 @@
 import passport from "passport";
 import bcrypt from "bcrypt";
-import initializePassport from "../auth/passport.js";
+import initializePassport from "../middlewares/auth/passport.js";
 import validator from "express-validator";
 import usersModel from "../models/users.model.js";
 

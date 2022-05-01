@@ -1,5 +1,5 @@
 import shoppingModel from "../models/shopping.model.js";
-import BillID from "../auth/Bill.js"
+import BillID from "../middlewares/auth/Bill.js"
 var something = (function() {
   var executed = false;
   return async function() {

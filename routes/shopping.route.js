@@ -8,21 +8,24 @@ import {
   productView,
   aboutView,
 } from "../controllers/shopping.controller.js";
+
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
-import { protectAdminRoute, protectRoute} from "../auth/protect.js";
-import BillID from "../auth/Bill.js"
+import { protectAdminRoute, protectRoute} from "../middlewares/auth/protect.js";
+import BillID from "../middlewares/auth/Bill.js"
 import adminModel from "../models/admin.model.js";
+
 router.get("/", homeView);
 
 router.get("/shop", shopView);
 
 router.get("/category/:CatID", categoryView);
+
 router.get("/comment",async (req,res)=>{
   res.json(!!req.isAuthenticated());
 });
-router.post('/product/comment',async (req,res)=>{
 
+router.post('/product/comment',async (req,res)=>{
   if(req.body.userid) {
     let userid = req.session.passport.user.id;
     const check = await shoppingModel.insertCommentByUserId(req.body.content, userid, req.body.proID);

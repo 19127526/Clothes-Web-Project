@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import {
   productManagementView,
@@ -5,17 +7,17 @@ import {
   AddProduct,
   DelProduct,
 } from "../controllers/admin.controller.js";
-import {protectAdminRoute} from "../auth/protect.js";
+import {protectAdminRoute} from "../middlewares/auth/protect.js";
 import  paypal from 'paypal-rest-sdk';
 import shoppingModel from "../models/shopping.model.js";
 import usersModel from "../models/users.model.js";
-import BillID from "../auth/Bill.js"
+import BillID from "../middlewares/auth/Bill.js"
 var total =0;
 var entity;
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'AYmVcsQqf47NY436c-PpR_NAFJBWAjbJuzrF30kib-PW6V_Px_CVlHrYTEC2_ZNbcPN2j34nK6UHQUjt',
-  'client_secret': 'EJjOoyJdwYCcIifXCe0c4Dkc9wJxr9904n3Do1iWL2NTciwKERgH1kTIW4pl_N74gljRdyv-2D3cS6nE'
+  'client_id': process.env.PAYPAL_ID,
+  'client_secret': process.env.PAYPAL_SECRET,
 });
 
 

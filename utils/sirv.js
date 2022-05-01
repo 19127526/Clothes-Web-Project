@@ -1,7 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
 import http from "https";
 
-const clientId = "8a5DiZ0iHzLekaapN1bwnLenf3d";
-const clientSecret = "Yiz69K8fFbRDFQG6zK1hU5x8hhUOiscPgSDdQrPyIA+BO9Ev1vpiifI1k9hAONW6RxOfy4WWN511HoaIgdb4KA==";
+const clientId = process.env.SIRV_ID;
+const clientSecret = process.env.SIRV_SECRET;
 
 const options = {
   method: "POST",
