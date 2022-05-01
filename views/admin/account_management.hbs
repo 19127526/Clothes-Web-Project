@@ -69,7 +69,7 @@
                         </div>
                     </li>
                     {{#each list}}
-                        {{#if (equal this.UserID user.id)}}
+                        {{#if (equal this.idAdmin this.UserID)}}
                             <li class="item" id="{{this.UserID}}">
                                 <div class="item-row">
                                     <div class="item-col fixed item-col-check">
@@ -82,14 +82,14 @@
                                         <div class="item-heading">Email</div>
                                         <div>
                                             <a  class="" href="/admin/account-detail/{{this.UserID}}">
-                                                <h4 class="item-title"> {{this.email}} </h4>
+                                                <h4 class="item-title"> {{this.email}}</h4>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="item-col item-col-category no-overflow">
                                         <div class="item-heading">Trạng thái</div>
                                         <div class="no-overflow">
-                                            <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                                            <a id="{{this.IdStatus}}">{{this.Name}} (me)</a>
                                         </div>
                                     </div>
                                     <div class="item-col item-col-author">

@@ -127,6 +127,14 @@ router.get("/account-management"/*,,protectAdminRoute*/, async function (req,res
     const perPage = 10;
     const page = req.query.page || 1;
     const listEmail= await usersModel.findAllAccount(page, perPage);
+    const user= req.session.passport.user;
+    listEmail.listProduct.forEach(u=>{
+        if(u.UserID==user.id){
+            u.idAdmin=user.id;
+        }
+    })
+    console.log(listEmail.listProduct)
+    console.log(listEmail.listProduct.idAdmin)
     const totalEmail= await usersModel.findTotalAccount().then(async (u)=>{
         return res.render('admin/account_management',{
             layout:'layoutAdmin.hbs',

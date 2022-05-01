@@ -24,7 +24,7 @@ export default function (app) {
           equal(x1,x2){
             console.log(x1);
             console.log(x2);
-            return x1===x2;
+            return parseInt(x1)===parseInt(x2);
           },
           multi(x1,x2){
             x1=parseInt(x1);
