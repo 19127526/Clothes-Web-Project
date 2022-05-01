@@ -21,6 +21,35 @@ export default function (app) {
         time(val) {
           return moment(val).format("DD/MM/YYYY");
         },
+          equal(x1,x2){
+            return x1===x2;
+          },
+          multi(x1,x2){
+            x1=parseInt(x1);
+            x2=parseInt(x2)
+            return x1+x2;
+          },
+        check(x1){
+          return x1!==0
+        },
+        product(index){
+          return index+' Sản phẩm'
+        },
+        format_name(x1,x2){
+          return x1+ " "+x2;
+        },
+        checkBlock(x1){
+          return x1!==-1;
+        },
+        checkFilter(x1){
+          return x1==='1';
+        },
+        checkProDuctStatus(x1){
+          return x1===1;
+        },
+        timeBill(val){
+          return moment(val).format("HH:mm:ss DD/MM/YYYY");
+        },
       },
       extname: ".hbs",
     })

@@ -7,6 +7,7 @@ import {
   registerUser,
   loginUser,
   authValidation,
+  checkEmail
 } from "../controllers/login.controller.js";
 
 router.get("/register", registerView);
@@ -16,8 +17,12 @@ router.get("/login", loginView);
 router.post("/login", authValidation("loginUser"), loginUser);
 
 router.get("/logout", (req, res) => {
+  req.session.passport
+
   req.logout();
   res.redirect("/");
 });
+
+router.post("/check_email", checkEmail);
 
 export default router;

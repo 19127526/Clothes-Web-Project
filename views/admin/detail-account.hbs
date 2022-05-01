@@ -1,0 +1,167 @@
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content item-editor-page">
+            <div class="title-block">
+                <h3 class="title"> Chi tiết tài khoản
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+               <!-- <div class="form-group row">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" id="quaylai" class="btn btn-danger" > Quay lại </button>
+                    </div>
+                </div>-->
+                <div class="card card-block">
+                    <div class="form-group row">
+
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title">
+                            <br>
+                            Tên người dùng
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="card"  >
+                                <div class="card-body" >
+                                    {{format_name listDetailUser.firstname  listDetailUser.lastname}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title">
+                            <br>
+                            Email
+                        </label>
+                        <div class="col-sm-10">
+                                <div class="card" >
+                                    <div class="card-body" >
+                                        {{listDetailUser.email}}
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right" for="title">
+                            <br>
+                            Địa chỉ
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="card" >
+                                <div class="card-body" >
+                                    {{listDetailUser.address}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right">
+                            <br>
+                            Số điện thoại
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="card">
+                                <div class="card-body">
+                               {{{listDetailUser.phonenumber}}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"><br> Tổng bill đã đặt</label>
+                        <div class="col-sm-10">
+                            {{#if totalBill.total}}
+                                <div class="input-group mb-3" style="height: 50px">
+                                    <input value="{{{totalBill.total}}} đơn hàng" readonly type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <div class="input-group-append" >
+                                        <a href="/admin/detail-bill/{{listDetailUser.UserID}}" type="button" class=" btn btn-primary" >Detail Bill</a>
+                                    </div>
+                                </div>
+                            {{else}}
+                                <div class="input-group mb-3" style="height: 50px">
+                                    <input value="Không có đơn hàng nào" readonly type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> <br>Trạng thái</label>
+                        <div class="col-sm-10">
+                            <div class="card">
+                                <div class="card-body">
+                                    {{listDetailUser.Name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label text-xs-right"> Hình ảnh: </label>
+                        <div class="col-sm-10">
+                            <div class="images-container">
+                                <div class="image-container">
+                                    <div class="controls">
+                                        <a href="#" class="control-btn move">
+                                            <i class="fa fa-arrows"></i>
+                                        </a>
+                                    </div>
+                                    <div class="image" id="image1" style="background-image:url('{{list.Image}}')"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </article>
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                            <input id="url" name="url" value="" readonly>
+                        <div class="tab-content modal-tab-content">
+                                <div class="tab-pane fade active in" id="upload" role="tabpanel">
+
+                                    <div class="file-loading">
+                                        <input id="input-21"  type="file" name="image" value="">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+
+</div>
+{{#section 'cssAdmin'}}
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+{{/section}}
+{{#section 'jsAdmin'}}
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/locales/vi.min.js" integrity="sha512-Uq/oCjgDVhP8yiVZWU3F+XZcIwdIeMCgP43VG/Q/V3rqlhdpLS16CRknPqjKo4WUUM606zVchpiJuIkMJbQp7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{/section}}

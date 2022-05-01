@@ -1,0 +1,193 @@
+
+<body class="mb-5">
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0 ">
+            <div id="mdb-lightbox-ui"></div>
+            <div class="mdb-lightbox">
+                <div class="row product-gallery mx-1">
+                    <div class="col-12 mb-0">
+                        <figure class="view overlay rounded z-depth-1 main-img">
+                            <a data-size="710x823">
+                                <img src="{{this.product.Image}}" class="img-fluid z-depth-1 fill" >
+                            </a>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5>{{this.product.ProName}}</h5>
+            <p class="mb-2 text-muted text-uppercase small">Loại: {{this.product.CatName}}</p>
+            <p class="mb-2 text-muted text-uppercase small">Số lượng: {{this.product.Quantity}}</p>
+            <p class="mb-2 text-muted text-uppercase small">Giá tiền: {{format_number this.product.Price}}</p>
+            <p><span class="mr-1"><strong>Mô tả sản phẩm</strong></span></p>
+            <p class="pt-1">{{{this.product.FullDes}}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        <div class="table-responsive mb-2">
+            <table class="table table-sm table-borderless">
+                <tbody>
+                <tr>
+                    <td class="pl-0 pb-0 w-25">Chọn số lượng</td>
+                    <td class="pb-0">Chọn size</td>
+                </tr>
+                <tr>
+                    <td class="pl-0">
+                        <div class="def-number-input number-input safari_only mb-0">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn-outline-dark">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <input class="quantity" min="0" name="quantity" value="1" type="number">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn-outline-dark">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mt-1">
+                            <div class="form-check form-check-inline pl-0">
+                                <input type="radio" class="form-check-input" id="small" name="materialExampleRadios"
+                                       checked>
+                                <label class="form-check-label small text-uppercase card-link-secondary"
+                                       for="small">Small</label>
+                            </div>
+                            <div class="form-check form-check-inline pl-0">
+                                <input type="radio" class="form-check-input" id="medium" name="materialExampleRadios">
+                                <label class="form-check-label small text-uppercase card-link-secondary"
+                                       for="medium">Medium</label>
+                            </div>
+                            <div class="form-check form-check-inline pl-0">
+                                <input type="radio" class="form-check-input" id="large" name="materialExampleRadios">
+                                <label class="form-check-label small text-uppercase card-link-secondary"
+                                       for="large">Large</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+        <button type="button" id="addtoCart" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="d-flex flex-column col-md-8">
+                    <div class="coment-bottom bg-white p-2 px-4">
+                        <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                            <div class="d-flex flex-row align-items-center commented-user">
+                                {{#if user}}
+                                    <h5 class="mr-2">{{user.firstname}} {{user.lastname}}</h5>
+                                {{else}}
+                                    <h5 class="mr-2">Vui lòng đăng nhập</h5>
+                                {{/if}}
+                            </div>
+                            <input type="text" id="contentComment" class="form-control mr-3" placeholder="Add comment">
+                            <button class="btn btn-primary"  id="commentbtn" type="button" style="width: 200px" >Comment</button>
+                        </div>
+                        <div id="ajax">
+                        {{#each comment}}
+                            <div class="commented-section mt-2">
+                                <div class="d-flex flex-row align-items-center commented-user">
+                                    <h5 class="mr-2">{{this.firstname}} {{this.lastname}}</h5><span class="dot mb-1"></span><span class="mb-1 ml-2">{{this.date}}</span>
+                                </div>
+                                <div class="comment-text-sm"><span>{{this.content}}</span></div>
+                            </div>
+                        {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{{#section 'js'}}
+    <script>
+        $('#commentbtn').click(function () {
+            console.log('dmm')
+            $.getJSON('/comment', function (data) {
+                try {
+                    if (!data) {
+                        alert("Vui lòng đăng nhập thì mới được comment!")
+                        $('#commentbtn').prop('disabled', true);
+                    } else {
+                        $('#commentbtn').prop('disabled', false);
+                        $.post("/product/comment" , {
+                            content: $("#contentComment").val(),
+                            userid: true,
+                            proID:{{product.ProID}} }, function (data, status) {
+                            if (data) {
+                                $.ajax({
+                                    async:false,
+                                    type:"GET",
+                                    url:"/product/"+{{product.ProID}}+"/hi",
+                                    success:function (data){
+                                        alert("Bình luận thành công")
+                                        $("#contentComment").prop('value',"")
+                                        $("#ajax").replaceWith(data)
+                                    },
+                                    err:function (xhr,ajaxOptions,thrownError){
+                                        alert("Lỗi")
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }
+                catch (e){
+                    alert("Vui lòng đăng nhập thì mới được comment!");
+                    $('#commentbtn').prop('disabled', true);
+                }
+            },
+            );
+        });
+    </script>
+{{/section}}
+
+
+
+{{#section 'css'}}
+    <style>
+    body {
+    background-color: #eee
+    }
+
+    .bdge {
+    height: 21px;
+    background-color: orange;
+    color: #fff;
+    font-size: 11px;
+    padding: 8px;
+    border-radius: 4px;
+    line-height: 3px
+    }
+
+    .comments {
+    text-decoration: underline;
+    text-underline-position: under;
+    cursor: pointer
+    }
+
+    .dot {
+    height: 7px;
+    width: 7px;
+    margin-top: 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block
+    }
+
+    .hit-voting:hover {
+    color: blue
+    }
+
+    .hit-voting {
+    cursor: pointer
+    }
+    </style>
+{{/section}}

@@ -1,0 +1,479 @@
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <form method="post" action="/admin/add-product">
+        <article class="content item-editor-page">
+            <div class="title-block">
+                <h3 class="title"> Thêm sản phẩm
+                    <span class="sparkline bar" data-type="bar"></span>
+                </h3>
+            </div>
+            <!--<form name="item" method="post">-->
+            <div class="card card-block">
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Product name: </label>
+                    <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" name="title" id="title" placeholder="" value="">
+                            <div class="invalid-feedback">
+                                Please enter product name.
+                            </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Giá tiền: </label>
+                    <div class="col-sm-10">
+                        <input type="text" data-type="currency"name="price" placeholder="1,000,000.00"class="form-control boxed" id="price" placeholder="" value="{{format_number list.Price}}">
+                        <div class="invalid-feedback">
+                            Please enter price for your product.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Số lượng: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control boxed"name="quantity" id="quantity" placeholder="" value="">
+                        <div class="invalid-feedback">
+                            Please enter quantity for your product.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right mt-2"> Chi tiết sản phẩm </label>
+                    <div class="col-sm-10">
+                        <textarea id="des" name="des"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Loại: </label>
+                    <div class="col-sm-10">
+                        <select class="c-select form-control boxed"name="category" id="category">
+                            {{#each listCategory}}
+                                 <option value="{{this.CatID}}">{{this.CatName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label text-xs-right"> Trạng thái: </label>
+                    <div class="col-sm-10">
+                        <select class="c-select form-control boxed" name="status" id="status">
+                            {{#each listStatusProduct}}
+                                <option value="{{this.IdStatus}}">{{this.NameStatus}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" id="submitbtn22" class="btn btn-primary"> Next </button>
+                    </div>
+                </div>
+            </div>
+            <!--</form>-->
+        </article>
+        </form>
+        <div class="modal fade" id="modal-media">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Media Library</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-tab-container">
+                        <ul class="nav nav-tabs modal-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#upload" data-toggle="tab" role="tab">Upload</a>
+                            </li>
+                        </ul>
+                        <form method="post"  enctype="multipart/form-data">
+                            <div class="tab-content modal-tab-content">
+                                <div class="tab-pane fade active in" id="upload" role="tabpanel">
+                                    <div class="file-loading">
+                                        <input id="input-700"  multiple type="file" name="image" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="confirm-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <i class="fa fa-pencil"></i>  &nbsp; Xác nhận cập nhật sản phẩm</h4>
+                        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn cập nhật sản phẩm này?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="success-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-check"></i> &nbsp;Thông tin sản phẩm</h4>
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Đã tạo sản phẩm thành công !!</p>
+            </div>
+            <!-- <div class="modal-footer">
+                 <button type="button" id="submitUpdate" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                 <button type="button" id="no" class="btn btn-secondary" data-dismiss="modal">No</button>
+             </div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+{{#section 'cssAdmin'}}
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+{{/section}}
+{{#section 'jsAdmin'}}
+    <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tinymce.init({
+            selector: '#des',
+            /* width and height of the editor */
+            width: "100%",
+            height: 600,
+            /* display statusbar */
+            statusbar: true,
+            /* plugin */
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            /* toolbar */
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+            /* style */
+            style_formats: [
+                {title: "Headers", items: [
+                        {title: "Header 1", format: "h1"},
+                        {title: "Header 2", format: "h2"},
+                        {title: "Header 3", format: "h3"},
+                        {title: "Header 4", format: "h4"},
+                        {title: "Header 5", format: "h5"},
+                        {title: "Header 6", format: "h6"}
+                    ]},
+                {title: "Inline", items: [
+                        {title: "Bold", icon: "bold", format: "bold"},
+                        {title: "Italic", icon: "italic", format: "italic"},
+                        {title: "Underline", icon: "underline", format: "underline"},
+                        {title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
+                        {title: "Superscript", icon: "superscript", format: "superscript"},
+                        {title: "Subscript", icon: "subscript", format: "subscript"},
+                        {title: "Code", icon: "code", format: "code"}
+                    ]},
+                {title: "Blocks", items: [
+                        {title: "Paragraph", format: "p"},
+                        {title: "Blockquote", format: "blockquote"},
+                        {title: "Div", format: "div"},
+                        {title: "Pre", format: "pre"}
+                    ]},
+                {title: "Alignment", items: [
+                        {title: "Left", icon: "alignleft", format: "alignleft"},
+                        {title: "Center", icon: "aligncenter", format: "aligncenter"},
+                        {title: "Right", icon: "alignright", format: "alignright"},
+                        {title: "Justify", icon: "alignjustify", format: "alignjustify"}
+                    ]}
+            ],
+        });
+    </script>
+    <script>
+        $(" #submitbtn22").prop('disabled', true)
+        let a3 = false;
+        let a4 = false;
+        let a5 = false;
+        if($('#title').val()!=""){
+            a3=true;
+        }
+        if($('#quantity').val()!=""){
+            a4=true;
+        }
+        if($("#price").val()!=""){
+            a5=true;
+        }
+        $('#title').on("change", function () {
+            if ($(this).val() == "") {
+                a3 = false;
+                $('#title').addClass('is-invalid')
+                $('#title').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a3 = true;
+                $('#title').removeClass('is-invalid')
+                $('#title').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
+        $('#quantity').on("change", function () {
+            if ($(this).val() == "") {
+                a4 = false;
+                $('#quantity').addClass('is-invalid')
+                $('#quantity').removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a4 = true;
+                $('#quantity').removeClass('is-invalid')
+                $('#quantity').addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        })
+
+        $("#price").on("change", function () {
+            if ($(this).val() == "") {
+                a5 = false;
+                $("#price").addClass('is-invalid')
+                $("#price").removeClass('is-valid')
+                $(" #submitbtn22").prop('disabled', true)
+            } else {
+                a5 = true;
+                $("#price").removeClass('is-invalid')
+                $("#price").addClass('is-valid')
+                if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                    $(" #submitbtn22").prop('disabled', false)
+                }
+            }
+        });
+    </script>
+    <script>
+        $('#no').click(function (){
+            $('#confirm-modal').modal('hide');
+
+        })
+        $('#close').click(function (){
+            $('#confirm-modal').modal('hide');
+        })
+        $('#submitbtn22').click(function (){
+            $('#confirm-modal').modal('show');
+        });
+        function myGreeting(){
+            location.reload();
+        }
+    </script>
+    <!--<script>
+        $(document).ready(function() {
+            var i=1;
+            $("#input-700").fileinput({
+                overwriteInitial: false,
+                validateInitialCount: true,
+                initialPreviewAsData: true,
+                previewFileType: "image",
+                browseClass: "btn btn-success",
+                browseLabel: "Chọn hình",
+                browseIcon: "<i class=\"bi-file-image\"></i> ",
+                removeClass: "btn btn-danger",
+                removeLabel: "Xóa",
+                removeIcon: "<i class=\"bi-trash\"></i> ",
+                uploadClass: "btn btn-info",
+                uploadLabel: "Upload hình",
+                uploadIcon: "<i class=\"bi-upload\"></i> ",
+                uploadUrl: "/admin/upload-image-product",
+                initialPreviewConfig: [
+                    {
+                        caption: "People-1.jpg",
+                        description: 'This is a representative placeholder description for this image.',
+                        size: 576237,
+                        width: "120px",
+                        url: "/site/file-delete",
+                        key: 1
+                    },
+                ],
+                theme: 'fa',
+                language: 'vi',
+                /*  allowedFileExtensions: ['jpg'],*/
+            }).on('fileuploaded', function (e, params) {
+                $.post("/admin/post-image-sirv",{},function (data){
+
+                })
+                /*console.log(params.response.filename)
+                if (params.response.filename.includes("1")) {
+                    console.log(params.response.detail);
+                    console.log("1");
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image1"},
+                        success: function (data) {
+                            $("#image1").replaceWith(data);
+                        },
+                        err: function (xhr, ajaxOptions, thrownError) {
+                            alert("Lỗi")
+                        }
+                    })
+                } else if (params.response.filename.includes("2")) {
+                    console.log(params.response.detail);
+                    console.log("2");
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image2"},
+
+                        success: function (data) {
+                            $("#image2").replaceWith(data)
+                        },
+                        err: function (xhr, ajaxOptions, thrownError) {
+                            alert("Lỗi")
+                        },
+                    })
+                } else if (params.response.filename.includes("3")) {
+                    console.log(params.response.detail);
+                    console.log("3");
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "/admin/geturl",
+                        data: {url: params.response.detail, id: "image3"},
+                        success: function (data) {
+                            $("#image3").replaceWith(data);
+                            console.log(data);
+                        },
+                        err: function (xhr, ajaxOptions, thrownError) {
+                            alert("Lỗi")
+                        }
+                    })
+                }*/
+            });
+        });
+    </script>-->
+    <script>
+        $("input[data-type='currency']").on({
+            keyup: function() {
+                formatCurrency($(this));
+            },
+            blur: function() {
+                formatCurrency($(this), "blur");
+            }
+        });
+        function formatNumber(n) {
+            // format number 1000000 to 1,234,567
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+        function formatCurrency(input, blur) {
+            // appends $ to value, validates decimal side
+            // and puts cursor back in right position.
+            // get input value
+            var input_val = input.val();
+            // don't validate empty input
+            if (input_val === "") { return; }
+            // original length
+            var original_len = input_val.length;
+            // initial caret position
+            var caret_pos = input.prop("selectionStart");
+            // check for decimal
+            if (input_val.indexOf(".") >= 0) {
+                // get position of first decimal
+                // this prevents multiple decimals from
+                // being entered
+                var decimal_pos = input_val.indexOf(".");
+                // split number by decimal point
+                var left_side = input_val.substring(0, decimal_pos);
+                var right_side = input_val.substring(decimal_pos);
+                // add commas to left side of number
+                left_side = formatNumber(left_side);
+                // validate right side
+                right_side = formatNumber(right_side);
+                // On blur make sure 2 numbers after decimal
+                if (blur === "blur") {
+                    right_side += "00";
+                }
+                // Limit decimal to only 2 digits
+                right_side = right_side.substring(0, 2);
+                // join number by .
+                input_val =  + left_side + "." + right_side;
+            } else {
+                // no decimal entered
+                // add commas to number
+                // remove all non-digits
+                input_val = formatNumber(input_val);
+                input_val =  input_val +" VNĐ";
+                // final formatting
+                /* if (blur === "blur") {
+                     input_val += ".00";
+                 }*/
+            }
+            // send updated string to input
+            input.val(input_val);
+            // put caret back in the right position
+            var updated_len = input_val.length;
+            caret_pos = updated_len - original_len + caret_pos;
+            input[0].setSelectionRange(caret_pos, caret_pos);
+        }
+    </script>
+    <script>
+       /* $('#submitUpdate').click(function (){
+            const message = tinyMCE.activeEditor.getContent();
+            $.post("/admin/add-product",{
+                title:$('#title').val(),
+                des:message,
+                quantity:$('#quantity').val(),
+                price:$("#price").val(),
+                statusproduct:$("#status option:selected").val(),
+                category:$("#category option:selected").val()},function (data,status){
+                if(data){
+                    $('#confirm-modal').modal('hide');
+                    $('#success-modal').modal('show');
+                    $('#success-modal').click(function (e) {
+                        $('#success-modal').modal('toggle');
+                        location.reload();
+                    });
+                    const myTimeout = setTimeout(myGreeting, 5000);
+                    /!*   console.log(data.update)
+                       location.reload();*!/
+                }
+            });
+        })*/
+    </script>
+{{/section}}

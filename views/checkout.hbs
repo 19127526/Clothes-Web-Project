@@ -1,0 +1,291 @@
+
+
+
+
+<main>
+    <form id="postcheckout" method="post">
+    <section class="h-100 h-custom p-4">
+        <div class="card shadow-2-strong mb-5 mb-lg-0 p-3" style="border-radius: 16px;">
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">Filling information</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">First name</label>
+                            <input  readonly type="text" class="form-control" name="firstname" id="firstName" placeholder="" value="{{userList.firstname}}" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Last name</label>
+                            <input readonly type="text" class="form-control" id="lastName" name="lastname" placeholder="" value="{{userList.lastname}}" required="">
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input  type="email" class="form-control" id="email" name="email" value="{{userList.email}}" placeholder="you@example.com">
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input  type="text" class="form-control" id="address" name="address" value="{{userList.address}}" placeholder="Quan 1" required="">
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="phone">Phone number</label>
+                        <input  type="text" class="form-control" id="phone" name="phonenumber" value="{{userList.phonenumber}}" placeholder="ex: 123456789" required="">
+                        <div class="invalid-feedback">
+                            Please enter your phone number
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="card shadow-2-strong mb-5 mb-lg-0 mt-5 p-3" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <label>Payment Options</label>
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
+                        <form>
+                            <div class="d-flex flex-row pb-3">
+                                <div class="d-flex align-items-center pe-2">
+                                    <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioNoLabel"
+                                            id="radioNoLabel1v"
+                                            value="1"
+                                            aria-label="..."
+                                            checked
+                                    />
+                                </div>
+                                <div class="rounded border w-100 p-3">
+                                    <p class="d-flex align-items-center mb-0">
+                                        <i class="fab fa-cc-mastercard fa-2x text-dark p-2" id="cod"></i>Credit
+                                        Card
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="d-flex align-items-center pe-2">
+                                    <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioNoLabel"
+                                            id="radioNoLabel3v"
+                                            value="2"
+                                            aria-label="..."
+                                    />
+                                </div>
+                                <div class="rounded border w-100 p-3">
+                                    <p class="d-flex align-items-center mb-0">
+                                        <i class="fab fa-cc-paypal fa-2x fa-lg text-dark p-2" id="paypal"></i> PayPal
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                    <p class="mb-2">Subtotal</p>
+                                    <p class="mb-2" id="Subtotal" >{{format_number subtotal}}</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                    <p class="mb-0">Shipping</p>
+                                    <p class="mb-0"id="Shipping">{{format_number shipping}}</p>
+                                </div>
+
+                                <hr class="my-4">
+
+                                <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                    <p class="mb-2">Total (tax included)</p>
+                                    <p class="mb-2" id="Totaltax">0 VNĐ</p>
+                                </div>
+
+                                <button type="submit" id="buttonTotaltax" class="btn btn-primary btn-block btn-lg" href="#myModal" data-toggle="modal">
+                                    <div class="d-flex justify-content-between text-center">
+                                        <span>Confirm</span>
+                                        <span id="btnTotaltax" >0 VNĐ</span>
+                                    </div>
+                                </button>
+                                <div class="text-center">
+                                    <!-- Open Modal -->
+                                    <div id="myModal" class="modal fade" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-confirm">
+                                            <div class="modal-content">
+                                                <div class="modal-header justify-content-center">
+                                                    <div class="icon-box">
+                                                        <img src="../public/assets/img/logo/checked.png" style="width: 80px;">
+                                                    </div>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    <h4>Great!</h4>
+                                                    <p>Congratulations on your successful payment!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-6">
+                                <div class="cart_inner" style="width:1000px; height:400px; overflow: auto;">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{#each cartList}}
+                                                <tr id="cartproduct">
+                                                    <td>
+                                                        <div class="media">
+                                                            <div class="d-flex">
+                                                                <img src="{{this.Image}}" alt="" />
+                                                            </div>
+                                                            <div class="media-body">
+                                                                <p>{{this.ProName}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p id="price">{{format_number this.Price}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <div class="product_count">
+                                                            <div class="def-number-input number-input safari_only mb-0">
+                                                                <p id="quantity">{{this.Amount}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p id="size">{{this.Size}}</p>
+                                                    </td>
+                                                    <td >
+                                                        <p id="{{this.OrderID}}" name="total" >{{format_number this.Total}}</p>
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </form>
+        <!-- Shoping Cart Section End -->
+
+    </main>
+
+
+{{#section 'js'}}
+    <script type="text/javascript" >
+        function formatMoney(n) {
+            return (Math.round(n * 100) / 100).toLocaleString() +" VNĐ";
+        }
+        let total=document.getElementById("Totaltax")
+        let shipping={{shipping}}
+        let subtotal={{subtotal}};
+        const sub=shipping+subtotal
+        total.textContent=formatMoney(sub)
+        let btntotal=document.getElementById("btnTotaltax");
+        btntotal.textContent=formatMoney(sub)
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#buttonTotaltax").prop('disabled', false)
+            let a3 = false;
+            let a4 = false;
+            let a5 = false;
+
+            if($("#email").val()!=""){
+                a3=true;
+            }
+            if($("#address").val()!=""){
+                a4=true;
+            }
+            if($("#phone").val()!=""){
+                a5=true;
+            }
+            $("#email").on("change", function () {
+                if ($(this).val() == "") {
+                    a3 = false;
+                    $("#email").addClass('is-invalid')
+                    $("#email").removeClass('is-valid')
+                    $("#buttonTotaltax").prop('disabled', true)
+                } else {
+                    a3 = true;
+                    $("#email").removeClass('is-invalid')
+                    $("#email").addClass('is-valid')
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                        $("#buttonTotaltax").prop('disabled', false)
+                    }
+                }
+            })
+            $("#address").on("change", function () {
+                if ($(this).val() == "") {
+                    a4 = false;
+                    $("#address").addClass('is-invalid')
+                    $("#address").removeClass('is-valid')
+                    $("#buttonTotaltax").prop('disabled', true)
+                } else {
+                    a4 = true;
+                    $("#address").removeClass('is-invalid')
+                    $("#address").addClass('is-valid')
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                        $("#buttonTotaltax").prop('disabled', false)
+                    }
+                }
+            })
+
+            $("#phone").on("change", function () {
+                if ($(this).val() == "") {
+                    a5 = false;
+                    $("#phone").addClass('is-invalid')
+                    $("#phone").removeClass('is-valid')
+                    $("#buttonTotaltax").prop('disabled', true)
+                } else {
+                    a5 = true;
+                    $("#phone").removeClass('is-invalid')
+                    $("#phone").addClass('is-valid')
+                    if ( (a3 === true) && (a4 === true) && (a5 === true)) {
+                        $("#buttonTotaltax").prop('disabled', false)
+                    }
+                }
+            });
+            $("#buttonTotaltax").click(function (){
+                var selected = $("input[type='radio'][name='radioNoLabel']:checked").val();
+                console.log(selected)
+                if(selected==='2'){
+                    $("#postcheckout").attr('action', '/checkoutpaypal');
+                    console.log("hehe")
+                }
+                else{
+                    $("#postcheckout").attr('action', '/checkout');
+                }
+            })
+        });
+    </script>
+{{/section}}
