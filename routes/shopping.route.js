@@ -7,6 +7,7 @@ import {
   categoryView,
   productView,
   aboutView,
+  getProducts,
 } from "../controllers/shopping.controller.js";
 
 import shoppingModel from "../models/shopping.model.js";
@@ -18,6 +19,8 @@ import adminModel from "../models/admin.model.js";
 router.get("/", homeView);
 
 router.get("/shop", shopView);
+
+router.get("/products", getProducts);
 
 router.get("/category/:CatID", categoryView);
 
