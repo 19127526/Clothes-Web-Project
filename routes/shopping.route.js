@@ -15,6 +15,10 @@ import usersModel from "../models/users.model.js";
 import { protectAdminRoute, protectRoute} from "../middlewares/auth/protect.js";
 import BillID from "../middlewares/auth/Bill.js"
 import adminModel from "../models/admin.model.js";
+import multer from "multer";
+import fs from "fs";
+import request from "request";
+import getToken from "../utils/sirv.js";
 
 router.get("/", homeView);
 
@@ -194,7 +198,6 @@ router.post("/checkout", protectRoute,async (req,res)=> {
     promise.then(function (data){
       const promise3=new Promise(async (resolve,reject)=>{
       const total=await shoppingModel.totalOrder(res.locals.billid);
-      console.log(total[0].total);
       for (let i=0;i<total[0].total;i++){
         const select= await shoppingModel.selectProductAfterOrder(res.locals.billid);
         let update=await shoppingModel.updateQuantityProduct(select[i]);
@@ -258,7 +261,6 @@ router.get("/history",protectRoute,async (req,res)=>{
 
 
 router.post("/history/detail/:BillID",protectRoute,async (req,res)=>{
-  console.log(req.params.BillID);
   const temp=await adminModel.findDetailOrder(req.params.BillID);
   temp.forEach(u => {
     if(u.SizeID===u.SizeS){
@@ -274,11 +276,141 @@ router.post("/history/detail/:BillID",protectRoute,async (req,res)=>{
       u.Size="XL"
     }
   });
-  console.log(temp);
   res.render("detail-bill",{
     list:temp[0]
   })
 
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const tempDir=[];
+const DirNew=[];
+
+
+function renamefile(old,New){
+  fs.rename(old, New,function (err){
+    if(err){
+
+    }
+    else{
+    }
+  });
+}
+
+
+
+let userid;
+router.post("/post-avatar-sirv",async function(req,res){
+
+  const promise=new Promise((resolve,reject)=>{
+    const token=getToken()
+    resolve(token)
+  });
+  userid=req.session.passport.user.id;
+  promise.then(function (data){
+    for (let i = 0; i < DirNew.length; i++) {
+      readAvatarProfile(DirNew[i], data,req.body)
+    }
+  })
+})
+
+function readAvatarProfile(dir,token,UserID){
+  const promise=new Promise((resolve,reject)=> {
+    fs.readFile("./public/temp/" + dir, (err, data2) => {
+      if (err) {
+        throw err
+      } else {
+        var options = {
+          method: 'POST',
+          url: 'https://api.sirv.com/v2/files/upload',
+          qs: {filename: '/profile/'+ dir},
+          headers: {
+            'content-type': 'image/jpeg',
+            authorization: 'Bearer' + token
+          },
+          body: data2
+        };
+        request(options, function (error, response, body) {
+          if (error) throw error;
+          else resolve("./public/temp/" + dir)
+        });
+      }
+    });
+
+  });
+  promise.then(async function (data){
+    const update=await usersModel.updateAvatar(userid,dir);
+    if (fs.existsSync(data)) {
+      tempDir.splice(0,tempDir.length)
+      DirNew.splice(0,tempDir.length)
+      fs.unlinkSync(data);
+    }
+  })
+}
+
+
+
+
+
+
+
+router.post("/upload-avatar-profile",protectRoute,async function(req,res){
+    const storage = multer.diskStorage({
+      destination: async function (req, file, cb) {
+        if ((file.mimetype == "image/jpg")
+            || (file.mimetype == "image/png")
+            || (file.mimetype == "image/jpeg")) {
+          cb(null, 'public/temp');
+        } else {
+          cb(new Error('not Image'), false);
+        }
+      },
+      filename: async function (req, file, cb) {
+        tempDir.push("./public/temp/" + file.originalname);
+        cb(null, file.originalname);
+
+      }
+    });
+    const upload = multer({storage: storage})
+    upload.array('image', 5)(req, res, function (err) {
+      if (err) {
+      } else {
+        let index = 1;
+        let email = req.session.passport.user.email;
+        email = email.toString();
+        email = email.substring(0, email.lastIndexOf("@"));
+        const promise = new Promise((resolve, reject) => {
+          for (let i = 0; i < tempDir.length; i++) {
+            if (fs.existsSync(tempDir[i])) {
+              renamefile(tempDir[i], "./public/temp/" + email + ".jpg")
+              DirNew.push(email + ".jpg")
+            }
+            index += 1;
+          }
+          resolve("data")
+        });
+        promise.then(function (data) {
+          return res.send(true);
+        })
+      }
+    })
+});
+
+router.get("/profile/change-avatar",protectRoute,async function(req,res){
+  return res.render("change-avatar");
 });
 export default router;
 

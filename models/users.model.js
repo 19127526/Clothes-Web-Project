@@ -58,6 +58,15 @@ export default {
     const listProduct = await db("users").join('statususer','statususer.IdStatus','users.type').limit(perPage).offset(offset * perPage);
     return { pagination, listProduct };
   },
+  async updateAvatar(userid,dir){
+    const link="https://encinver.sirv.com/profile/"+dir;
+    console.log(link);
+    console.log("userid"+userid)
+    const list= await db("users").where("users.UserID", userid).update({
+      image:link.toString()
+    });
+    return list;
+  }
   /*async findAllAccount(){
     const list=await db('users').select('users.*');
     return list

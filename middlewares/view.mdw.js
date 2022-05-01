@@ -50,6 +50,9 @@ export default function (app) {
         timeBill(val){
           return moment(val).format("HH:mm:ss DD/MM/YYYY");
         },
+        convertDateToString(val){
+          return val.toString();
+        }
       },
       extname: ".hbs",
     })

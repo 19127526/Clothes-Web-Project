@@ -18,7 +18,7 @@ import userRouter from "./routes/user.route.js";
 import vnpayRouter from "./routes/paypal.route.js";
 
 const app = express();
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3007;
 
 app.use(flash());
 //app.use(morgan("dev"));

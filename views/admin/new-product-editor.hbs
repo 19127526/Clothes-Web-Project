@@ -88,7 +88,9 @@
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </div>
-                                    <div class="image" id="image3" style="background-image:url('{{list.Image}}')"></div>
+                                    <a href="http://google.com">
+                                        <img class="Sirv" data-src="{{list.Image}}" data-options="autostart:created" style="width: 400px;height: 400px">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -473,7 +475,9 @@
                     total:{{total}}
                 }, function (data) {
                     if(data){
-
+                        setTimeout(function (){
+                            location.reload()
+                        },7000);
                     }
                 });
             });

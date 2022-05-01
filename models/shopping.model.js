@@ -197,7 +197,7 @@ export default {
     })
     return list;
   },
-  async changeProductInCartGuest(){
+  async changeProductInCartGuest(user){
     const list=await db("orders").where('UserID',user).update({
       UserID: -1,
     })
@@ -270,6 +270,7 @@ export default {
   },
 
 
+
   async findAllOrderByID(id) {
     const list = await db("orders").join("products", "products.ProID", "orders.ProID").join('bill','bill.BillID','orders.BillID').join('statusbill','statusbill.idstatus','orders.status').andWhere(function (){
       this.where('UserID',id);
@@ -313,4 +314,15 @@ export default {
             /* list2.product=list;*/
             return {list2,count};
     },
+    async findProductRelatedID(id){
+        const sql=`select c.* FROM products  as c
+                    where c.CatID="${id}"
+                   ORDER BY RAND ()
+                    limit 3
+
+        `
+        const raw_data= await db.raw(sql)
+        return raw_data[0]
+    }
+
 };

@@ -37,7 +37,10 @@ const categoryView = async function (req, res) {
 const productView = async function (req, res) {
   const proID = req.params.ProID || 0;
   const product = await shoppingModel.findByProductID(proID);
-  res.render("product", { product });
+  console.log(product.CatID);
+  const productRelated=await shoppingModel.findProductRelatedID(product.CatID);
+  console.log(productRelated)
+  res.render("product", { product ,related:productRelated });
 };
 
 const aboutView = function (req, res) {
@@ -45,6 +48,7 @@ const aboutView = function (req, res) {
 };
 
 const getProducts = async function (req, res) {
+  console.log("hehe")
   const perPage = req.query.limit;
   const page = req.query.page;
   const order = req.query.order;

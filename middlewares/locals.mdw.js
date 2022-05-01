@@ -32,15 +32,17 @@ export default function (app) {
     res.locals.billid = BillID.getValue();
     if (req.session.passport && req.session.passport.user) {
       res.locals.user = req.session.passport.user;
+      console.log(req.session.passport.user)
       const total=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
-      if(total[0].total!==0){
+
+      if(total[0].total!=0){
           const promise=new Promise(async (resolve, reject) => {
             try {
               const changeAuthen = await shoppingModel.changeProductInCartAuthen(req.session.passport.user.id);
+
               resolve("done");
             }
               catch (e){
-
                   const totalProDuctInCart=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
                   res.locals.cart=totalProDuctInCart[0];
               }
@@ -51,9 +53,8 @@ export default function (app) {
             res.locals.cart = totalProDuctInCart[0];
           }
           catch (e){
-
             const promise=new Promise(async (resolve, reject) => {
-              const changeAuthen  = await shoppingModel.changeProductInCartGuest()
+              const changeAuthen  = await shoppingModel.changeProductInCartGuest(req.session.passport.user.id)
               resolve("done");
             });
             promise.then(async function () {

@@ -56,8 +56,8 @@ router.get("/category/editproduct/:proID"/*,,protectAdminRoute*/, async function
     const TempName=image.substring(pos,image.lastIndexOf("/"));
     const pos2=TempName.lastIndexOf("/");
     const ResultName=TempName.substring(pos2+1,TempName.length)
-    console.log(ResultName)
- /*   https://mascaper.sirv.com/Images/1/6/(1).jpg*/
+    console.log(ResultName);
+    console.log(productDetail)
     res.render("admin/new-product-editor",{
         layout:'layoutAdmin.hbs',
         list:productDetail,
@@ -385,9 +385,14 @@ router.post("/edit-image-sirv",async function(req,res){
         resolve(token)
     });
     promise.then(function (data){
-        for (let i = 0; i < DirNew.length; i++) {
-            readImageEdit(DirNew[i], data,req.body)
-        }
+        const promise2=new Promise((resolve,reject)=> {
+            for (let i = 0; i < DirNew.length; i++) {
+                readImageEdit(DirNew[i], data, req.body)
+            }
+        });
+        promise2.then(function (){
+            return res.send(true)
+        })
     })
 })
 
@@ -416,6 +421,7 @@ function readImageEdit(dir,token,CatPro){
 
     });
     promise.then(async function (data){
+        const updateImageProduct=await AdminModel.updateImageProduct(CatPro);
         if (fs.existsSync(data)) {
             tempDir.splice(0,tempDir.length)
             DirNew.splice(0,tempDir.length)

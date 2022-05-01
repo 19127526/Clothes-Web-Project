@@ -152,20 +152,17 @@
 <div class="col-12  " style="padding: 15px 0;border: solid 1px #ccc;margin-bottom: 20px;background: #f6f6f6;text-align: center;">
     <h1>Related Product</h1>
     <div id="dsSanPhamLienQuan" class="owl-carousel owl-theme owl-loaded owl-drag">
-        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1455px; padding-left: 15px; padding-right: 15px;"><div class="owl-item active" style="width: 475px;"><div class="vitem">
-            <a href="/shop/gu-don-gian/quan-short-on-gian-m12-0020649?c=Nâu Đậm">
-                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/06fcaed2-968d-a300-1eff-0018f4b9818e.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
-            </a>
-        </div></div><div class="owl-item" style="width: 475px;"><div class="vitem">
-            <a href="/shop/gu-don-gian/ao-thun-co-tron-toi-gian-ver12-0020772?c=Trắng">
-                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/8d37fdf7-e945-0200-a992-0019046480a2.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
-            </a>
-        </div></div><div class="owl-item" style="width: 475px;"><div class="vitem">
-            <a href="/shop/gu-don-gian/ao-thun-co-tron-toi-gian-ver12-0020774?c=Xanh Đậu Nhạt">
-                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/b163af6f-1dc8-1e00-2494-001904654d57.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
-            </a>
-
-        </div></div></div></div><div class="owl-nav disabled"><div class="owl-prev">prev</div><div class="owl-next">next</div></div><div class="owl-dots" style="position: absolute; bottom: 5px; left: calc(50% - 0px);"><div class="owl-dot active"><span style="width: 5px; height: 5px;"></span></div><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div></div></div>
+        <div class="owl-stage-outer">
+            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1455px; padding-left: 15px; padding-right: 15px;">
+                {{#each related}}
+                    <div class="owl-item active" style="width: 475px;"><div class="vitem">
+                        <a href="/product/{{this.ProID}}">
+                            <img class="img-responsive" src="{{this.Image}}" alt="">
+                        </a>
+                    </div>
+                    </div>
+                {{/each}}
+            </div></div><div class="owl-nav disabled"><div class="owl-prev">prev</div><div class="owl-next">next</div></div><div class="owl-dots" style="position: absolute; bottom: 5px; left: calc(50% - 0px);"><div class="owl-dot active"><span style="width: 5px; height: 5px;"></span></div><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div></div></div>
 </div>
 
 
