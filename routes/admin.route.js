@@ -27,8 +27,7 @@ const router = express.Router();
 router.get("/", protectAdminRoute, async function (req,res){
     res.render('admin/home',{
         layout:'layoutAdmin.hbs',
-        productSold,
-        totalUSer
+       
 
     })
 });
