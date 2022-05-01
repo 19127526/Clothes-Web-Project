@@ -107,6 +107,7 @@ export default {
       type:entity.type
     })
   },
+
   async findBillDetailByBillID(billid){
     const list2 = await db("bill")
         .join('statusbill','statusbill.idstatus','bill.Status')

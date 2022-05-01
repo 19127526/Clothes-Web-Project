@@ -24,9 +24,12 @@ import AdminModel from "../models/admin.model.js";
 
 
 const router = express.Router();
-router.get("/",/* protectAdminRoute,*/ async function (req,res){
+router.get("/", protectAdminRoute, async function (req,res){
     res.render('admin/home',{
         layout:'layoutAdmin.hbs',
+        productSold,
+        totalUSer
+
     })
 });
 router.get("/category/product/:proID"/*,,protectAdminRoute*/, async function (req,res){
@@ -56,8 +59,6 @@ router.get("/category/editproduct/:proID"/*,,protectAdminRoute*/, async function
     const TempName=image.substring(pos,image.lastIndexOf("/"));
     const pos2=TempName.lastIndexOf("/");
     const ResultName=TempName.substring(pos2+1,TempName.length)
-    console.log(ResultName);
-    console.log(productDetail)
     res.render("admin/new-product-editor",{
         layout:'layoutAdmin.hbs',
         list:productDetail,
@@ -132,9 +133,7 @@ router.get("/account-management"/*,,protectAdminRoute*/, async function (req,res
         if(u.UserID==user.id){
             u.idAdmin=user.id;
         }
-    })
-    console.log(listEmail.listProduct)
-    console.log(listEmail.listProduct.idAdmin)
+    });
     const totalEmail= await usersModel.findTotalAccount().then(async (u)=>{
         return res.render('admin/account_management',{
             layout:'layoutAdmin.hbs',
@@ -320,7 +319,6 @@ router.post("/upload-image-product",async function(req,res){
             const promise=new Promise((resolve,reject)=>{
             for (let i=0;i<tempDir.length;i++){
                 if(fs.existsSync(tempDir[i])){
-                    console.log(index)
                     renamefile(tempDir[i],"./public/temp/("+index+")"+".jpg")
                     DirNew.push("("+index+")"+".jpg")
                 }
@@ -364,8 +362,6 @@ router.post("/add-product",async function(req,res){
         resolve({ProID:proID[0],CatID:list.category})
     });
     promise.then(function (data){
-        console.log(data.ProID);
-        console.log(data.CatID)
         res.render("admin/item-add-image",{
             layout:'layoutAdmin.hbs',
             catID:data.CatID,

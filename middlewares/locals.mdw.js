@@ -1,5 +1,6 @@
 import shoppingModel from "../models/shopping.model.js";
 import BillID from "../middlewares/auth/Bill.js"
+import usersModel from "../models/users.model.js";
 var something = (function() {
   var executed = false;
   return async function() {
@@ -31,7 +32,8 @@ export default function (app) {
     res.locals.lcCategories = rawData;
     res.locals.billid = BillID.getValue();
     if (req.session.passport && req.session.passport.user) {
-      res.locals.user = req.session.passport.user;
+      const user=await usersModel.getUserById(req.session.passport.user.id);
+      res.locals.user=user;
       const total=await shoppingModel.totalProDuctInCartGuest(BillID.getValue());
       if(total[0].total!=0){
           const promise=new Promise(async (resolve, reject) => {

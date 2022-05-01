@@ -69,46 +69,6 @@
                         </div>
                     </li>
                     {{#each list}}
-                        {{#if (equal this.idAdmin this.UserID)}}
-                            <li class="item" id="{{this.UserID}}">
-                                <div class="item-row">
-                                    <div class="item-col fixed item-col-check">
-                                        <label class="item-check" id="select-all-items">
-                                            <input type="checkbox" class="checkbox">
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                    <div class="item-col fixed pull-left item-col-title">
-                                        <div class="item-heading">Email</div>
-                                        <div>
-                                            <a  class="" href="/admin/account-detail/{{this.UserID}}">
-                                                <h4 class="item-title"> {{this.email}}</h4>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="item-col item-col-category no-overflow">
-                                        <div class="item-heading">Trạng thái</div>
-                                        <div class="no-overflow">
-                                            <a id="{{this.IdStatus}}">{{this.Name}} (me)</a>
-                                        </div>
-                                    </div>
-                                    <div class="item-col item-col-author">
-                                        <div class="item-heading">Name User</div>
-                                        <div class="no-overflow">
-                                            <a >{{ format_name this.firstname this.lastname}}</a>
-                                        </div>
-                                    </div>
-                                    <div class="item-col item-col-date">
-                                        <div class="item-heading">Phone Number</div>
-                                        <div class="no-overflow"> {{this.phonenumber}} </div>
-                                    </div>
-                                    <div class="item-col fixed item-col-actions-dropdown">
-                                        <div class="item-actions-block"  id="BlockAccount">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        {{else}}
                             <li class="item" id="{{this.UserID}}">
                                 <div class="item-row">
                                     <div class="item-col fixed item-col-check">
@@ -156,7 +116,6 @@
                                     </div>
                                 </div>
                             </li>
-                        {{/if}}
 
                     {{/each}}
                     {{{paginateHelper pagination paginationClass="pagination pagination-lg justify-content-center"}}}
@@ -243,7 +202,6 @@
                     .getElementsByClassName("item-col fixed item-col-actions-dropdown")[0]
                     .getElementsByClassName("item-actions-block")[0].getElementsByClassName('remove')[0]
                     .addEventListener("click",function (){
-                        console.log(this.id)
                         if(this.id==='unlock'){
                             $.post("/admin/setting-account",{
                                 id:{{this.UserID}},

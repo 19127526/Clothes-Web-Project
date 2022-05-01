@@ -56,6 +56,10 @@ export default {
     const listProduct = await db("users").join('statususer','statususer.IdStatus','users.type').limit(perPage).offset(offset * perPage);
     return { pagination, listProduct };
   },
+  async findAllAcount(){
+    const listProduct = await db("users").join('statususer','statususer.IdStatus','users.type');
+    return listProduct
+  },
   async updateAvatar(userid,dir){
     const link="https://encinver.sirv.com/profile/"+dir;
     console.log(link);
