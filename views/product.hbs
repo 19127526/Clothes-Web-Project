@@ -1,24 +1,24 @@
-<body class="mb-5">
+
+<body class="mb-5" style="background-color: white">
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0 ">
             <div id="mdb-lightbox-ui"></div>
             <div class="mdb-lightbox">
                 <div class="row product-gallery mx-1">
                     <div class="col-12 mb-0">
-                        <figure class="view overlay rounded z-depth-1 main-img">
-                            <a data-size="710x823">
-                                <img src="{{this.product.Image}}" class="img-fluid z-depth-1 fill" >
-                            </a>
-                        </figure>
+                        <div class="single_product_img">
+                            <img src="{{this.product.Image}}" alt="#" class="img-fluid">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <h5>{{this.product.ProName}}</h5>
+            <h5 id="ProName">{{this.product.ProName}}</h5>
             <p class="mb-2 text-muted text-uppercase small">Loại: {{this.product.CatName}}</p>
             <p class="mb-2 text-muted text-uppercase small">Số lượng: {{this.product.Quantity}}</p>
             <p class="mb-2 text-muted text-uppercase small">Giá tiền: {{format_number this.product.Price}}</p>
+            <p class="mb-2 text-muted text-uppercase small">Trạng thái: {{this.product.NameStatus}}</p>
             <p><span class="mr-1"><strong>Mô tả sản phẩm</strong></span></p>
             <p class="pt-1">{{{this.product.FullDes}}}</p>
         </div>
@@ -38,7 +38,7 @@
                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn-outline-dark">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </button>
-                            <input class="quantity" min="0" name="quantity" value="1" type="number">
+                            <input class="quantity" min="0" id="quantity" name="quantity" value="1" type="number">
                             <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn-outline-dark">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
@@ -47,20 +47,25 @@
                     <td>
                         <div class="mt-1">
                             <div class="form-check form-check-inline pl-0">
-                                <input type="radio" class="form-check-input" id="small" name="materialExampleRadios"
+                                <input type="radio" class="form-check-input" id="small" value="{{this.product.SizeS}}" name="materialExampleRadios"
                                        checked>
                                 <label class="form-check-label small text-uppercase card-link-secondary"
                                        for="small">Small</label>
                             </div>
                             <div class="form-check form-check-inline pl-0">
-                                <input type="radio" class="form-check-input" id="medium" name="materialExampleRadios">
+                                <input type="radio" class="form-check-input" id="medium" value="{{this.product.SizeM}}" name="materialExampleRadios">
                                 <label class="form-check-label small text-uppercase card-link-secondary"
                                        for="medium">Medium</label>
                             </div>
                             <div class="form-check form-check-inline pl-0">
-                                <input type="radio" class="form-check-input" id="large" name="materialExampleRadios">
+                                <input type="radio" class="form-check-input" id="large" value="{{this.product.SizeL}}" name="materialExampleRadios">
                                 <label class="form-check-label small text-uppercase card-link-secondary"
                                        for="large">Large</label>
+                            </div>
+                            <div class="form-check form-check-inline pl-0">
+                                <input type="radio" class="form-check-input" id="Extralarge" value="{{this.product.SizeXL}}" name="materialExampleRadios">
+                                <label class="form-check-label small text-uppercase card-link-secondary"
+                                       for="large">Extra Large</label>
                             </div>
                         </div>
                     </td>
@@ -68,9 +73,207 @@
                 </tbody>
             </table>
         </div>
-        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+            {{#if (checkProDuctStatus this.product.IdStatus)}}
+                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                <button type="button" id="addtoCart" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
+            {{else}}
+            {{/if}}
+
+        </div>
+    </div>
+    <div class="row" >
+        <div class="container mt-5 mb-5" >
+            <div class="d-flex justify-content-center row">
+                <div class="d-flex flex-column col-md-8" >
+                    <div class="coment-bottom bg-white p-2 px-4" >
+                        <div class="d-flex flex-row add-comment-section mt-4 mb-4" >
+                            <div class="d-flex flex-row align-items-center commented-user">
+                                {{#if user}}
+                                    <h5 class="mr-2">{{user.firstname}} {{user.lastname}}</h5>
+                                {{else}}
+                                    <h5 class="mr-2">Vui lòng đăng nhập</h5>
+                                {{/if}}
+                            </div>
+                            <input type="text" id="contentComment" class="form-control mr-3" placeholder="Add comment">
+                            <button class="btn btn-primary btn btn-primary btn-md mr-1 mb-2"  id="commentbtn" type="button" style="width: 200px;" >Comment</button>
+                        </div>
+                        <div id="ajax"> </div>
+                        <div id="pagination-container">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+
+
+
+
 </body>
+
+
+
+
+<div class="modal fade" id="addCartSuccess" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Successfully added to cart</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editProfile" method="post">
+                <div class="container rounded bg-white mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mt-3">
+                                <div class="col-md-12 my-1">
+                                    <p>
+                                        Successfully added to cart
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-primary profile-button" type="submit" value="submit" formaction="/update_profile">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="col-12  " style="padding: 15px 0;border: solid 1px #ccc;margin-bottom: 20px;background: #f6f6f6;text-align: center;">
+    <h1>Related Product</h1>
+    <div id="dsSanPhamLienQuan" class="owl-carousel owl-theme owl-loaded owl-drag">
+        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1455px; padding-left: 15px; padding-right: 15px;"><div class="owl-item active" style="width: 475px;"><div class="vitem">
+            <a href="/shop/gu-don-gian/quan-short-on-gian-m12-0020649?c=Nâu Đậm">
+                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/06fcaed2-968d-a300-1eff-0018f4b9818e.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
+            </a>
+        </div></div><div class="owl-item" style="width: 475px;"><div class="vitem">
+            <a href="/shop/gu-don-gian/ao-thun-co-tron-toi-gian-ver12-0020772?c=Trắng">
+                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/8d37fdf7-e945-0200-a992-0019046480a2.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
+            </a>
+        </div></div><div class="owl-item" style="width: 475px;"><div class="vitem">
+            <a href="/shop/gu-don-gian/ao-thun-co-tron-toi-gian-ver12-0020774?c=Xanh Đậu Nhạt">
+                <img class="img-responsive" src="https://cdn2.yame.vn/pimg/ao-thun-co-tron-toi-gian-ver12-0020773/b163af6f-1dc8-1e00-2494-001904654d57.jpg?w=540&amp;h=756&amp;c=true&amp;ntf=false" alt="">
+            </a>
+
+        </div></div></div></div><div class="owl-nav disabled"><div class="owl-prev">prev</div><div class="owl-next">next</div></div><div class="owl-dots" style="position: absolute; bottom: 5px; left: calc(50% - 0px);"><div class="owl-dot active"><span style="width: 5px; height: 5px;"></span></div><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div></div></div>
+</div>
+
+
+
+
+
+
+{{#section 'css'}}
+    <link rel="stylesheet" href="/public/assets/css/pagination.css">
+{{/section}}
+
+{{#section 'js'}}
+    <script src="/public/assets/js/pagination.min.js"></script>
+    <script>
+        let i=0;
+        $("#addtoCart").click(function (){
+            const cart=[
+                {
+                    product:{id:{{this.product.ProID}},category:"{{this.product.CatName}}",
+                        name:$("#ProName").text(),
+                        image:'{{this.product.Image}}',
+                        size:$("input[name=materialExampleRadios]:checked").val(),
+                        price:{{this.product.Price}},
+                    },
+                    quantity:($("#quantity").val())
+                }
+            ];
+            $.post("/getproductAuthen",{id:{{this.product.ProID}},category:"{{this.product.CatName}}",
+                name:$("#ProName").text(),
+                image:'{{this.product.Image}}',
+                size:$("input[name=materialExampleRadios]:checked").val(),
+                price:{{this.product.Price}},
+                quantity:($("#quantity").val()),
+            },function (data){
+                if(data) {
+                    $("#totalcart").replaceWith(data);
+                }
+            });
+        });
+        $('#commentbtn').click(function () {
+            $.getJSON('/comment', function (data) {
+                        try {
+                            if (!data) {
+                                alert("Vui lòng đăng nhập thì mới được comment!")
+                                $('#commentbtn').prop('disabled', true);
+                            } else {
+                                $('#commentbtn').prop('disabled', false);
+                                $.post("/product/comment", {
+                                    content: $("#contentComment").val(),
+                                    userid: true,
+                                    proID:{{product.ProID}} }, function (data, status) {
+                                    if (data) {
+                                        $.ajax({
+                                            async:false,
+                                            type:"GET",
+                                            url:"/product/"+{{product.ProID}}+"/hi",
+                                            success:function (data) {
+                                                alert("Bình luận thành công");
+                                                $("#contentComment").prop('value',"");
+                                            },
+                                            err:function (xhr,ajaxOptions,thrownError){
+                                                alert("Lỗi");
+                                            }
+                                        })
+                                    }
+                                });
+                            }
+                        }
+                        catch (e){
+                            alert("Vui lòng đăng nhập thì mới được comment!");
+                            $('#commentbtn').prop('disabled', true);
+                        }
+                    },
+            );
+        });
+        $("#pagination-container").pagination({
+            dataSource: function(done) {
+                $.ajax({
+                    type: "GET",
+                    url: "/product/"+{{product.ProID}}+"/hi",
+                    success: function(response) {
+                        done(response);
+                    }
+                });
+            },
+            pageSize: 5,
+            callback: function(data, pagination) {
+                let html = "";
+                for (item of data) {
+                    html += `
+                    <div class="commented-section mt-2 mx-5">
+                        <div class="d-flex flex-row align-items-center commented-user justify-content-between">
+                            <h5 class="mr-2">${item.firstname} ${item.lastname}</h5>
+                            <span class="mb-1 ml-2">${item.date}</span>
+                        </div>
+                        <div class="comment-text-sm mb-5">
+                            <input class="rounded-3 border-info form-control px-3" value="${item.content}" readonly>
+                            <br>
+                        </div>
+                    </div>
+                `;
+                }
+                $("#ajax").html(html);
+            },
+            className: "paginationjs-theme-blue",
+        });
+    </script>
+{{/section}}
+
+
+

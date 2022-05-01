@@ -1,0 +1,52 @@
+/*icon top left*/
+
+@media only screen and (max-width: 600px) {
+    #rcorners3 {
+        border-radius: 25px;
+        background-repeat: repeat;
+        width: 50px;
+        height: 50px;
+    }
+}
+@media only screen and (min-width: 600px) {
+    #rcorners3 {
+        border-radius: 25px;
+        background-repeat: repeat;
+        padding:10px;
+        width: 120px;
+        height: 100px;
+    }
+}
+/*button new*/
+.btn-grad {background-image: linear-gradient(to right, #e52d27 0%, #b31217  51%, #e52d27  100%)}
+.btn-grad {
+    margin-left: 10px;
+    padding: 7px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    border-radius: 2px;
+    display: block;
+}
+
+.btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+.btn-position-grad{
+    position: relative;
+    left:843px;
+    bottom: 25px;
+    width: 5px;
+    height: 5px;
+    font-size: 12px;
+}
+.btn-text-position-grad{
+    position: relative;
+    bottom: 10px;
+    font-size: 10px;
+    right: 10px;
+}

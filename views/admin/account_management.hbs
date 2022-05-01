@@ -1,0 +1,277 @@
+<body id="post">
+<div class="main-wrapper">
+    <div class="app" id="app">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+        <div class="mobile-menu-handle"></div>
+        <article class="content items-list-page" id="ajaxAccount">
+            <div class="title-search-block">
+                <div class="title-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="title"> Quản lý tài khoản
+                                <div class="action dropdown">
+                                    <button class="btn  btn-sm rounded-s btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More actions... </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fa fa-pencil-square-o icon"></i>Mark as a draft</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#confirm-modal">
+                                            <i class="fa fa-close icon"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </h3>
+                            <p class="title-description"> Tổng tài khoản: {{totalEmail.total}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="items-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control boxed rounded-s" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                        <button class="btn btn-secondary rounded-s" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                            </span>
+                        </div>
+                </div>
+            </div>
+            <div class="card items" >
+                <ul class="item-list striped">
+                    <li class="item item-list-header">
+                        <div class="item-row">
+                            <div class="item-col fixed item-col-check">
+                                <label class="item-check" id="select-all-items">
+                                    <input type="checkbox" class="checkbox">
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="item-col item-col-header item-col-title">
+                                <div>
+                                    <span>Email</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-category">
+                                <div class="no-overflow">
+                                    <span>Trạng thái</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-author">
+                                <div class="no-overflow">
+                                    <span>Tên người dùng</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header item-col-date">
+                                <div>
+                                    <span>Phone number</span>
+                                </div>
+                            </div>
+                            <div class="item-col item-col-header fixed item-col-actions-dropdown"> </div>
+                        </div>
+                    </li>
+                    {{#each list}}
+                        <li class="item" id="{{this.UserID}}">
+                            <div class="item-row">
+                                <div class="item-col fixed item-col-check">
+                                    <label class="item-check" id="select-all-items">
+                                        <input type="checkbox" class="checkbox">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="item-col fixed pull-left item-col-title">
+                                    <div class="item-heading">Email</div>
+                                    <div>
+                                        <a  class="" href="/admin/account-detail/{{this.UserID}}">
+                                            <h4 class="item-title"> {{this.email}} </h4>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item-col item-col-category no-overflow">
+                                    <div class="item-heading">Trạng thái</div>
+                                    <div class="no-overflow">
+                                        <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                                    </div>
+                                </div>
+                                <div class="item-col item-col-author">
+                                    <div class="item-heading">Name User</div>
+                                    <div class="no-overflow">
+                                        <a >{{ format_name this.firstname this.lastname}}</a>
+                                    </div>
+                                </div>
+                                <div class="item-col item-col-date">
+                                    <div class="item-heading">Phone Number</div>
+                                    <div class="no-overflow"> {{this.phonenumber}} </div>
+                                </div>
+                                <div class="item-col fixed item-col-actions-dropdown">
+                                        <div class="item-actions-block"  id="BlockAccount">
+                                            {{#if ( checkBlock this.type)}}
+                                                <a class="remove" title="Nhấn vào để khóa tài khoản"  type="submit"  href="#"  id="lock"  >
+                                                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                                                </a>
+                                            {{else}}
+                                                <a class="remove"  title="Nhấn vào để mở khóa tài khoản"  type="submit"  href="#"  id="unlock" >
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                </a>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                        </li>
+                    {{/each}}
+                    {{{paginateHelper pagination paginationClass="pagination pagination-lg justify-content-center"}}}
+                    <nav class="text-right">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#"> Prev </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#"> 1 </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"> 2 </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"> 3 </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"> 4 </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"> 5 </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"> Next </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </ul>
+            </div>
+        </article>
+    </div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+    <div class="color-primary"></div>
+    <div class="chart">
+        <div class="color-primary"></div>
+        <div class="color-secondary"></div>
+    </div>
+</div>
+</body>
+
+<div class="position-fixed bottom-0 end-0 p-3" id="toast" style="z-index: 11">
+    <div id="liveToastblock" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="/public/assets/img/logo/hagl.png" style="width: 30px;height: 30px" class="rounded me-2" alt="...">
+            <strong class="me-auto">Thông tin tài khoản</strong>
+            <small>Hiện tại</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Khoá tài khoản thành công. Vui lòng đợi ít phút để tải lại
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" id="toast" style="z-index: 11">
+    <div id="liveToastunblock" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="/public/assets/img/logo/hagl.png" style="width: 30px;height: 30px" class="rounded me-2" alt="...">
+            <strong class="me-auto">Thông tin tài khoản</strong>
+            <small>Hiện tại</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Mở khoá tài khoản thành công. Vui lòng đợi ít phút để tải lại
+        </div>
+    </div>
+</div>
+
+
+{{#section 'cssAdmin'}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+{{/section}}
+{{#section 'jsAdmin'}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script>
+            {{#each list}}
+            document.getElementById({{this.UserID}})
+                    .getElementsByClassName("item-col fixed item-col-actions-dropdown")[0]
+                    .getElementsByClassName("item-actions-block")[0].getElementsByClassName('remove')[0]
+                    .addEventListener("click",function (){
+                        console.log(this.id)
+                        if(this.id==='unlock'){
+                            $.post("/admin/setting-account",{
+                                id:{{this.UserID}},
+                                type:0
+                            },function (data){
+                                if(data){
+                                    setTimeout(function (){
+                                        location.reload()
+                                    },3000);
+                                    $("#liveToastunblock").toast('show');
+                                }
+                            })
+                        }
+                        else if(this.id==='lock'){
+                            $.post("/admin/setting-account",{
+                                id:{{this.UserID}},
+                                type:-1
+                            },function (data){
+                                if(data){
+                                    setTimeout(function (){
+                                        location.reload()
+                                    },3000);
+                                    $("#liveToastblock").toast('show');
+                                }
+                            })
+                        }
+                    })
+            {{/each}}
+
+    </script>
+    <!--<script>
+        function unblock(id){
+            $.post("/admin/quan-li-tai-khoan/mo-khoa-tai-khoan/"+id,{title:"mo khoa tai khoan"},function (data,status){
+                if(data){
+                    console.log(data);
+                    $("#liveToastunlock").toast('show');
+                }
+
+            })
+        }
+    </script>
+    <script>
+        function block(id){
+            $.post("/admin/quan-li-tai-khoan/khoa-tai-khoan/"+id,{title:"khoa tai khoan"},function (data,status){
+                if(data){
+                    console.log(data);
+                    $("#liveToastblock").toast('show');
+                }
+            })
+        }
+    </script>
+    <script>
+
+    </script>
+    <script>
+        $("#BlockAccount a").click(function (){
+            console.log(this.id)
+            /*if(this.id==="unlock"){
+                unblock(this.name);
+                setTimeout(function (){
+                    location.reload()
+                },3000);
+
+            }
+            else{
+                block(this.name);
+                setTimeout(function (){
+                    location.reload()
+                },3000);
+            }*/
+        })
+    </script>-->
+{{/section}}

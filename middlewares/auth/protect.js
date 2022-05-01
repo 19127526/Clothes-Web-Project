@@ -1,3 +1,5 @@
+
+
 const protectRoute = (req, res, next) => {
   if (req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl;
@@ -21,5 +23,6 @@ const protectAdminRoute = (req, res, next) => {
     res.redirect("/login");
   }
 };
+
 
 export { protectRoute, protectAdminRoute };

@@ -45,7 +45,7 @@
           <div class="main-menu d-none d-lg-block">
             <nav>
               <ul id="navigation">
-                <li><a href="/">Home</a></li>
+                <li><a href="/" id="home">Home</a></li>
                 {{#if user.type}}
                   <li><a href="/admin">Management</a></li>
                 {{/if}}
@@ -82,6 +82,7 @@
                       {{user.firstname}}</span></a>
                   <ul class="submenu">
                     <li><a href="/profile">Profile</a></li>
+                      <li><a href="/history">History</a></li>
                     <li><a href="/logout">Logout</a></li>
                   </ul>
                 {{else}}
@@ -92,9 +93,21 @@
                   </ul>
                 {{/if}}
               </li>
-              <li><a href="/cart"><span
-                    class="flaticon-shopping-cart"
-                  ></span></a>
+              <li>
+                  <a href="/cart">
+                      <span class="flaticon-shopping-cart">
+                          {{#if cart.total}}
+                              <span id="totalcart" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{cart.total}}
+                                </span>
+                          {{else}}
+                              <span id="totalcart" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  0
+                              </span>
+                          {{/if}}
+
+                      </span>
+                  </a>
               </li>
             </ul>
           </div>

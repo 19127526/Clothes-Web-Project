@@ -23,6 +23,7 @@ const categoryView = async function (req, res) {
     page,
     perPage
   );
+  const nameParent="Sản phẩm"
   res.render("category", {
     pagination: {
       page: pagination.current_page,

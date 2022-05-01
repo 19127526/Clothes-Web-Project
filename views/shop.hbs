@@ -16,7 +16,7 @@
 
     function getProducts() {
         $.ajax({
-            url: "products",
+            url: "/products",
             type: "GET",
             dataType: "json",
             data: {
@@ -44,7 +44,7 @@
                 let html = "";
                 for (let i = 0; i < products.length; i++) {
                     html += '<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6"> <div class="single-popular-items mb-50 text-center"> <div class="popular-img"> <a href="/product/' + products[i].ProID + '"> <img src="' +
-                        products[i].Image + '" alt="Card image cap"> </a> <div class="img-cap"> <span>Add to cart</span> </div> <div class="favorit-items"> <span class="flaticon-heart"></span> </div> </div>' +
+                        products[i].Image + '" alt="Card image cap"> </a> <div class="img-cap" href="/product/' + products[i].ProID + '"><span>See details</span> </div> <div class="favorit-items"> <span class="flaticon-heart"></span> </div> </div>' +
                         '<div class="popular-caption"> <h3><a href="/product/' + products[i].ProID + '">' + products[i].ProName + '</a></h3> <span>' + products[i].Price + '</span> </div> </div> </div>';
                 }
                 $("#products").html(html);
