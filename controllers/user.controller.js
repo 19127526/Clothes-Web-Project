@@ -5,11 +5,15 @@ const profileView = async function (req, res) {
 };
 
 const profileChange = async function (req, res) {
-  try {
-    await usersModel.updateAccount(req.session.passport.user.id, req.body);
-    req.locals.user = req.session.passport.user;
-  } catch (err) {}
-  res.redirect("/profile");
+  const promise=new Promise(async (resolve, reject) => {
+    const list = await usersModel.updateAccount(req.session.passport.user.id, req.body);
+    resolve("done")
+  });
+  promise.then(function (){
+    res.redirect("/profile");
+  })
+
+
 };
 
 export { profileView, profileChange };

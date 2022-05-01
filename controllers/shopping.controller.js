@@ -37,9 +37,7 @@ const categoryView = async function (req, res) {
 const productView = async function (req, res) {
   const proID = req.params.ProID || 0;
   const product = await shoppingModel.findByProductID(proID);
-  console.log(product.CatID);
   const productRelated=await shoppingModel.findProductRelatedID(product.CatID);
-  console.log(productRelated)
   res.render("product", { product ,related:productRelated });
 };
 

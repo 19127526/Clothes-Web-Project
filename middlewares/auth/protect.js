@@ -16,7 +16,7 @@ const protectAdminRoute = (req, res, next) => {
       next();
     } else {
       req.session.login_err = "You are not an admin";
-      res.redirect("/login");
+      res.redirect("/");
     }
   } else {
     req.session.login_err = "Please login to continue";

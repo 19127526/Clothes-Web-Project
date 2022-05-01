@@ -22,6 +22,8 @@ export default function (app) {
           return moment(val).format("DD/MM/YYYY");
         },
           equal(x1,x2){
+            console.log(x1);
+            console.log(x2);
             return x1===x2;
           },
           multi(x1,x2){
@@ -31,6 +33,9 @@ export default function (app) {
           },
         check(x1){
           return x1!==0
+        },
+        isAdmin(x1){
+          return x1===1
         },
         product(index){
           return index+' Sản phẩm'
@@ -51,8 +56,10 @@ export default function (app) {
           return moment(val).format("HH:mm:ss DD/MM/YYYY");
         },
         convertDateToString(val){
-          return val.toString();
-        }
+          const temp2=moment(val).format("DD/MM/YYYY");;
+          return  temp2.toString();
+        },
+
       },
       extname: ".hbs",
     })

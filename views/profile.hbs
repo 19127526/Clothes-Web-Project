@@ -38,7 +38,7 @@
                                     <div class="col-md-12 my-1"><label class="labels">Phone number</label><span class="form-control">{{user.phonenumber}}</span></div>
                                     <div class="col-md-12 my-1"><label class="labels">Address</label><span class="form-control">{{user.address}}</span></div>
                                     <div class="col-md-12 my-1"><label class="labels">Email address</label><span class="form-control">{{user.email}}</span></div>
-                                    <div class="col-md-12 my-1"><label class="labels">Date of birth</label><span type="date" class="form-control">{{time user.dob}}</span></div>
+                                    <div class="col-md-12 my-1"><label class="labels">Date of birth</label><span type="date" class="form-control">{{convertDateToString user.dob}}</span></div>
                                 </div>
                                 <div class="my-3 text-center">
                                     <a href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#editProfileForm">
@@ -62,7 +62,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="editProfile" method="post">
+                <form id="editProfile" method="post" action="/update_profile">
                     <div class="container rounded bg-white mb-3">
                     <div class="row">
                         <div class="col-md-5 border-right">

@@ -78,13 +78,25 @@
               </li>
               <li>
                 {{#if user}}
-                  <a href="/profile"><span class="flaticon-user">&nbsp Welcome
-                      {{user.firstname}}</span></a>
-                  <ul class="submenu">
-                    <li><a href="/profile">Profile</a></li>
-                      <li><a href="/history">History</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                  </ul>
+                    {{#if (isAdmin user.type)}}
+                        <a href="/profile"><span class="flaticon-user">&nbsp Welcome
+                            {{user.firstname}}</span></a>
+                        <ul class="submenu">
+                            <li><a href="/profile">Profile</a></li>
+                            <li><a href="/history">History</a></li>
+                            <li><a href="/admin">Go to Admin Site</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    {{else}}
+                        <a href="/profile"><span class="flaticon-user">&nbsp Welcome
+                            {{user.firstname}}</span></a>
+                        <ul class="submenu">
+                            <li><a href="/profile">Profile</a></li>
+                            <li><a href="/history">History</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    {{/if}}
+
                 {{else}}
                   <a href="/login"><span class="flaticon-user"></span></a>
                   <ul class="submenu">

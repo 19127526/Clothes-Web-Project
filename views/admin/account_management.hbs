@@ -69,39 +69,79 @@
                         </div>
                     </li>
                     {{#each list}}
-                        <li class="item" id="{{this.UserID}}">
-                            <div class="item-row">
-                                <div class="item-col fixed item-col-check">
-                                    <label class="item-check" id="select-all-items">
-                                        <input type="checkbox" class="checkbox">
-                                        <span></span>
-                                    </label>
-                                </div>
-                                <div class="item-col fixed pull-left item-col-title">
-                                    <div class="item-heading">Email</div>
-                                    <div>
-                                        <a  class="" href="/admin/account-detail/{{this.UserID}}">
-                                            <h4 class="item-title"> {{this.email}} </h4>
-                                        </a>
+                        {{#if (equal this.UserID user.id)}}
+                            <li class="item" id="{{this.UserID}}">
+                                <div class="item-row">
+                                    <div class="item-col fixed item-col-check">
+                                        <label class="item-check" id="select-all-items">
+                                            <input type="checkbox" class="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                    <div class="item-col fixed pull-left item-col-title">
+                                        <div class="item-heading">Email</div>
+                                        <div>
+                                            <a  class="" href="/admin/account-detail/{{this.UserID}}">
+                                                <h4 class="item-title"> {{this.email}} </h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="item-col item-col-category no-overflow">
+                                        <div class="item-heading">Trạng thái</div>
+                                        <div class="no-overflow">
+                                            <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="item-col item-col-author">
+                                        <div class="item-heading">Name User</div>
+                                        <div class="no-overflow">
+                                            <a >{{ format_name this.firstname this.lastname}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="item-col item-col-date">
+                                        <div class="item-heading">Phone Number</div>
+                                        <div class="no-overflow"> {{this.phonenumber}} </div>
+                                    </div>
+                                    <div class="item-col fixed item-col-actions-dropdown">
+                                        <div class="item-actions-block"  id="BlockAccount">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="item-col item-col-category no-overflow">
-                                    <div class="item-heading">Trạng thái</div>
-                                    <div class="no-overflow">
-                                        <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                            </li>
+                        {{else}}
+                            <li class="item" id="{{this.UserID}}">
+                                <div class="item-row">
+                                    <div class="item-col fixed item-col-check">
+                                        <label class="item-check" id="select-all-items">
+                                            <input type="checkbox" class="checkbox">
+                                            <span></span>
+                                        </label>
                                     </div>
-                                </div>
-                                <div class="item-col item-col-author">
-                                    <div class="item-heading">Name User</div>
-                                    <div class="no-overflow">
-                                        <a >{{ format_name this.firstname this.lastname}}</a>
+                                    <div class="item-col fixed pull-left item-col-title">
+                                        <div class="item-heading">Email</div>
+                                        <div>
+                                            <a  class="" href="/admin/account-detail/{{this.UserID}}">
+                                                <h4 class="item-title"> {{this.email}} </h4>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="item-col item-col-date">
-                                    <div class="item-heading">Phone Number</div>
-                                    <div class="no-overflow"> {{this.phonenumber}} </div>
-                                </div>
-                                <div class="item-col fixed item-col-actions-dropdown">
+                                    <div class="item-col item-col-category no-overflow">
+                                        <div class="item-heading">Trạng thái</div>
+                                        <div class="no-overflow">
+                                            <a id="{{this.IdStatus}}">{{this.Name}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="item-col item-col-author">
+                                        <div class="item-heading">Name User</div>
+                                        <div class="no-overflow">
+                                            <a >{{ format_name this.firstname this.lastname}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="item-col item-col-date">
+                                        <div class="item-heading">Phone Number</div>
+                                        <div class="no-overflow"> {{this.phonenumber}} </div>
+                                    </div>
+                                    <div class="item-col fixed item-col-actions-dropdown">
                                         <div class="item-actions-block"  id="BlockAccount">
                                             {{#if ( checkBlock this.type)}}
                                                 <a class="remove" title="Nhấn vào để khóa tài khoản"  type="submit"  href="#"  id="lock"  >
@@ -115,7 +155,9 @@
                                         </div>
                                     </div>
                                 </div>
-                        </li>
+                            </li>
+                        {{/if}}
+
                     {{/each}}
                     {{{paginateHelper pagination paginationClass="pagination pagination-lg justify-content-center"}}}
                     <nav class="text-right">

@@ -16,16 +16,14 @@ export default {
     }
   },
   async updateAccount(Id, user) {
-    try {
-      await db("users").where("UserID", Id).update({
+      const list=await db("users").where("UserID", Id).update({
         firstname: user.firstname,
         lastname: user.lastname,
         phonenumber: user.phonenumber,
         address: user.address,
+        dob:user.dob
       });
-    } catch (err) {
-      throw err.errno;
-    }
+      return list;
   },
   async getUserByEmail(Email) {
     try {

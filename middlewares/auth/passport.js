@@ -33,7 +33,8 @@ export default {
               address: user.address,
               phonenumber: user.phonenumber,
               type: user.type,
-              image: user.image
+              image: user.image,
+              dob:user.dob
           }),
       );
       passport.deserializeUser((user, done) => done(null, getUserById(user.id)));

@@ -16,9 +16,10 @@ import shoppingRouter from "./routes/shopping.route.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/user.route.js";
 import vnpayRouter from "./routes/paypal.route.js";
+import {protectAdminRoute} from "./middlewares/auth/protect.js";
 
 const app = express();
-const port = process.env.PORT || 3007;
+const port = process.env.PORT || 3000;
 
 app.use(flash());
 //app.use(morgan("dev"));
@@ -45,7 +46,7 @@ app.use(loginRouter);
 app.use(shoppingRouter);
 app.use(userRouter);
 app.use(vnpayRouter)
-app.use("/admin", adminRouter);
+app.use("/admin", protectAdminRoute,adminRouter);
 app.use("/public", express.static("public"));
 app.use("/publicAdmin", express.static("publicAdmin"));
 

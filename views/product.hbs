@@ -222,6 +222,7 @@
                                             success:function (data) {
                                                 alert("Bình luận thành công");
                                                 $("#contentComment").prop('value',"");
+                                                location.reload();
                                             },
                                             err:function (xhr,ajaxOptions,thrownError){
                                                 alert("Lỗi");
