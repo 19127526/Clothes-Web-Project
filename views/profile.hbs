@@ -7,9 +7,13 @@
                         <div class="row">
                             <div class="col-md-4 border-right">
                                 <div class="d-flex flex-column align-items-center">
-                                        <img class="rounded-circle mb-1 mt-5" width="150px" src="./public/imgs/1//1/(1).jpg">
+
+                                        <img class="rounded-circle mb-1 mt-5" width="250px" height="250px" src="{{user.image}}" >
                                         <span class="font-weight-bold">{{user.firstname}} {{user.lastname}}</span>
                                         <span class="text-black-50">{{user.email}}</span>
+                                    <form method="post"  enctype="multipart/form-data">
+                                        <input id="input-700" multiple type="file"  name="image" >
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -59,7 +63,14 @@
                 <form id="editProfile" method="post">
                     <div class="container rounded bg-white mb-3">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-5 border-right">
+                            <div class="d-flex flex-column align-items-center justify-content">
+                                <img class="rounded-circle mb-1 mt-5" width="150px" height="150px" src="{{user.image}}" >
+
+                                <span class="font-weight-bold">{{user.firstname}} {{user.lastname}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="mt-3">
                                 <div class="col-md-12 my-1"><label class="labels">First name</label><input type="text" name="firstname" class="form-control" placeholder="First name" value="{{user.firstname}}"></div>
                                 <div class="col-md-12 my-1"><label class="labels">Last name</label><input type="text" name="lastname" class="form-control" value="{{user.lastname}}" placeholder="Last name"></div>
@@ -79,3 +90,57 @@
     </div>
     <!-- Modal end -->
 </main>
+
+{{#section 'css'}}
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+{{/section}}
+{{#section 'js'}}
+    <script src="https://cdn.tiny.cloud/1/p1fwo21pu5sn0tp0vy4twc8487p3m1at2uussi5efjxyyylq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/fa/theme.min.js" integrity="sha512-ywJxJU8HX2ZyXikj/iM4gW2vWIhnGCjfehz9kMU0oqo0GDdr3w8E2E3DZlzgIBTNKU8jovkg09pWktiw0mOFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            $("#input-700").fileinput({
+                overwriteInitial: false,
+                validateInitialCount: true,
+                initialPreviewAsData: true,
+                previewFileType: "image",
+                browseClass: "btn btn-success",
+                browseLabel: "Chọn hình",
+                browseIcon: "<i class=\"bi-file-image\"></i> ",
+                removeClass: "btn btn-danger",
+                removeLabel: "Xóa",
+                removeIcon: "<i class=\"bi-trash\"></i> ",
+                uploadClass: "btn btn-info",
+                uploadLabel: "Upload hình",
+                uploadIcon: "<i class=\"bi-upload\"></i> ",
+                uploadUrl: "/admin/upload-image-product",
+                initialPreviewConfig: [
+                    {
+                        caption: "People-1.jpg",
+                        description: 'This is a representative placeholder description for this image.',
+                        size: 576237,
+                        width: "120px",
+                        url: "/site/file-delete",
+                        key: 1
+                    },
+                ],
+                theme: 'fa',
+                language: 'vi',
+                /*  allowedFileExtensions: ['jpg'],*/
+            }).on('fileuploaded', function (e, params) {
+                $.post("/admin/edit-image-sirv", {
+                    catid:{{catID}},
+                    proid:{{proID}},
+                    total:{{total}}
+                }, function (data) {
+                    if (data) {
+
+                    }
+                });
+            });
+        });
+    </script>
+{{/section}}

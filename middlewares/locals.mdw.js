@@ -23,7 +23,7 @@ export default function (app) {
     something();
     const rawProduct=await shoppingModel.findAllProductsToChange();
     for (let i=0;i<rawProduct.total[0].total;i++){
-      if(rawProduct.list[i].Quantity===0){
+      if(rawProduct.list[i].Multiple===0){
         const update=await shoppingModel.ChangeStatusProduct(rawProduct.list[i],0);
       }
     }

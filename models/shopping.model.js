@@ -184,7 +184,7 @@ export default {
     const list=await db("orders").join('products','products.ProID','orders.ProID').andWhere(function (){
       this.where('orders.BillID',billid)
       this.where('orders.status','!=',-1)
-    }).select('orders.ProID', 'orders.Amount','products.Quantity');
+    }).select('orders.ProID', 'orders.Amount','products.Single','products.Multiple');
 
     return list;
   },
@@ -194,10 +194,24 @@ export default {
   },
   async updateQuantityProduct(entity){
     console.log(entity)
-    const list=await db("products").where('ProID',entity.ProID).update({
-      Quantity:(entity.Quantity-entity.Amount)
-    });
-    return list;
+      if(entity.Single>=entity.Amount) {
+          const list = await db("products").where('ProID', entity.ProID).update({
+              Single: (entity.Single - entity.Amount)
+          });
+          return list;
+      }
+      else{
+          if(entity.Multiple!==0){
+              const list = await db("products").where('ProID', entity.ProID).update({
+                  Multiple: entity.Multiple-1,
+                  Single:(100+entity.Single)-entity.Amount
+              });
+              return list;
+          }
+          else{
+              return false;
+          }
+      }
   },
 
   async insertBill(){

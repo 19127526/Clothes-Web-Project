@@ -53,6 +53,31 @@ export default {
         .where('bill.User',userID)
     return {list ,totalBill };
   },
+
+  async findAllDetailBill(filter){
+    if(filter=='0'){
+      const list = await db("users")
+          .join("orders", "orders.UserID", "users.UserID")
+          .join('bill','bill.BillID','orders.BillID')
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .join('products','products.ProID','orders.ProID');
+      const list2 = await db("bill")
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .orderBy('bill.Date','asc')
+      const count=await db('bill').count('BillID', {as: 'total'})
+      /* list2.product=list;*/
+      return {list2,count};
+    }
+    else if (filter=='1'){
+      console.log("hello")
+      const list2 = await db("bill")
+          .join('statusbill','statusbill.idstatus','bill.Status')
+          .orderBy('bill.Status','asc')
+      const count=await db('bill').count('BillID', {as: 'total'})
+      /* list2.product=list;*/
+      return {list2,count};
+    }
+  },
   async findDetailOrder(billid){
     const list3=await db('orders')
         .join('bill','bill.BillID','orders.BillID')

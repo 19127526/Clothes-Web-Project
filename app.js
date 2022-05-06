@@ -12,12 +12,14 @@ import loginRouter from "./routes/login.route.js";
 import shoppingRouter from "./routes/shopping.route.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/user.route.js";
+import paypalRoute from "./routes/paypal.route.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use('/public',express.static('public'))
 app.use(flash());
-//app.use(morgan("dev"));
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -39,8 +41,10 @@ activateViewMiddleware(app);
 app.use(loginRouter);
 app.use(shoppingRouter);
 app.use(userRouter);
+app.use(paypalRoute)
 app.use("/admin", adminRouter);
 app.use("/public", express.static("public"));
+app.use("/publicAdmin", express.static("publicAdmin"));
 
 //listen port
 app.listen(port, function () {

@@ -150,6 +150,7 @@ router.get("/account-detail/:UserID",async function(req,res){
     })
 });
 
+
 router.get("/account-detail/:UserID", async function (req,res){
     const productDetail=await adminModel.findDetailByProductID(req.params.proID);
     const totalEmail= await usersModel.findTotalAccount().then(async (u)=>{
@@ -222,6 +223,31 @@ router.get("/detail-bill/:UserID",async function(req,res){
         list:listDetailUser.list2,
         total:listDetailUser.count[0],
         user,
+        filter:listDetailUser.filter
+    })
+});
+
+router.get("/order",async function(req,res){
+    const listDetailUser=await adminModel.findAllDetailBill(req.query.filter||0);
+    listDetailUser.filter=req.query.filter||0;
+    const size=listDetailUser.count[0].total;
+    for (let i=0;i<size-1;i++){
+        console.log(listDetailUser.list2[i].BillID)
+        const temp=await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
+        listDetailUser.list2[i].listProduct=temp;
+        const listStatusProduct=await adminModel.findAllStatusBill();
+        listStatusProduct.forEach(u=>{
+            if(u.idstatus===listDetailUser.list2[i].Status){
+                u.check=true;
+            }
+        });
+        listDetailUser.list2[i].AmountStatus=listStatusProduct;
+    };
+
+    res.render("admin/order",{
+        layout:'layoutAdmin.hbs',
+        list:listDetailUser.list2,
+        total:listDetailUser.count[0],
         filter:listDetailUser.filter
     })
 });

@@ -113,40 +113,39 @@ router.post("/getproductAuthen",async (req,res)=>{
 });
 router.post("/gettotal",async (req,res)=>{
     const list = req.body;
-      list.total=parseInt(req.body.price *req.body.amount);
-    if(req.isAuthenticated()) {
+    list.total = parseInt(req.body.price * req.body.amount);
+    if (req.isAuthenticated()) {
       const promise = new Promise(async (resolve, reject) => {
         const updateAmount = await shoppingModel.updateQuantityByOrderID(list);
         resolve(req.body.id);
       });
       promise.then(async function (data) {
-        const cartList = await shoppingModel.findAllCartByID(req.session.passport.user.id,res.locals.billid);
+        const cartList = await shoppingModel.findAllCartByID(req.session.passport.user.id, res.locals.billid);
         let subtotal = 0;
         cartList.forEach(u => {
           subtotal += u.Total;
         });
         res.json(subtotal);
       })
-    }
-    else{
-        const promise = new Promise(async (resolve, reject) => {
-          const updateAmount = await shoppingModel.updateQuantityByOrderID(list);
-          resolve(req.body.id);
+    } else {
+      const promise = new Promise(async (resolve, reject) => {
+        const updateAmount = await shoppingModel.updateQuantityByOrderID(list);
+        resolve(req.body.id);
+      });
+      promise.then(async function (data) {
+        const cartList = await shoppingModel.findAllCartByID(-1, res.locals.billid);
+        let subtotal = 0;
+        cartList.forEach(u => {
+          subtotal += u.Total;
         });
-        promise.then(async function (data) {
-          const cartList = await shoppingModel.findAllCartByID( -1,res.locals.billid);
-          let subtotal = 0;
-          cartList.forEach(u => {
-            subtotal += u.Total;
-          });
 
-          res.json(subtotal);
-        })
-      }
+        res.json(subtotal);
+      })
+    }
 })
 
 
-router.get("/checkout", protectRoute,async (req,res)=>{
+router.get("/checkout",async (req,res)=>{
   if(req.isAuthenticated()){
     const cartList = await shoppingModel.findAllCartByID(req.session.passport.user.id,res.locals.billid );
     const userList=await usersModel.getUserById(req.session.passport.user.id);
@@ -175,49 +174,11 @@ router.get("/checkout", protectRoute,async (req,res)=>{
       shipping:shipping
     })
   }
-});
-
-router.post("/checkout", protectRoute,async (req,res)=> {
-    const promise=new Promise(async (resolve, reject) => {
-      const entity = req.body;
-      entity.User = req.session.passport.user.id;
-      const changeBill = await shoppingModel.changeMethodBill(res.locals.billid, entity);
-      const changeOrder = await shoppingModel.changeMethodOrder(res.locals.billid);
-      resolve("done")
-    });
-    promise.then(function (data){
-      const promise3=new Promise(async (resolve,reject)=>{
-      const total=await shoppingModel.totalOrder(res.locals.billid);
-      console.log(total[0].total);
-      for (let i=0;i<total[0].total;i++){
-        const select= await shoppingModel.selectProductAfterOrder(res.locals.billid);
-        let update=await shoppingModel.updateQuantityProduct(select[i]);
-      }
-      resolve("done")
-        promise3.then(async function () {
-          const data3 = await shoppingModel.insertBill();
-          BillID.setvalue(data3[0])
-          return res.redirect("/history")
-        })
-      })
-    });
-});
-router.get("/product/:ProID", productView);
-
-router.get("/about", aboutView);
-
-
-router.get("/");
-
-router.get("/history",protectRoute,async (req,res)=>{
-  const listDetailUser=await shoppingModel.findDetailBillByID(req.session.passport.user.id);
-  const user=await usersModel.getUserById(req.session.passport.user.id);
-  listDetailUser.filter=req.query.filter||0;
-  const size=listDetailUser.count[0].total;
-
-  for (let i=0;i<size;i++){
-    const temp=await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
-    temp.forEach(u => {
+  else{
+    const cartList = await shoppingModel.findAllCartByID(-1,res.locals.billid );
+    let subtotal= 0;
+    cartList.forEach(u => {
+      subtotal += u.Total;
       if(u.SizeID===u.SizeS){
         u.Size="S"
       }
@@ -231,27 +192,155 @@ router.get("/history",protectRoute,async (req,res)=>{
         u.Size="XL"
       }
     });
-    listDetailUser.list2[i].listProduct=temp;
-    const listStatusProduct=await adminModel.findAllStatusBill();
-    listStatusProduct.forEach(u=>{
-      if(u.idstatus===listDetailUser.list2[i].Status){
-        u.check=true;
-      }
-    });
-    listDetailUser.list2[i].AmountStatus=listStatusProduct;
-  };
+    const shipping=50000
+    return res.render("checkout",{
+      cartList,
+      subtotal:subtotal,
+      shipping:shipping
+    })
+  }
+});
 
-  res.render("history",{
-    list:listDetailUser.list2,
-    total:listDetailUser.count[0],
-    user,
-    filter:listDetailUser.filter
-  })
+router.post("/checkout",async (req,res)=> {
+  if(req.isAuthenticated()) {
+    const promise = new Promise(async (resolve, reject) => {
+      const entity = req.body;
+      entity.User = req.session.passport.user.id;
+      const changeBill = await shoppingModel.changeMethodBill(res.locals.billid, entity);
+      const changeOrder = await shoppingModel.changeMethodOrder(res.locals.billid);
+      resolve("done")
+    });
+    promise.then(function (data) {
+      const promise3 = new Promise(async (resolve, reject) => {
+        const total = await shoppingModel.totalOrder(res.locals.billid);
+        console.log(total[0].total);
+        for (let i = 0; i < total[0].total; i++) {
+          const select = await shoppingModel.selectProductAfterOrder(res.locals.billid);
+          let update = await shoppingModel.updateQuantityProduct(select[i]);
+        }
+        resolve("done")
+        promise3.then(async function () {
+          const data3 = await shoppingModel.insertBill();
+          BillID.setvalue(data3[0])
+          return res.redirect("/history")
+        })
+      })
+    });
+  }
+  else{
+    const promise = new Promise(async (resolve, reject) => {
+      const entity = req.body;
+      entity.User = -1;
+      const changeBill = await shoppingModel.changeMethodBill(res.locals.billid, entity);
+      const changeOrder = await shoppingModel.changeMethodOrder(res.locals.billid);
+      resolve("done")
+    });
+    promise.then(function (data) {
+      const promise3 = new Promise(async (resolve, reject) => {
+        const total = await shoppingModel.totalOrder(res.locals.billid);
+        console.log(total[0].total);
+        for (let i = 0; i < total[0].total; i++) {
+          const select = await shoppingModel.selectProductAfterOrder(res.locals.billid);
+          let update = await shoppingModel.updateQuantityProduct(select[i]);
+        }
+        resolve("done")
+        promise3.then(async function () {
+          const data3 = await shoppingModel.insertBill();
+          BillID.setvalue(data3[0])
+          return res.redirect("/history")
+        })
+      })
+    });
+  }
+});
+router.get("/product/:ProID", productView);
+
+router.get("/about", aboutView);
+
+
+router.get("/");
+
+router.get("/history",async (req,res)=>{
+  if(req.isAuthenticated()) {
+
+    const listDetailUser = await shoppingModel.findDetailBillByID(req.session.passport.user.id);
+    const user = await usersModel.getUserById(req.session.passport.user.id);
+    listDetailUser.filter = req.query.filter || 0;
+    const size = listDetailUser.count[0].total;
+
+    for (let i = 0; i < size; i++) {
+      const temp = await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
+      temp.forEach(u => {
+        if (u.SizeID === u.SizeS) {
+          u.Size = "S"
+        } else if (u.SizeID === u.SizeM) {
+          u.Size = "M"
+        } else if (u.SizeID === u.SizeL) {
+          u.Size = "L"
+        } else if (u.SizeID === u.SizeXL) {
+          u.Size = "XL"
+        }
+      });
+      listDetailUser.list2[i].listProduct = temp;
+      const listStatusProduct = await adminModel.findAllStatusBill();
+      listStatusProduct.forEach(u => {
+        if (u.idstatus === listDetailUser.list2[i].Status) {
+          u.check = true;
+        }
+      });
+      listDetailUser.list2[i].AmountStatus = listStatusProduct;
+    }
+    ;
+
+    res.render("history", {
+      list: listDetailUser.list2,
+      total: listDetailUser.count[0],
+      user,
+      filter: listDetailUser.filter
+    })
+  }
+  else{
+    const listDetailUser = await shoppingModel.findDetailBillByID(-1);
+    const user = await usersModel.getUserById(-1);
+    listDetailUser.filter = req.query.filter || 0;
+    const size = listDetailUser.count[0].total;
+
+    for (let i = 0; i < size; i++) {
+      const temp = await adminModel.findDetailOrder(listDetailUser.list2[i].BillID);
+      temp.forEach(u => {
+        if (u.SizeID === u.SizeS) {
+          u.Size = "S"
+        } else if (u.SizeID === u.SizeM) {
+          u.Size = "M"
+        } else if (u.SizeID === u.SizeL) {
+          u.Size = "L"
+        } else if (u.SizeID === u.SizeXL) {
+          u.Size = "XL"
+        }
+      });
+      listDetailUser.list2[i].listProduct = temp;
+      const listStatusProduct = await adminModel.findAllStatusBill();
+      listStatusProduct.forEach(u => {
+        if (u.idstatus === listDetailUser.list2[i].Status) {
+          u.check = true;
+        }
+      });
+      listDetailUser.list2[i].AmountStatus = listStatusProduct;
+    }
+    ;
+
+    res.render("history", {
+      list: listDetailUser.list2,
+      total: listDetailUser.count[0],
+      user,
+      filter: listDetailUser.filter
+    })
+  }
 })
 
 
 
-router.post("/history/detail/:BillID",protectRoute,async (req,res)=>{
+router.post("/history/detail/:BillID",async (req,res)=>{
   console.log(req.params.BillID);
   const temp=await adminModel.findDetailOrder(req.params.BillID);
   temp.forEach(u => {
