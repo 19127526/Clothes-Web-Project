@@ -25,7 +25,7 @@ const knex = knexObj({
         },
   pool: {
     min: 0,
-    max: 10,
+    max: 100,
   },
 });
 
